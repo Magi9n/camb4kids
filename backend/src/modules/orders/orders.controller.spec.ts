@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { User } from '../auth/entities/user.entity';
 
 describe('OrdersController', () => {
   let controller: OrdersController;
@@ -18,7 +19,17 @@ describe('OrdersController', () => {
   });
 
   it('debería permitir crear orden autenticado', async () => {
-    const result = await controller.create({ amount: 100 }, { id: 1, email: 'test@mail.com' });
+    const mockUser: User = {
+      id: 1,
+      email: 'test@mail.com',
+      password: 'hashed',
+      nombre: 'Test',
+      isAdmin: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      orders: [],
+    };
+    const result = await controller.create({ amount: 100 }, mockUser);
     expect(result).toHaveProperty('message', 'Orden creada');
   });
 }); 
