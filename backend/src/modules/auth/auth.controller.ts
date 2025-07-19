@@ -10,27 +10,42 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() dto: RegisterDto, @Res() res: Response) {
-    // lógica de registro
-    return res.json({ message: 'Registro exitoso' });
+    const result = await this.authService.register(dto);
+    return res.json(result);
   }
 
   @Post('login')
   async login(@Body() dto: LoginDto, @Res() res: Response) {
-    // lógica de login
-    return res.json({ message: 'Login exitoso' });
+    const result = await this.authService.login(dto);
+    // JWT en HttpOnly cookie
+    res.cookie('jwt', result.token, {
+      httpOnly: true,
+      secure: process.env.APP_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 1000, // 1 hora
+    });
+    return res.json({ user: result.user });
   }
 
   @Post('refresh')
   @UseGuards(JwtAuthGuard)
   async refresh(@Req() req: Request, @Res() res: Response) {
-    // lógica de refresh
+    const oldToken = req.cookies['jwt'];
+    const result = await this.authService.refresh(oldToken);
+    res.cookie('jwt', result.token, {
+      httpOnly: true,
+      secure: process.env.APP_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 1000,
+    });
     return res.json({ message: 'Token refrescado' });
   }
 
   @Post('logout')
   @UseGuards(JwtAuthGuard)
   async logout(@Req() req: Request, @Res() res: Response) {
-    // lógica de logout
+    res.clearCookie('jwt');
+    await this.authService.logout('');
     return res.json({ message: 'Logout exitoso' });
   }
 } 
