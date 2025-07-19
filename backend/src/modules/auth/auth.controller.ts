@@ -1,4 +1,5 @@
 import { Controller, Post, Body, Res, Req, UseGuards } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
 import { RegisterDto, LoginDto } from './dto';
 import { Response, Request } from 'express';
@@ -15,6 +16,7 @@ export class AuthController {
   }
 
   @Post('login')
+  @Throttle(5, 60) // 5 intentos por minuto
   async login(@Body() dto: LoginDto, @Res() res: Response) {
     const result = await this.authService.login(dto);
     // JWT en HttpOnly cookie
