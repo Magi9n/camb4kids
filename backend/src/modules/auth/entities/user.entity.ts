@@ -13,10 +13,10 @@ export class User {
   password: string; // Hasheada
 
   @Column()
-  nombre: string;
+  name: string;
 
-  @Column({ default: false })
-  isAdmin: boolean;
+  @Column({ type: 'enum', enum: ['user', 'admin'], default: 'user' })
+  role: string;
 
   @CreateDateColumn()
   createdAt: Date;
