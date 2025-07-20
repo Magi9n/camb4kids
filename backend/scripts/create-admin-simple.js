@@ -47,7 +47,7 @@ async function createAdmin() {
     const adminUser = userRepository.create({
       email: 'admin@mate4kids.com',
       password: hashedPassword,
-      nombre: 'Administrador',
+      name: 'Administrador',
       role: 'admin'
     });
     
