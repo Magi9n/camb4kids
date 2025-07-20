@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { join } from 'path';
 import { typeOrmConfig } from './config/typeorm.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { RatesModule } from './modules/rates/rates.module';
@@ -14,7 +13,6 @@ import { AdminModule } from './modules/admin/admin.module';
   imports: [
     ConfigModule.forRoot({ 
       isGlobal: true,
-      envFilePath: join(__dirname, '../../../.env')
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
