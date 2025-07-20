@@ -14,6 +14,7 @@ export const typeOrmConfig = (configService: ConfigService): DataSourceOptions =
   database: configService.get('DB_DATABASE'),
   entities: [User, Order, ExchangeRate, AdminSetting],
   migrations: ['src/migrations/*.ts'],
+  migrationsRun: false, // No ejecutar migraciones automáticamente
   synchronize: false,
   logging: configService.get('NODE_ENV') === 'development',
 });
