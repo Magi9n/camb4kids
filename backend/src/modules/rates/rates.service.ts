@@ -5,11 +5,9 @@ import { ExchangeRate } from './entities/exchange-rate.entity';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import axios from 'axios';
 import Redis from 'ioredis';
+import { redisConfig } from '../../config/redis.config';
 
-const redis = new Redis({ 
-  host: process.env.REDIS_HOST || 'localhost', 
-  port: parseInt(process.env.REDIS_PORT) || 6379 
-});
+const redis = new Redis(redisConfig);
 
 @Injectable()
 export class RatesService {
