@@ -5,7 +5,7 @@ import { AdminSetting } from './entities/admin-setting.entity';
 import { Order } from '../orders/entities/order.entity';
 import { UpdateSettingsDto } from '../../common/dto/update-settings.dto';
 import { UpdateOrderDto } from '../../common/dto/update-order.dto';
-import * as Redis from 'ioredis';
+import Redis from 'ioredis';
 
 const redis = new Redis({ host: process.env.REDIS_HOST, port: Number(process.env.REDIS_PORT) });
 

@@ -29,7 +29,11 @@ describe('OrdersController', () => {
       updatedAt: new Date(),
       orders: [],
     };
-    const result = await controller.create({ amount: 100 }, mockUser);
+    const result = await controller.create({ 
+      amount: 100, 
+      fromCurrency: 'USD', 
+      toCurrency: 'PEN' 
+    }, mockUser);
     expect(result).toHaveProperty('message', 'Orden creada');
   });
 }); 

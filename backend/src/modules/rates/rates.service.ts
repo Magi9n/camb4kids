@@ -43,7 +43,7 @@ export class RatesService {
     let rate = await redis.get('EXCHANGE_RATE_USD_PEN');
     if (!rate) {
       const last = await this.rateRepo.find({ order: { createdAt: 'DESC' }, take: 1 });
-      rate = last[0]?.rate || null;
+      rate = last[0]?.rate?.toString() || null;
     }
     return { rate: rate ? parseFloat(rate) : null };
   }

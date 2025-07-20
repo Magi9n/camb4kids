@@ -16,17 +16,9 @@ export class AuthController {
   }
 
   @Post('login')
-  @Throttle(5, 60) // 5 intentos por minuto
-  async login(@Body() dto: LoginDto, @Res() res: Response) {
-    const result = await this.authService.login(dto);
-    // JWT en HttpOnly cookie
-    res.cookie('jwt', result.token, {
-      httpOnly: true,
-      secure: process.env.APP_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 1000, // 1 hora
-    });
-    return res.json({ user: result.user });
+  @Throttle(5) // 5 intentos por minuto
+  async login(@Body() loginDto: LoginDto) {
+    return this.authService.login(loginDto);
   }
 
   @Post('refresh')
