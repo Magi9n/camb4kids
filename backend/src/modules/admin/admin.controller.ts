@@ -1,35 +1,57 @@
-import { Controller, Get, Put, Param, Body, UseGuards } from '@nestjs/common';
-import { Roles } from '../auth/decorators/roles.decorator';
+import { 
+  Controller, 
+  Get, 
+  Post, 
+  Put, 
+  Param, 
+  Body, 
+  Query, 
+  UseGuards,
+  ParseIntPipe,
+  DefaultValuePipe 
+} from '@nestjs/common';
+import { AdminService } from './admin.service';
+import { UpdateSettingsDto } from '../../common/dto/update-settings.dto';
+import { UpdateOrderDto } from '../../common/dto/update-order.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 
-@UseGuards(RolesGuard)
 @Controller('admin')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('admin')
 export class AdminController {
+  constructor(private readonly adminService: AdminService) {}
+
   @Get('settings')
-  @Roles('admin')
   async getSettings() {
-    // lógica para obtener ajustes
-    return { variation: 0.02 };
+    return this.adminService.getSettings();
   }
 
   @Put('settings')
-  @Roles('admin')
-  async updateSettings(@Body() dto: any) {
-    // lógica para actualizar ajustes
-    return { message: 'Ajustes actualizados' };
+  async updateSettings(@Body() dto: UpdateSettingsDto) {
+    return this.adminService.updateSettings(dto);
   }
 
   @Get('orders')
-  @Roles('admin')
-  async getOrders() {
-    // lógica para listar órdenes
-    return { orders: [] };
+  async getOrders(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
+    @Query('status') status?: string,
+  ) {
+    return this.adminService.getOrders(page, limit, status);
   }
 
   @Put('orders/:id')
-  @Roles('admin')
-  async updateOrder(@Param('id') id: string, @Body() dto: any) {
-    // lógica para actualizar estado de orden
-    return { message: 'Orden actualizada' };
+  async updateOrder(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateOrderDto,
+  ) {
+    return this.adminService.updateOrder(id, dto);
+  }
+
+  @Get('stats')
+  async getStats() {
+    return this.adminService.getStats();
   }
 } 
