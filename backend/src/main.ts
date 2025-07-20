@@ -1,24 +1,41 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
-import pino from 'pino';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as helmet from 'helmet';
+import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { bufferLogs: true });
-  app.use(helmet({ contentSecurityPolicy: false }));
+  const app = await NestFactory.create(AppModule);
+  const logger = new Logger('Bootstrap');
+
+  // Configuración de seguridad
+  app.use(helmet());
+
+  // CORS
   app.enableCors({
-    origin: 'https://cambio.mate4kids.com',
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
   });
+
+  // Validación global
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     forbidNonWhitelisted: true,
-    transform: true,
   }));
-  const logger = pino();
-  app.useLogger(logger);
-  await app.listen(3000);
+
+  // Configuración de Swagger
+  const config = new DocumentBuilder()
+    .setTitle('Cambio Mate4Kids API')
+    .setDescription('API para plataforma de cambio de divisas')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+  logger.log(`Aplicación ejecutándose en puerto ${port}`);
 }
 bootstrap(); 

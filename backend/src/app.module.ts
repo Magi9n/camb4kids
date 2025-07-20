@@ -14,7 +14,7 @@ import { AdminModule } from './modules/admin/admin.module';
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(typeOrmConfig),
     ScheduleModule.forRoot(),
-    ThrottlerModule.forRoot({ ttl: 60, limit: 10 }),
+    ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
     AuthModule,
     RatesModule,
     OrdersModule,
