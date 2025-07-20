@@ -27,9 +27,9 @@ export class AuthService {
     if (!user) throw new UnauthorizedException('Credenciales inválidas');
     const valid = await bcrypt.compare(dto.password, user.password);
     if (!valid) throw new UnauthorizedException('Credenciales inválidas');
-    const payload = { sub: user.id, email: user.email, isAdmin: user.isAdmin };
+    const payload = { sub: user.id, email: user.email, role: user.role };
     const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' });
-    return { token, user: { id: user.id, email: user.email, nombre: user.nombre, isAdmin: user.isAdmin } };
+    return { token, user: { id: user.id, email: user.email, name: user.name, role: user.role } };
   }
 
   async refresh(token: string) {

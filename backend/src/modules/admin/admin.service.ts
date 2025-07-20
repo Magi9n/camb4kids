@@ -140,7 +140,7 @@ export class AdminService {
         user: {
           id: order.user.id,
           email: order.user.email,
-          name: order.user.nombre,
+          name: order.user.name,
         },
       })),
       pagination: {
@@ -185,7 +185,7 @@ export class AdminService {
       user: {
         id: order.user.id,
         email: order.user.email,
-        name: order.user.nombre,
+        name: order.user.name,
       },
     };
   }
