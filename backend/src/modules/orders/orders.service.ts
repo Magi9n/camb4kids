@@ -5,7 +5,7 @@ import { Order, OrderStatus } from './entities/order.entity';
 import { User } from '../auth/entities/user.entity';
 import { RatesService } from '../rates/rates.service';
 import { CreateOrderDto } from '../../common/dto/create-order.dto';
-import * as Redis from 'ioredis';
+import Redis from 'ioredis';
 
 const redis = new Redis({ host: process.env.REDIS_HOST, port: Number(process.env.REDIS_PORT) });
 

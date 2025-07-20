@@ -1,4 +1,4 @@
-import { DataSource } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { config } from 'dotenv';
 import { join } from 'path';
 import { User } from '../modules/auth/entities/user.entity';
@@ -9,7 +9,7 @@ import { AdminSetting } from '../modules/admin/entities/admin-setting.entity';
 // Cargar .env desde el directorio padre (public_html)
 config({ path: join(__dirname, '../../../.env') });
 
-export const typeOrmConfig = {
+export const typeOrmConfig: DataSourceOptions = {
   type: 'mysql',
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT) || 3306,
@@ -22,9 +22,4 @@ export const typeOrmConfig = {
   logging: process.env.NODE_ENV === 'development',
 };
 
-export default new DataSource({
-  ...typeOrmConfig,
-  type: 'mysql',
-  migrations: ['src/migrations/*.ts'],
-  migrationsTableName: 'migrations',
-}); 
+export default new DataSource(typeOrmConfig); 

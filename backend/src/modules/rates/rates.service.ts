@@ -4,7 +4,7 @@ import { Repository, Between } from 'typeorm';
 import { ExchangeRate } from './entities/exchange-rate.entity';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import axios from 'axios';
-import * as Redis from 'ioredis';
+import Redis from 'ioredis';
 
 const redis = new Redis({ host: process.env.REDIS_HOST, port: Number(process.env.REDIS_PORT) });
 
