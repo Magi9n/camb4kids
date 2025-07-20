@@ -1,29 +1,33 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
 import { AdminSetting } from './entities/admin-setting.entity';
 import { Order } from '../orders/entities/order.entity';
 import { UpdateSettingsDto } from '../../common/dto/update-settings.dto';
 import { UpdateOrderDto } from '../../common/dto/update-order.dto';
 import Redis from 'ioredis';
 
-const redis = new Redis({ 
-  host: process.env.REDIS_HOST || 'localhost', 
-  port: parseInt(process.env.REDIS_PORT) || 6379 
-});
-
 @Injectable()
 export class AdminService {
+  private readonly redis: Redis;
+
   constructor(
     @InjectRepository(AdminSetting)
     private readonly settingsRepo: Repository<AdminSetting>,
     @InjectRepository(Order)
     private readonly orderRepo: Repository<Order>,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+    this.redis = new Redis({ 
+      host: this.configService.get('REDIS_HOST') || 'localhost', 
+      port: parseInt(this.configService.get('REDIS_PORT')) || 6379 
+    });
+  }
 
   async getSettings() {
     // Intentar obtener del caché
-    const cached = await redis.get('admin_settings');
+    const cached = await this.redis.get('admin_settings');
     if (cached) {
       return JSON.parse(cached);
     }
@@ -50,7 +54,7 @@ export class AdminService {
     };
 
     // Guardar en caché por 10 minutos
-    await redis.setex('admin_settings', 600, JSON.stringify(result));
+    await this.redis.setex('admin_settings', 600, JSON.stringify(result));
 
     return result;
   }
@@ -82,7 +86,7 @@ export class AdminService {
     await this.settingsRepo.save(settings);
 
     // Limpiar caché
-    await redis.del('admin_settings');
+    await this.redis.del('admin_settings');
 
     return {
       id: settings.id,
@@ -172,7 +176,7 @@ export class AdminService {
     await this.orderRepo.save(order);
 
     // Limpiar caché del usuario
-    await redis.del(`user_orders_${order.user.id}`);
+    await this.redis.del(`user_orders_${order.user.id}`);
 
     return {
       id: order.id,
