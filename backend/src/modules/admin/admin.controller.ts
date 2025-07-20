@@ -39,7 +39,7 @@ export class AdminController {
     @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
     @Query('status') status?: string,
   ) {
-    return this.adminService.getOrders(page, limit, status);
+    return this.adminService.getAllOrders(page, limit);
   }
 
   @Put('orders/:id')
@@ -47,11 +47,21 @@ export class AdminController {
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateOrderDto,
   ) {
-    return this.adminService.updateOrder(id, dto);
+    return this.adminService.updateOrderStatus(id, dto.status);
   }
 
   @Get('stats')
   async getStats() {
     return this.adminService.getStats();
+  }
+
+  @Post('cache/clear')
+  async clearCache() {
+    return this.adminService.clearCache();
+  }
+
+  @Get('cache/stats')
+  async getCacheStats() {
+    return this.adminService.getCacheStats();
   }
 } 

@@ -8,6 +8,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { RatesModule } from './modules/rates/rates.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { CacheModule } from './common/cache.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AdminModule } from './modules/admin/admin.module';
     }),
     ScheduleModule.forRoot(),
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
+    CacheModule,
     AuthModule,
     RatesModule,
     OrdersModule,

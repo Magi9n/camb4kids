@@ -5,9 +5,7 @@ import { Order, OrderStatus } from './entities/order.entity';
 import { User } from '../auth/entities/user.entity';
 import { RatesService } from '../rates/rates.service';
 import { CreateOrderDto } from '../../common/dto/create-order.dto';
-// import Redis from 'ioredis';
-
-// const redis = new Redis({ host: process.env.REDIS_HOST, port: Number(process.env.REDIS_PORT) });
+import { CacheService } from '../../common/services/cache.service';
 
 @Injectable()
 export class OrdersService {
@@ -15,6 +13,7 @@ export class OrdersService {
     @InjectRepository(Order)
     private readonly orderRepo: Repository<Order>,
     private readonly ratesService: RatesService,
+    private readonly cacheService: CacheService,
   ) {}
 
   async create(dto: CreateOrderDto, user: User) {
@@ -41,7 +40,7 @@ export class OrdersService {
     await this.orderRepo.save(order);
 
     // Limpiar caché de historial del usuario
-    // await redis.del(`user_orders_${user.id}`);
+    this.cacheService.del(`user_orders_${user.id}`);
 
     return {
       id: order.id,
@@ -57,10 +56,10 @@ export class OrdersService {
 
   async history(user: User) {
     // Intentar obtener del caché
-    // const cached = await redis.get(`user_orders_${user.id}`);
-    // if (cached) {
-    //   return JSON.parse(cached);
-    // }
+    const cached = this.cacheService.get(`user_orders_${user.id}`);
+    if (cached) {
+      return cached;
+    }
 
     // Obtener de la base de datos
     const orders = await this.orderRepo.find({
@@ -81,7 +80,7 @@ export class OrdersService {
     }));
 
     // Guardar en caché por 5 minutos
-    // await redis.setex(`user_orders_${user.id}`, 300, JSON.stringify(result));
+    this.cacheService.set(`user_orders_${user.id}`, result, 300);
 
     return result;
   }
@@ -126,7 +125,7 @@ export class OrdersService {
     await this.orderRepo.save(order);
 
     // Limpiar caché
-    // await redis.del(`user_orders_${user.id}`);
+    this.cacheService.del(`user_orders_${user.id}`);
 
     return {
       id: order.id,
