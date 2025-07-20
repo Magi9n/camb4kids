@@ -1,11 +1,13 @@
 import { DataSource } from 'typeorm';
 import { config } from 'dotenv';
+import { join } from 'path';
 import { User } from '../modules/auth/entities/user.entity';
 import { Order } from '../modules/orders/entities/order.entity';
 import { ExchangeRate } from '../modules/rates/entities/exchange-rate.entity';
 import { AdminSetting } from '../modules/admin/entities/admin-setting.entity';
 
-config();
+// Cargar .env desde el directorio padre (public_html)
+config({ path: join(__dirname, '../../../.env') });
 
 export const typeOrmConfig = {
   type: 'mysql',
