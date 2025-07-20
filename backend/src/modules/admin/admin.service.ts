@@ -317,3 +317,303 @@ export class AdminService {
     return this.cacheService.getStats();
   }
 } 
+      },
+    };
+
+    // Guardar en caché por 2 minutos
+    this.cacheService.set('admin_stats', stats, 120);
+
+    return stats;
+  }
+
+  async getAllOrders(page: number = 1, limit: number = 10) {
+    const cacheKey = `admin_orders_${page}_${limit}`;
+    
+    // Intentar obtener del caché
+    const cached = this.cacheService.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    const [orders, total] = await this.orderRepo.findAndCount({
+      relations: ['user'],
+      order: { createdAt: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    const result = {
+      orders: orders.map(order => ({
+        id: order.id,
+        amount: order.amount,
+        fromCurrency: order.fromCurrency,
+        toCurrency: order.toCurrency,
+        rate: order.rate,
+        total: order.total,
+        status: order.status,
+        createdAt: order.createdAt,
+        user: {
+          id: order.user.id,
+          email: order.user.email,
+          name: order.user.name,
+        },
+      })),
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
+
+    // Guardar en caché por 1 minuto
+    this.cacheService.set(cacheKey, result, 60);
+
+    return result;
+  }
+
+  async updateOrderStatus(orderId: number, status: string) {
+    const order = await this.orderRepo.findOne({
+      where: { id: orderId },
+      relations: ['user'],
+    });
+
+    if (!order) {
+      throw new Error('Orden no encontrada');
+    }
+
+    order.status = status as any;
+    await this.orderRepo.save(order);
+
+    // Limpiar caché relacionado
+    this.cacheService.del('admin_stats');
+    this.cacheService.del(`user_orders_${order.user.id}`);
+    this.cacheService.del(`user_stats_${order.user.id}`);
+    
+    // Limpiar caché de listado de órdenes
+    this.cacheService.delMultiple([
+      'admin_orders_1_10',
+      'admin_orders_1_20',
+      'admin_orders_1_50',
+    ]);
+
+    return {
+      id: order.id,
+      status: order.status,
+      updatedAt: order.updatedAt,
+    };
+  }
+
+  // Método para limpiar caché manualmente
+  async clearCache() {
+    const stats = this.cacheService.getStats();
+    this.cacheService.clear();
+    return {
+      message: 'Caché limpiado exitosamente',
+      previousStats: stats,
+    };
+  }
+
+  // Método para obtener estadísticas del caché
+  async getCacheStats() {
+    return this.cacheService.getStats();
+  }
+} 
+      },
+    };
+
+    // Guardar en caché por 2 minutos
+    this.cacheService.set('admin_stats', stats, 120);
+
+    return stats;
+  }
+
+  async getAllOrders(page: number = 1, limit: number = 10) {
+    const cacheKey = `admin_orders_${page}_${limit}`;
+    
+    // Intentar obtener del caché
+    const cached = this.cacheService.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    const [orders, total] = await this.orderRepo.findAndCount({
+      relations: ['user'],
+      order: { createdAt: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    const result = {
+      orders: orders.map(order => ({
+        id: order.id,
+        amount: order.amount,
+        fromCurrency: order.fromCurrency,
+        toCurrency: order.toCurrency,
+        rate: order.rate,
+        total: order.total,
+        status: order.status,
+        createdAt: order.createdAt,
+        user: {
+          id: order.user.id,
+          email: order.user.email,
+          name: order.user.name,
+        },
+      })),
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
+
+    // Guardar en caché por 1 minuto
+    this.cacheService.set(cacheKey, result, 60);
+
+    return result;
+  }
+
+  async updateOrderStatus(orderId: number, status: string) {
+    const order = await this.orderRepo.findOne({
+      where: { id: orderId },
+      relations: ['user'],
+    });
+
+    if (!order) {
+      throw new Error('Orden no encontrada');
+    }
+
+    order.status = status as any;
+    await this.orderRepo.save(order);
+
+    // Limpiar caché relacionado
+    this.cacheService.del('admin_stats');
+    this.cacheService.del(`user_orders_${order.user.id}`);
+    this.cacheService.del(`user_stats_${order.user.id}`);
+    
+    // Limpiar caché de listado de órdenes
+    this.cacheService.delMultiple([
+      'admin_orders_1_10',
+      'admin_orders_1_20',
+      'admin_orders_1_50',
+    ]);
+
+    return {
+      id: order.id,
+      status: order.status,
+      updatedAt: order.updatedAt,
+    };
+  }
+
+  // Método para limpiar caché manualmente
+  async clearCache() {
+    const stats = this.cacheService.getStats();
+    this.cacheService.clear();
+    return {
+      message: 'Caché limpiado exitosamente',
+      previousStats: stats,
+    };
+  }
+
+  // Método para obtener estadísticas del caché
+  async getCacheStats() {
+    return this.cacheService.getStats();
+  }
+} 
+      },
+    };
+
+    // Guardar en caché por 2 minutos
+    this.cacheService.set('admin_stats', stats, 120);
+
+    return stats;
+  }
+
+  async getAllOrders(page: number = 1, limit: number = 10) {
+    const cacheKey = `admin_orders_${page}_${limit}`;
+    
+    // Intentar obtener del caché
+    const cached = this.cacheService.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    const [orders, total] = await this.orderRepo.findAndCount({
+      relations: ['user'],
+      order: { createdAt: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    const result = {
+      orders: orders.map(order => ({
+        id: order.id,
+        amount: order.amount,
+        fromCurrency: order.fromCurrency,
+        toCurrency: order.toCurrency,
+        rate: order.rate,
+        total: order.total,
+        status: order.status,
+        createdAt: order.createdAt,
+        user: {
+          id: order.user.id,
+          email: order.user.email,
+          name: order.user.name,
+        },
+      })),
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
+
+    // Guardar en caché por 1 minuto
+    this.cacheService.set(cacheKey, result, 60);
+
+    return result;
+  }
+
+  async updateOrderStatus(orderId: number, status: string) {
+    const order = await this.orderRepo.findOne({
+      where: { id: orderId },
+      relations: ['user'],
+    });
+
+    if (!order) {
+      throw new Error('Orden no encontrada');
+    }
+
+    order.status = status as any;
+    await this.orderRepo.save(order);
+
+    // Limpiar caché relacionado
+    this.cacheService.del('admin_stats');
+    this.cacheService.del(`user_orders_${order.user.id}`);
+    this.cacheService.del(`user_stats_${order.user.id}`);
+    
+    // Limpiar caché de listado de órdenes
+    this.cacheService.delMultiple([
+      'admin_orders_1_10',
+      'admin_orders_1_20',
+      'admin_orders_1_50',
+    ]);
+
+    return {
+      id: order.id,
+      status: order.status,
+      updatedAt: order.updatedAt,
+    };
+  }
+
+  // Método para limpiar caché manualmente
+  async clearCache() {
+    const stats = this.cacheService.getStats();
+    this.cacheService.clear();
+    return {
+      message: 'Caché limpiado exitosamente',
+      previousStats: stats,
+    };
+  }
+
+  // Método para obtener estadísticas del caché
+  async getCacheStats() {
+    return this.cacheService.getStats();
+  }
+} 

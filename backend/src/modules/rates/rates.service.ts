@@ -64,3 +64,12 @@ export class RatesService {
     return { history };
   }
 } 
+    return { history };
+  }
+} 
+    return { history };
+  }
+} 
+    return { history };
+  }
+} 

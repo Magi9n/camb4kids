@@ -22,3 +22,12 @@ export const typeOrmConfig = (configService: ConfigService): DataSourceOptions =
 // Para migraciones, usar configuración por defecto
 const configService = new ConfigService();
 export default new DataSource(typeOrmConfig(configService)); 
+// Para migraciones, usar configuración por defecto
+const configService = new ConfigService();
+export default new DataSource(typeOrmConfig(configService)); 
+// Para migraciones, usar configuración por defecto
+const configService = new ConfigService();
+export default new DataSource(typeOrmConfig(configService)); 
+// Para migraciones, usar configuración por defecto
+const configService = new ConfigService();
+export default new DataSource(typeOrmConfig(configService)); 
