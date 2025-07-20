@@ -18,4 +18,6 @@ export const typeOrmConfig = (configService: ConfigService): DataSourceOptions =
   logging: configService.get('NODE_ENV') === 'development',
 });
 
-export default new DataSource(typeOrmConfig(new ConfigService())); 
+// Para migraciones, usar configuración por defecto
+const configService = new ConfigService();
+export default new DataSource(typeOrmConfig(configService)); 
