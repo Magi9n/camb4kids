@@ -6,7 +6,10 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import axios from 'axios';
 import Redis from 'ioredis';
 
-const redis = new Redis({ host: process.env.REDIS_HOST, port: Number(process.env.REDIS_PORT) });
+const redis = new Redis({ 
+  host: process.env.REDIS_HOST || 'localhost', 
+  port: parseInt(process.env.REDIS_PORT) || 6379 
+});
 
 @Injectable()
 export class RatesService {
