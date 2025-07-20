@@ -1,0 +1,231 @@
+nohup: ignoring input
+
+> cambio-backend@1.0.0 start:dev
+> nest start --watch
+
+[2J[3J[H[[90m4:12:23 AM[0m] Starting compilation in watch mode...
+
+[96msrc/config/typeorm.config.ts[0m:[93m23[0m:[93m7[0m - [91merror[0m[90m TS2451: [0mCannot redeclare block-scoped variable 'configService'.
+
+[7m23[0m const configService = new ConfigService();
+[7m  [0m [91m      ~~~~~~~~~~~~~[0m
+
+[96msrc/config/typeorm.config.ts[0m:[93m24[0m:[93m1[0m - [91merror[0m[90m TS2528: [0mA module cannot have multiple default exports.
+
+[7m24[0m export default new DataSource(typeOrmConfig(configService));
+[7m  [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/config/typeorm.config.ts[0m:[93m27[0m:[93m1[0m
+    [7m27[0m export default new DataSource(typeOrmConfig(configService));
+    [7m  [0m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    Another export default is here.
+
+[96msrc/config/typeorm.config.ts[0m:[93m26[0m:[93m7[0m - [91merror[0m[90m TS2451: [0mCannot redeclare block-scoped variable 'configService'.
+
+[7m26[0m const configService = new ConfigService();
+[7m  [0m [91m      ~~~~~~~~~~~~~[0m
+
+[96msrc/config/typeorm.config.ts[0m:[93m27[0m:[93m1[0m - [91merror[0m[90m TS2528: [0mA module cannot have multiple default exports.
+
+[7m27[0m export default new DataSource(typeOrmConfig(configService));
+[7m  [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/config/typeorm.config.ts[0m:[93m24[0m:[93m1[0m
+    [7m24[0m export default new DataSource(typeOrmConfig(configService));
+    [7m  [0m [96m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    The first export default is here.
+
+[[90m4:12:26 AM[0m] Found 4 errors. Watching for file changes.
+
+[2J[3J[H[[90m4:14:02 AM[0m] File change detected. Starting incremental compilation...
+
+[[90m4:14:03 AM[0m] Found 0 errors. Watching for file changes.
+
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +28ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCacheModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mThrottlerModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mScheduleModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +113ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mRatesModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAdminModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mOrdersModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/auth}:[39m[38;5;3m +40ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/register, POST} route[39m[38;5;3m +3ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/login, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/refresh, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/logout, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mOrdersController {/orders}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders/history, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders/:id/status, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAdminController {/admin}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/settings, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/settings, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/orders, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/orders/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/stats, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/cache/clear, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/cache/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +13ms[39m
+[31m[Nest] 3556185  - [39m07/20/2025, 4:14:04 AM [31m  ERROR[39m [38;5;3m[NestApplication] [39m[31mError: listen EADDRINUSE: address already in use :::3000[39m[38;5;3m +2ms[39m
+node:internal/errors:496
+    ErrorCaptureStackTrace(err);
+    ^
+
+Error: listen EADDRINUSE: address already in use :::3000
+    at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+    at __node_internal_uvExceptionWithHostPort (node:internal/errors:593:12)
+    at Server.setupListenHandle [as _listen2] (node:net:1817:16)
+    at listenInCluster (node:net:1865:12)
+    at Server.listen (node:net:1953:7)
+    at ExpressAdapter.listen (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/@nestjs/platform-express/adapters/express-adapter.js:95:32)
+    at /home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/@nestjs/core/nest-application.js:183:30
+    at new Promise (<anonymous>)
+    at NestApplication.listen (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/@nestjs/core/nest-application.js:173:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at bootstrap (/home/admin/web/cambio.mate4kids.com/public_html/backend/src/main.ts:38:3) {
+  code: 'EADDRINUSE',
+  errno: -98,
+  syscall: 'listen',
+  address: '::',
+  port: 3000
+}
+
+Node.js v18.20.8
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          [32m[Nest] 3553958  - [39m07/20/2025, 4:13:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[2J[3J[H[[90m4:14:02 AM[0m] File change detected. Starting incremental compilation...
+
+[[90m4:14:03 AM[0m] Found 0 errors. Watching for file changes.
+
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +21ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCacheModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mThrottlerModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mScheduleModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +104ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mRatesModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAdminModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mOrdersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/auth}:[39m[38;5;3m +36ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/register, POST} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/login, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/refresh, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/logout, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mOrdersController {/orders}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders/history, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders/:id/status, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAdminController {/admin}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/settings, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/settings, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/orders, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/orders/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/cache/clear, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/cache/stats, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556177  - [39m07/20/2025, 4:14:05 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +13ms[39m
+[31m[Nest] 3556177  - [39m07/20/2025, 4:14:05 AM [31m  ERROR[39m [38;5;3m[NestApplication] [39m[31mError: listen EADDRINUSE: address already in use :::3000[39m[38;5;3m +3ms[39m
+node:internal/errors:496
+    ErrorCaptureStackTrace(err);
+    ^
+
+Error: listen EADDRINUSE: address already in use :::3000
+    at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+    at __node_internal_uvExceptionWithHostPort (node:internal/errors:593:12)
+    at Server.setupListenHandle [as _listen2] (node:net:1817:16)
+    at listenInCluster (node:net:1865:12)
+    at Server.listen (node:net:1953:7)
+    at ExpressAdapter.listen (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/@nestjs/platform-express/adapters/express-adapter.js:95:32)
+    at /home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/@nestjs/core/nest-application.js:183:30
+    at new Promise (<anonymous>)
+    at NestApplication.listen (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/@nestjs/core/nest-application.js:173:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at bootstrap (/home/admin/web/cambio.mate4kids.com/public_html/backend/src/main.ts:38:3) {
+  code: 'EADDRINUSE',
+  errno: -98,
+  syscall: 'listen',
+  address: '::',
+  port: 3000
+}
+
+Node.js v18.20.8
+5, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCacheModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mThrottlerModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mScheduleModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +53ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mRatesModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAdminModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mOrdersModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/auth}:[39m[38;5;3m +65ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/register, POST} route[39m[38;5;3m +3ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/login, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/refresh, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/logout, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mOrdersController {/orders}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders, POST} route[39m[38;5;3m +16ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders/history, GET} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders/:id/status, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAdminController {/admin}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/settings, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/settings, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/orders, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/orders/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/cache/clear, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/cache/stats, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +15ms[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:14:04 AM [32m    LOG[39m [38;5;3m[Bootstrap] [39m[32mAplicación ejecutándose en puerto 3000[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:15:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:16:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:17:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:18:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:19:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:20:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:21:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:22:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:23:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:24:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:25:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:26:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:27:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:28:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:29:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:30:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:31:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:32:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:33:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:34:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
+[32m[Nest] 3556167  - [39m07/20/2025, 4:35:10 AM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5647[39m
