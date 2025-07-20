@@ -8,7 +8,7 @@ async function testConnection() {
       port: parseInt(process.env.DB_PORT) || 3306,
       user: process.env.DB_USERNAME || 'root',
       password: process.env.DB_PASSWORD || 'password',
-      database: process.env.DB_DATABASE || 'cambio_mate4kids',
+      database: process.env.DB_DATABASE || 'admin_casadecambio',
     });
 
     console.log('✅ DB connection successful');

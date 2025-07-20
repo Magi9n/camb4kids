@@ -15,7 +15,7 @@ export const typeOrmConfig = {
   port: parseInt(process.env.DB_PORT) || 3306,
   username: process.env.DB_USERNAME || 'root',
   password: process.env.DB_PASSWORD || 'password',
-  database: process.env.DB_DATABASE || 'cambio_mate4kids',
+  database: process.env.DB_DATABASE || 'admin_casadecambio',
   entities: [User, Order, ExchangeRate, AdminSetting],
   migrations: ['src/migrations/*.ts'],
   synchronize: false,
