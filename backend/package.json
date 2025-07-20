@@ -17,7 +17,7 @@
     "migration:create": "typeorm-ts-node-commonjs migration:create src/migrations/InitialMigration",
     "db:check": "node test-db.js",
     "db:check-ts": "ts-node -e \"import { DataSource } from 'typeorm'; import { typeOrmConfig } from './src/config/typeorm.config'; const ds = new DataSource(typeOrmConfig); ds.initialize().then(() => { console.log('✅ DB connection successful'); process.exit(0); }).catch(e => { console.error('❌ DB connection failed:', e.message); process.exit(1); });\"",
-    "redis:check": "ts-node -e \"import Redis from 'ioredis'; const redis = new Redis({ host: process.env.REDIS_HOST, port: Number(process.env.REDIS_PORT) }); redis.ping().then(() => { console.log('✅ Redis connection successful'); process.exit(0); }).catch(e => { console.error('❌ Redis connection failed:', e.message); process.exit(1); });\"",
+    "redis:check": "node test-redis.js",
     "setup": "chmod +x scripts/setup.sh && ./scripts/setup.sh"
   },
   "dependencies": {
