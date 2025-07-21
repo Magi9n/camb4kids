@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { typeOrmConfig } from './config/typeorm.config';
+import dataSource from './config/typeorm.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { RatesModule } from './modules/rates/rates.module';
 import { OrdersModule } from './modules/orders/orders.module';
@@ -15,11 +15,7 @@ import { CacheModule } from './common/cache.module';
     ConfigModule.forRoot({ 
       isGlobal: true,
     }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => typeOrmConfig(configService),
-      inject: [ConfigService],
-    }),
+    TypeOrmModule.forRoot(dataSource.options),
     ScheduleModule.forRoot(),
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
     CacheModule,
