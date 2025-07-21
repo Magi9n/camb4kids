@@ -3,132 +3,62 @@ nohup: ignoring input
 > cambio-backend@1.0.0 start:prod
 > node dist/main
 
-[32m[Nest] 3909907  - [39m07/21/2025, 7:47:09 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
-[32m[Nest] 3909907  - [39m07/21/2025, 7:47:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +25ms[39m
-[32m[Nest] 3909907  - [39m07/21/2025, 7:47:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
-[32m[Nest] 3909907  - [39m07/21/2025, 7:47:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCacheModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3909907  - [39m07/21/2025, 7:47:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mThrottlerModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3909907  - [39m07/21/2025, 7:47:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3909907  - [39m07/21/2025, 7:47:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3909907  - [39m07/21/2025, 7:47:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3909907  - [39m07/21/2025, 7:47:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mScheduleModule dependencies initialized[39m[38;5;3m +1ms[39m
-[31m[Nest] 3909907  - [39m07/21/2025, 7:47:09 PM [31m  ERROR[39m [38;5;3m[TypeOrmModule] [39m[31mUnable to connect to the database. Retrying (1)...[39m
-Error: Access denied for user ''@'localhost' (using password: NO)
-    at Packet.asError (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packets/packet.js:740:17)
-    at ClientHandshake.execute (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/commands/command.js:29:26)
-    at PoolConnection.handlePacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:475:34)
-    at PacketParser.onPacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:93:12)
-    at PacketParser.executeStart (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packet_parser.js:75:16)
-    at Socket.<anonymous> (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:100:25)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-[31m[Nest] 3909907  - [39m07/21/2025, 7:47:12 PM [31m  ERROR[39m [38;5;3m[TypeOrmModule] [39m[31mUnable to connect to the database. Retrying (2)...[39m
-Error: Access denied for user ''@'localhost' (using password: NO)
-    at Packet.asError (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packets/packet.js:740:17)
-    at ClientHandshake.execute (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/commands/command.js:29:26)
-    at PoolConnection.handlePacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:475:34)
-    at PacketParser.onPacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:93:12)
-    at PacketParser.executeStart (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packet_parser.js:75:16)
-    at Socket.<anonymous> (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:100:25)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-[31m[Nest] 3909907  - [39m07/21/2025, 7:47:15 PM [31m  ERROR[39m [38;5;3m[TypeOrmModule] [39m[31mUnable to connect to the database. Retrying (3)...[39m
-Error: Access denied for user ''@'localhost' (using password: NO)
-    at Packet.asError (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packets/packet.js:740:17)
-    at ClientHandshake.execute (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/commands/command.js:29:26)
-    at PoolConnection.handlePacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:475:34)
-    at PacketParser.onPacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:93:12)
-    at PacketParser.executeStart (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packet_parser.js:75:16)
-    at Socket.<anonymous> (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:100:25)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-[31m[Nest] 3909907  - [39m07/21/2025, 7:47:18 PM [31m  ERROR[39m [38;5;3m[TypeOrmModule] [39m[31mUnable to connect to the database. Retrying (4)...[39m
-Error: Access denied for user ''@'localhost' (using password: NO)
-    at Packet.asError (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packets/packet.js:740:17)
-    at ClientHandshake.execute (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/commands/command.js:29:26)
-    at PoolConnection.handlePacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:475:34)
-    at PacketParser.onPacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:93:12)
-    at PacketParser.executeStart (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packet_parser.js:75:16)
-    at Socket.<anonymous> (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:100:25)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-[31m[Nest] 3909907  - [39m07/21/2025, 7:47:21 PM [31m  ERROR[39m [38;5;3m[TypeOrmModule] [39m[31mUnable to connect to the database. Retrying (5)...[39m
-Error: Access denied for user ''@'localhost' (using password: NO)
-    at Packet.asError (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packets/packet.js:740:17)
-    at ClientHandshake.execute (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/commands/command.js:29:26)
-    at PoolConnection.handlePacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:475:34)
-    at PacketParser.onPacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:93:12)
-    at PacketParser.executeStart (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packet_parser.js:75:16)
-    at Socket.<anonymous> (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:100:25)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-[31m[Nest] 3909907  - [39m07/21/2025, 7:47:24 PM [31m  ERROR[39m [38;5;3m[TypeOrmModule] [39m[31mUnable to connect to the database. Retrying (6)...[39m
-Error: Access denied for user ''@'localhost' (using password: NO)
-    at Packet.asError (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packets/packet.js:740:17)
-    at ClientHandshake.execute (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/commands/command.js:29:26)
-    at PoolConnection.handlePacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:475:34)
-    at PacketParser.onPacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:93:12)
-    at PacketParser.executeStart (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packet_parser.js:75:16)
-    at Socket.<anonymous> (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:100:25)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-[31m[Nest] 3909907  - [39m07/21/2025, 7:47:27 PM [31m  ERROR[39m [38;5;3m[TypeOrmModule] [39m[31mUnable to connect to the database. Retrying (7)...[39m
-Error: Access denied for user ''@'localhost' (using password: NO)
-    at Packet.asError (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packets/packet.js:740:17)
-    at ClientHandshake.execute (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/commands/command.js:29:26)
-    at PoolConnection.handlePacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:475:34)
-    at PacketParser.onPacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:93:12)
-    at PacketParser.executeStart (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packet_parser.js:75:16)
-    at Socket.<anonymous> (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:100:25)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-[31m[Nest] 3909907  - [39m07/21/2025, 7:47:30 PM [31m  ERROR[39m [38;5;3m[TypeOrmModule] [39m[31mUnable to connect to the database. Retrying (8)...[39m
-Error: Access denied for user ''@'localhost' (using password: NO)
-    at Packet.asError (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packets/packet.js:740:17)
-    at ClientHandshake.execute (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/commands/command.js:29:26)
-    at PoolConnection.handlePacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:475:34)
-    at PacketParser.onPacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:93:12)
-    at PacketParser.executeStart (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packet_parser.js:75:16)
-    at Socket.<anonymous> (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:100:25)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-[31m[Nest] 3909907  - [39m07/21/2025, 7:47:33 PM [31m  ERROR[39m [38;5;3m[TypeOrmModule] [39m[31mUnable to connect to the database. Retrying (9)...[39m
-Error: Access denied for user ''@'localhost' (using password: NO)
-    at Packet.asError (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packets/packet.js:740:17)
-    at ClientHandshake.execute (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/commands/command.js:29:26)
-    at PoolConnection.handlePacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:475:34)
-    at PacketParser.onPacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:93:12)
-    at PacketParser.executeStart (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packet_parser.js:75:16)
-    at Socket.<anonymous> (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:100:25)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-[31m[Nest] 3909907  - [39m07/21/2025, 7:47:33 PM [31m  ERROR[39m [38;5;3m[ExceptionHandler] [39m[31mAccess denied for user ''@'localhost' (using password: NO)[39m
-Error: Access denied for user ''@'localhost' (using password: NO)
-    at Packet.asError (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packets/packet.js:740:17)
-    at ClientHandshake.execute (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/commands/command.js:29:26)
-    at PoolConnection.handlePacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:475:34)
-    at PacketParser.onPacket (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:93:12)
-    at PacketParser.executeStart (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/packet_parser.js:75:16)
-    at Socket.<anonymous> (/home/admin/web/cambio.mate4kids.com/public_html/backend/node_modules/mysql2/lib/base/connection.js:100:25)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +34ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCacheModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mThrottlerModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mScheduleModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +145ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mRatesModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAdminModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mOrdersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/auth}:[39m[38;5;3m +43ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/register, POST} route[39m[38;5;3m +3ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/verify-email, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/complete-profile, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/login, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/refresh, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/logout, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mOrdersController {/orders}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders/history, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders/:id/status, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAdminController {/admin}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/settings, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/settings, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/orders, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/orders/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/stats, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/cache/clear, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/cache/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +13ms[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[Bootstrap] [39m[32mAplicación ejecutándose en puerto 3000[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:47:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5591[39m
+
+==============================
+
+Enviando correo de verificación a: ivan.ugarten@gmail.com
+
+Este es tu código de verificación
+
+El código para confirmar tu correo es: 
+
+7653
+
+Este código tiene validez por 30 minutos desde que fue generado.
+
+==============================
+
+[32m[Nest] 3936059  - [39m07/21/2025, 10:48:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5591[39m
+[32m[Nest] 3936059  - [39m07/21/2025, 10:49:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5591[39m

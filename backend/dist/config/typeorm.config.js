@@ -5,6 +5,10 @@ const user_entity_1 = require("../modules/auth/entities/user.entity");
 const order_entity_1 = require("../modules/orders/entities/order.entity");
 const exchange_rate_entity_1 = require("../modules/rates/entities/exchange-rate.entity");
 const admin_setting_entity_1 = require("../modules/admin/entities/admin-setting.entity");
+console.log('DB_HOST:', process.env.DB_HOST);
+console.log('DB_USERNAME:', process.env.DB_USERNAME);
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
+console.log('DB_DATABASE:', process.env.DB_DATABASE);
 exports.default = new typeorm_1.DataSource({
     type: 'mysql',
     host: process.env.DB_HOST,
