@@ -29,7 +29,11 @@ import { AdminSetting } from './modules/admin/entities/admin-setting.entity';
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_DATABASE'),
         entities: [User, Order, ExchangeRate, AdminSetting],
-        migrations: ['src/migrations/*.ts'],
+        migrations: [
+          config.get('NODE_ENV') === 'development'
+            ? 'src/migrations/*.ts'
+            : 'dist/migrations/*.js'
+        ],
         migrationsRun: false,
         synchronize: false,
         logging: config.get('NODE_ENV') === 'development',
