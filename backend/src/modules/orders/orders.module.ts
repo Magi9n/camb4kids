@@ -13,6 +13,3 @@ import { CacheModule } from '../../common/cache.module';
   exports: [OrdersService],
 })
 export class OrdersModule {} 
-export class OrdersModule {} 
-export class OrdersModule {} 
-export class OrdersModule {} 
