@@ -4,6 +4,11 @@ import { Order } from '../modules/orders/entities/order.entity';
 import { ExchangeRate } from '../modules/rates/entities/exchange-rate.entity';
 import { AdminSetting } from '../modules/admin/entities/admin-setting.entity';
 
+console.log('DB_HOST:', process.env.DB_HOST);
+console.log('DB_USERNAME:', process.env.DB_USERNAME);
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
+console.log('DB_DATABASE:', process.env.DB_DATABASE);
+
 export default new DataSource({
   type: 'mysql',
   host: process.env.DB_HOST,
