@@ -65,33 +65,3 @@ export class AdminController {
     return this.adminService.getCacheStats();
   }
 } 
-  @Post('cache/clear')
-  async clearCache() {
-    return this.adminService.clearCache();
-  }
-
-  @Get('cache/stats')
-  async getCacheStats() {
-    return this.adminService.getCacheStats();
-  }
-} 
-  @Post('cache/clear')
-  async clearCache() {
-    return this.adminService.clearCache();
-  }
-
-  @Get('cache/stats')
-  async getCacheStats() {
-    return this.adminService.getCacheStats();
-  }
-} 
-  @Post('cache/clear')
-  async clearCache() {
-    return this.adminService.clearCache();
-  }
-
-  @Get('cache/stats')
-  async getCacheStats() {
-    return this.adminService.getCacheStats();
-  }
-} 
