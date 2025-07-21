@@ -5,7 +5,7 @@ import { Repository, LessThan } from 'typeorm';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import nodemailer from 'nodemailer';
+const nodemailer = require('nodemailer');
 
 function generateCode() {
   return Math.floor(1000 + Math.random() * 9000).toString();
