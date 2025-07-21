@@ -5,19 +5,33 @@ import { Repository, LessThan } from 'typeorm';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
 
 function generateCode() {
   return Math.floor(1000 + Math.random() * 9000).toString();
 }
 
-function sendVerificationEmail(email: string, code: string) {
-  // Simulación de envío de correo (log en consola)
-  console.log(`\n==============================\n`);
-  console.log(`Enviando correo de verificación a: ${email}`);
-  console.log(`\nEste es tu código de verificación\n`);
-  console.log(`El código para confirmar tu correo es: \n\n${code}\n`);
-  console.log(`Este código tiene validez por 30 minutos desde que fue generado.`);
-  console.log(`\n==============================\n`);
+async function sendVerificationEmail(email: string, code: string) {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+    await transporter.sendMail({
+      from: process.env.SMTP_FROM,
+      to: email,
+      subject: 'Código de verificación',
+      text: `Tu código de verificación es: ${code}\nEste código es válido por 30 minutos.`,
+    });
+    console.log(`[EMAIL] Correo de verificación enviado a: ${email}`);
+  } catch (err) {
+    console.error('[EMAIL] Error al enviar correo de verificación:', err);
+  }
 }
 
 @Injectable()
