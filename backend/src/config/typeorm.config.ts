@@ -1,33 +1,19 @@
-import { DataSource, DataSourceOptions } from 'typeorm';
-import { ConfigService } from '@nestjs/config';
+import { DataSource } from 'typeorm';
 import { User } from '../modules/auth/entities/user.entity';
 import { Order } from '../modules/orders/entities/order.entity';
 import { ExchangeRate } from '../modules/rates/entities/exchange-rate.entity';
 import { AdminSetting } from '../modules/admin/entities/admin-setting.entity';
 
-export const typeOrmConfig = (configService: ConfigService): DataSourceOptions => ({
+export default new DataSource({
   type: 'mysql',
-  host: configService.get('DB_HOST'),
-  port: configService.get('DB_PORT'),
-  username: configService.get('DB_USERNAME'),
-  password: configService.get('DB_PASSWORD'),
-  database: configService.get('DB_DATABASE'),
+  host: process.env.DB_HOST,
+  port: parseInt(process.env.DB_PORT || '3306'),
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
   entities: [User, Order, ExchangeRate, AdminSetting],
-  // migrations: ['src/migrations/*.ts'], // Comentado temporalmente
+  migrations: ['src/migrations/*.ts'],
   migrationsRun: false,
   synchronize: false,
-  logging: configService.get('NODE_ENV') === 'development',
-});
-
-// Para migraciones, usar configuración por defecto
-const configService = new ConfigService();
-export default new DataSource(typeOrmConfig(configService)); 
-// Para migraciones, usar configuración por defecto
-const configService = new ConfigService();
-export default new DataSource(typeOrmConfig(configService)); 
-// Para migraciones, usar configuración por defecto
-const configService = new ConfigService();
-export default new DataSource(typeOrmConfig(configService)); 
-// Para migraciones, usar configuración por defecto
-const configService = new ConfigService();
-export default new DataSource(typeOrmConfig(configService)); 
+  logging: process.env.NODE_ENV === 'development',
+}); 
