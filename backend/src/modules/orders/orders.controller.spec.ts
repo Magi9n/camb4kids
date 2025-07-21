@@ -3,6 +3,10 @@ import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { User } from '../auth/entities/user.entity';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Order } from './entities/order.entity';
+import { RatesService } from '../rates/rates.service';
+import { CacheService } from '../../common/services/cache.service';
 
 describe('OrdersController', () => {
   let controller: OrdersController;
@@ -10,7 +14,32 @@ describe('OrdersController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [OrdersController],
-      providers: [OrdersService],
+      providers: [
+        OrdersService,
+        {
+          provide: getRepositoryToken(Order),
+          useValue: {
+            find: jest.fn(),
+            findOne: jest.fn(),
+            save: jest.fn(),
+            create: jest.fn(),
+          },
+        },
+        {
+          provide: RatesService,
+          useValue: {
+            getCurrent: jest.fn().mockResolvedValue({ rate: 3.5 }),
+          },
+        },
+        {
+          provide: CacheService,
+          useValue: {
+            get: jest.fn(),
+            set: jest.fn(),
+            del: jest.fn(),
+          },
+        },
+      ],
     })
       .overrideGuard(JwtAuthGuard)
       .useValue({ canActivate: () => true })
