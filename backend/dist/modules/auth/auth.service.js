@@ -19,6 +19,17 @@ const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./entities/user.entity");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+function generateCode() {
+    return Math.floor(1000 + Math.random() * 9000).toString();
+}
+function sendVerificationEmail(email, code) {
+    console.log(`\n==============================\n`);
+    console.log(`Enviando correo de verificación a: ${email}`);
+    console.log(`\nEste es tu código de verificación\n`);
+    console.log(`El código para confirmar tu correo es: \n\n${code}\n`);
+    console.log(`Este código tiene validez por 30 minutos desde que fue generado.`);
+    console.log(`\n==============================\n`);
+}
 let AuthService = class AuthService {
     constructor(userRepo) {
         this.userRepo = userRepo;
@@ -28,20 +39,68 @@ let AuthService = class AuthService {
         if (exists)
             throw new common_1.ConflictException('El correo ya está registrado');
         const hash = await bcrypt.hash(dto.password, 10);
-        const user = this.userRepo.create(Object.assign(Object.assign({}, dto), { password: hash }));
+        const code = generateCode();
+        const expires = new Date(Date.now() + 30 * 60 * 1000);
+        const user = this.userRepo.create({
+            email: dto.email,
+            password: hash,
+            isVerified: false,
+            verificationCode: code,
+            verificationExpires: expires,
+            role: 'user',
+            name: '',
+        });
         await this.userRepo.save(user);
-        return { message: 'Registro exitoso' };
+        sendVerificationEmail(dto.email, code);
+        return { message: 'Registro exitoso. Revisa tu correo para el código de verificación.' };
+    }
+    async verifyEmail(dto) {
+        const user = await this.userRepo.findOne({ where: { email: dto.email } });
+        if (!user)
+            throw new common_1.NotFoundException('Usuario no encontrado');
+        if (user.isVerified)
+            throw new common_1.BadRequestException('El correo ya está verificado');
+        if (!user.verificationCode || !user.verificationExpires)
+            throw new common_1.BadRequestException('No hay código de verificación activo');
+        if (user.verificationCode !== dto.code)
+            throw new common_1.BadRequestException('Código incorrecto');
+        if (user.verificationExpires < new Date()) {
+            await this.userRepo.delete(user.id);
+            throw new common_1.BadRequestException('El código ha expirado. Debes registrarte de nuevo.');
+        }
+        user.isVerified = true;
+        user.verificationCode = null;
+        user.verificationExpires = null;
+        await this.userRepo.save(user);
+        return { message: 'Correo verificado correctamente' };
+    }
+    async completeProfile(dto) {
+        const user = await this.userRepo.findOne({ where: { email: dto.email } });
+        if (!user)
+            throw new common_1.NotFoundException('Usuario no encontrado');
+        if (!user.isVerified)
+            throw new common_1.BadRequestException('Debes verificar tu correo antes de completar el perfil');
+        user.documentType = dto.documentType;
+        user.document = dto.document;
+        user.name = dto.name;
+        user.lastname = dto.lastname;
+        user.sex = dto.sex;
+        user.phone = dto.phone;
+        await this.userRepo.save(user);
+        return { message: 'Perfil completado correctamente' };
     }
     async login(dto) {
         const user = await this.userRepo.findOne({ where: { email: dto.email } });
         if (!user)
             throw new common_1.UnauthorizedException('Credenciales inválidas');
+        if (!user.isVerified)
+            throw new common_1.UnauthorizedException('Debes verificar tu correo antes de iniciar sesión');
         const valid = await bcrypt.compare(dto.password, user.password);
         if (!valid)
             throw new common_1.UnauthorizedException('Credenciales inválidas');
         const payload = { sub: user.id, email: user.email, role: user.role };
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
-        return { token, user: { id: user.id, email: user.email, name: user.name, role: user.role } };
+        return { token, user: { id: user.id, email: user.email, name: user.name, lastname: user.lastname, role: user.role } };
     }
     async refresh(token) {
         try {
@@ -55,6 +114,15 @@ let AuthService = class AuthService {
     }
     async logout(token) {
         return { message: 'Logout exitoso' };
+    }
+    async cleanUnverifiedUsers() {
+        const now = new Date();
+        const users = await this.userRepo.find({ where: { isVerified: false, verificationExpires: (0, typeorm_2.LessThan)(now) } });
+        for (const user of users) {
+            await this.userRepo.delete(user.id);
+            console.log(`Usuario no verificado eliminado: ${user.email}`);
+        }
+        return { deleted: users.length };
     }
 };
 exports.AuthService = AuthService;

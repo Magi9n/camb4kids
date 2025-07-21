@@ -1,4 +1,4 @@
-import { RegisterDto, LoginDto } from './dto';
+import { RegisterDto, LoginDto, VerifyEmailDto, CompleteProfileDto } from './dto';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 export declare class AuthService {
@@ -7,12 +7,19 @@ export declare class AuthService {
     register(dto: RegisterDto): Promise<{
         message: string;
     }>;
+    verifyEmail(dto: VerifyEmailDto): Promise<{
+        message: string;
+    }>;
+    completeProfile(dto: CompleteProfileDto): Promise<{
+        message: string;
+    }>;
     login(dto: LoginDto): Promise<{
         token: string;
         user: {
             id: number;
             email: string;
             name: string;
+            lastname: string;
             role: string;
         };
     }>;
@@ -21,5 +28,8 @@ export declare class AuthService {
     }>;
     logout(token: string): Promise<{
         message: string;
+    }>;
+    cleanUnverifiedUsers(): Promise<{
+        deleted: number;
     }>;
 }

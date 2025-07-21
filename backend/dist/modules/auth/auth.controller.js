@@ -26,6 +26,14 @@ let AuthController = class AuthController {
         const result = await this.authService.register(dto);
         return res.json(result);
     }
+    async verifyEmail(dto, res) {
+        const result = await this.authService.verifyEmail(dto);
+        return res.json(result);
+    }
+    async completeProfile(dto, res) {
+        const result = await this.authService.completeProfile(dto);
+        return res.json(result);
+    }
     async login(loginDto) {
         return this.authService.login(loginDto);
     }
@@ -55,6 +63,22 @@ __decorate([
     __metadata("design:paramtypes", [dto_1.RegisterDto, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "register", null);
+__decorate([
+    (0, common_1.Post)('verify-email'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [dto_1.VerifyEmailDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "verifyEmail", null);
+__decorate([
+    (0, common_1.Post)('complete-profile'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [dto_1.CompleteProfileDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "completeProfile", null);
 __decorate([
     (0, common_1.Post)('login'),
     (0, throttler_1.Throttle)({ default: { limit: 5, ttl: 60000 } }),

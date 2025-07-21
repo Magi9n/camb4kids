@@ -27,11 +27,7 @@ exports.AppModule = AppModule = __decorate([
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
             }),
-            typeorm_1.TypeOrmModule.forRootAsync({
-                imports: [config_1.ConfigModule],
-                useFactory: (configService) => (0, typeorm_config_1.typeOrmConfig)(configService),
-                inject: [config_1.ConfigService],
-            }),
+            typeorm_1.TypeOrmModule.forRoot(typeorm_config_1.default.options),
             schedule_1.ScheduleModule.forRoot(),
             throttler_1.ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
             cache_module_1.CacheModule,

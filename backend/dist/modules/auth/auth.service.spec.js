@@ -24,7 +24,7 @@ describe('AuthService', () => {
     });
     it('debería lanzar error si el email ya existe en registro', async () => {
         repo.findOne = jest.fn().mockResolvedValue({ id: 1, email: 'test@mail.com' });
-        await expect(service.register({ email: 'test@mail.com', password: '123456', nombre: 'Test' }))
+        await expect(service.register({ email: 'test@mail.com', password: '123456' }))
             .rejects.toThrow();
     });
 });
