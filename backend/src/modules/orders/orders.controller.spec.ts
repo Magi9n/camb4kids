@@ -12,18 +12,28 @@ describe('OrdersController', () => {
   let controller: OrdersController;
 
   beforeEach(async () => {
+    const orderRepoMock = {
+      find: jest.fn(),
+      findOne: jest.fn(),
+      save: jest.fn().mockImplementation(order => ({
+        ...order,
+        id: 1,
+        user: order.user || { id: 1, email: 'test@mail.com', name: 'Test' },
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })),
+      create: jest.fn().mockImplementation(dto => ({
+        ...dto,
+        user: dto.user || { id: 1, email: 'test@mail.com', name: 'Test' },
+      })),
+    };
     const module: TestingModule = await Test.createTestingModule({
       controllers: [OrdersController],
       providers: [
         OrdersService,
         {
           provide: getRepositoryToken(Order),
-          useValue: {
-            find: jest.fn(),
-            findOne: jest.fn(),
-            save: jest.fn(),
-            create: jest.fn(),
-          },
+          useValue: orderRepoMock,
         },
         {
           provide: RatesService,
