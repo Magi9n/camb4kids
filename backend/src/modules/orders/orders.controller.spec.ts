@@ -80,6 +80,14 @@ describe('OrdersController', () => {
       { amount: 100, fromCurrency: 'USD', toCurrency: 'PEN' },
       { user: mockUser }
     );
-    expect(result).toHaveProperty('message', 'Orden creada');
+    expect(result).toMatchObject({
+      amount: 100,
+      fromCurrency: 'USD',
+      toCurrency: 'PEN',
+      rate: 3.5,
+      total: 350,
+      status: 'EN_PROCESO',
+    });
+    expect(result).toHaveProperty('id');
   });
 }); 
