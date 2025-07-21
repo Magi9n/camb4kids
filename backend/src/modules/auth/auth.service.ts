@@ -57,7 +57,7 @@ export class AuthService {
       name: '',
     });
     await this.userRepo.save(user);
-    sendVerificationEmail(dto.email, code);
+    await sendVerificationEmail(dto.email, code);
     return { message: 'Registro exitoso. Revisa tu correo para el código de verificación.' };
   }
 
