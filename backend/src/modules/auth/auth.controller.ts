@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Res, Req, UseGuards } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
-import { RegisterDto, LoginDto } from './dto';
+import { RegisterDto, LoginDto, VerifyEmailDto, CompleteProfileDto } from './dto';
 import { Response, Request } from 'express';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
@@ -12,6 +12,18 @@ export class AuthController {
   @Post('register')
   async register(@Body() dto: RegisterDto, @Res() res: Response) {
     const result = await this.authService.register(dto);
+    return res.json(result);
+  }
+
+  @Post('verify-email')
+  async verifyEmail(@Body() dto: VerifyEmailDto, @Res() res: Response) {
+    const result = await this.authService.verifyEmail(dto);
+    return res.json(result);
+  }
+
+  @Post('complete-profile')
+  async completeProfile(@Body() dto: CompleteProfileDto, @Res() res: Response) {
+    const result = await this.authService.completeProfile(dto);
     return res.json(result);
   }
 
