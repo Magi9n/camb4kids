@@ -1,10 +1,10 @@
 import React from 'react';
 import { Box, Grid, Typography, Paper, Fade } from '@mui/material';
-import bcpLogo from '../assets/bcp.png';
-import interbankLogo from '../assets/interbank.png';
-import scotiabankLogo from '../assets/scotiabank.png';
-import bbvaLogo from '../assets/bbva.png';
-import pichinchaLogo from '../assets/pichincha.png';
+import bcpLogo from '../assets/bcp.webp';
+import interbankLogo from '../assets/interbank.webp';
+import scotiabankLogo from '../assets/scotiabank.webp';
+import bbvaLogo from '../assets/bbva.webp';
+import pichinchaLogo from '../assets/pichincha.webp';
 
 const BanksSection = () => (
   <Box sx={{ bgcolor: '#fff', py: 3, px: { xs: 1, md: 6 }, borderBottom: '1px solid #eee' }}>
