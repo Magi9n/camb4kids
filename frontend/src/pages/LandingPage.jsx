@@ -5,12 +5,25 @@ import Calculator from '../components/Calculator';
 import Footer from '../components/Footer';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import HeroStats from '../components/HeroStats';
+import BanksSection from '../components/BanksSection';
+import BenefitsSection from '../components/BenefitsSection';
+import SubscribeBox from '../components/SubscribeBox';
+import HowItWorks from '../components/HowItWorks';
+import SimulatorSection from '../components/SimulatorSection';
+import CouponsSection from '../components/CouponsSection';
 
 const LandingPage = () => {
   return (
     <>
       <Header />
-      <Banner />
+      <HeroStats />
+      <BanksSection />
+      <BenefitsSection />
+      <SubscribeBox />
+      <HowItWorks />
+      <SimulatorSection />
+      <CouponsSection />
       <Container maxWidth="md">
         <Box my={4}>
           <Calculator />
