@@ -16,16 +16,13 @@ const BannerCupon = () => {
     <Box
       sx={{
         width: '100vw',
-        position: 'relative',
-        left: '50%',
-        right: '50%',
-        marginLeft: '-50vw',
-        marginRight: '-50vw',
         maxWidth: '100vw',
         overflowX: 'hidden',
         background: 'transparent',
         mt: 0,
         boxSizing: 'border-box',
+        display: 'flex',
+        justifyContent: 'center',
       }}
     >
       <Box
@@ -33,8 +30,6 @@ const BannerCupon = () => {
           minHeight: isMobile ? 160 : 140,
           height: isMobile ? 170 : 140,
           width: '100%',
-          maxWidth: '1400px',
-          margin: '0 auto',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -62,8 +57,8 @@ const BannerCupon = () => {
           }}
         />
         {/* Contenido */}
-        <Box sx={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: { xs: 4, md: 200 }, width: '100%', justifyContent: 'center' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-end', minWidth: 0 }}>
+        <Box sx={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: { xs: 10, md: 20 } }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-end' }}>
             <Typography sx={{ color: 'white', fontFamily: 'Open Sans, sans-serif', fontWeight: 400, lineHeight: 1, fontSize: '3rem', mb: 0, mt: 0 }}>
               Usa el cupon
             </Typography>
