@@ -32,7 +32,9 @@ const BannerCupon = () => {
         sx={{
           minHeight: isMobile ? 160 : 140,
           height: isMobile ? 170 : 140,
-          width: '100vw',
+          width: '100%',
+          maxWidth: '1400px',
+          margin: '0 auto',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -60,12 +62,12 @@ const BannerCupon = () => {
           }}
         />
         {/* Contenido */}
-        <Box sx={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: { xs: 6, md: 400 }, width: '100%', maxWidth: '1600px', justifyContent: 'center' }}>
+        <Box sx={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: { xs: 4, md: 200 }, width: '100%', justifyContent: 'center' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-end', minWidth: 0 }}>
-            <Typography sx={{ color: 'white', fontFamily: 'Open Sans, sans-serif', fontWeight: 400, lineHeight: 1, fontSize: '3rem', mb: 0, mt: 0, whiteSpace: 'nowrap' }}>
+            <Typography sx={{ color: 'white', fontFamily: 'Open Sans, sans-serif', fontWeight: 400, lineHeight: 1, fontSize: '3rem', mb: 0, mt: 0 }}>
               Usa el cupon
             </Typography>
-            <Typography sx={{ color: 'white', fontFamily: 'Open Sans, sans-serif', fontWeight: 700, lineHeight: 1, fontSize: '3rem', mb: 0, mt: 0, whiteSpace: 'nowrap' }}>
+            <Typography sx={{ color: 'white', fontFamily: 'Open Sans, sans-serif', fontWeight: 700, lineHeight: 1, fontSize: '3rem', mb: 0, mt: 0 }}>
               &gt; Dolero23
             </Typography>
           </Box>
@@ -86,7 +88,6 @@ const BannerCupon = () => {
               ml: 0,
               mr: 0,
               alignSelf: 'center',
-              whiteSpace: 'nowrap',
               '&:hover': {
                 boxShadow: `0 0 24px 6px ${neonColor}, 0 0 24px 6px rgba(0,0,0,0.22)`
               }
