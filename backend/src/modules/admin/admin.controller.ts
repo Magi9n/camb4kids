@@ -18,21 +18,25 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 
 @Controller('admin')
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Get('settings')
   async getSettings() {
     return this.adminService.getSettings();
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Put('settings')
   async updateSettings(@Body() dto: UpdateSettingsDto) {
     return this.adminService.updateSettings(dto);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Get('orders')
   async getOrders(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
@@ -42,6 +46,8 @@ export class AdminController {
     return this.adminService.getAllOrders(page, limit);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Put('orders/:id')
   async updateOrder(
     @Param('id', ParseIntPipe) id: number,
@@ -50,16 +56,22 @@ export class AdminController {
     return this.adminService.updateOrderStatus(id, dto.status);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Get('stats')
   async getStats() {
     return this.adminService.getStats();
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Post('cache/clear')
   async clearCache() {
     return this.adminService.clearCache();
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Get('cache/stats')
   async getCacheStats() {
     return this.adminService.getCacheStats();

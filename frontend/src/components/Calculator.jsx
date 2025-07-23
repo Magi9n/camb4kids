@@ -93,6 +93,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent }) => {
                 value={pen}
                 onChange={handlePenChange}
                 inputProps={{ inputMode: 'decimal' }}
+                autoComplete="off"
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -103,6 +104,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent }) => {
                 value={usd}
                 onChange={handleUsdChange}
                 inputProps={{ inputMode: 'decimal' }}
+                autoComplete="off"
               />
             </Grid>
           </Grid>
