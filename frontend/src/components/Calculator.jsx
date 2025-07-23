@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 
 const API_RATE = '/api/rates/current';
-const API_SETTINGS = '/api/admin/settings';
+const API_MARGINS = '/api/admin/public-margins';
 
 const Calculator = ({ overrideBuyPercent, overrideSellPercent }) => {
   const [rate, setRate] = useState(null);
@@ -22,13 +22,13 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent }) => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [rateRes, settingsRes] = await Promise.all([
+        const [rateRes, marginsRes] = await Promise.all([
           axios.get(API_RATE),
-          axios.get(API_SETTINGS),
+          axios.get(API_MARGINS),
         ]);
         setRate(rateRes.data.rate);
-        setBuyPercent(settingsRes.data.buyPercent || 1);
-        setSellPercent(settingsRes.data.sellPercent || 1);
+        setBuyPercent(marginsRes.data.buyPercent || 1);
+        setSellPercent(marginsRes.data.sellPercent || 1);
         setLoading(false);
       } catch (err) {
         setError('No se pudo obtener la tasa de cambio.');

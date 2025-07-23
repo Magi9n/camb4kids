@@ -64,4 +64,13 @@ export class AdminController {
   async getCacheStats() {
     return this.adminService.getCacheStats();
   }
+
+  @Get('public-margins')
+  async getPublicMargins() {
+    const settings = await this.adminService.getSettings() as any;
+    return {
+      buyPercent: settings.buyPercent,
+      sellPercent: settings.sellPercent,
+    };
+  }
 } 
