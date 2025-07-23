@@ -103,25 +103,6 @@ const HeroSection = () => {
               en <b style={{ color: '#111', fontWeight: 800 }}>MangosCash</b>
             </Typography>
           </Box>
-          {/* Bloque de precios centrado */}
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3, gap: 2 }}>
-            <Box sx={{ mb: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 20, textAlign: 'center', lineHeight: 1 }}>
-                Compramos:
-              </Typography>
-              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#057c39', fontSize: 26, textAlign: 'center', lineHeight: 1, mt: 1 }}>
-                {precioCompra || '--'}
-              </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 20, textAlign: 'center', lineHeight: 1 }}>
-                Vendemos:
-              </Typography>
-              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#e67e22', fontSize: 26, textAlign: 'center', lineHeight: 1, mt: 1 }}>
-                {precioVenta || '--'}
-              </Typography>
-            </Box>
-          </Box>
           {/* Calculadora */}
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
             <Calculator swap={swap} onSwap={handleSwap} swapActive={fade || swap} onPricesChange={handlePricesChange} />
