@@ -12,11 +12,13 @@ import SubscribeBox from '../components/SubscribeBox';
 import HowItWorks from '../components/HowItWorks';
 import SimulatorSection from '../components/SimulatorSection';
 import CouponsSection from '../components/CouponsSection';
+import BannerCupon from '../components/BannerCupon';
 
 const LandingPage = () => {
   return (
     <>
       <Header />
+      <BannerCupon />
       <HeroStats />
       <BanksSection />
       <BenefitsSection />
