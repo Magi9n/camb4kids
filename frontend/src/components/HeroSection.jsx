@@ -51,7 +51,7 @@ const HeroSection = () => {
         minHeight: isMobile ? 600 : 500,
         display: 'flex',
         flexDirection: isMobile ? 'column' : 'row',
-        alignItems: 'stretch',
+        alignItems: 'center',
         justifyContent: 'center',
         bgcolor: '#c6ffd1',
         px: { xs: 2, md: 8 },
@@ -85,8 +85,7 @@ const HeroSection = () => {
       </Box>
       {/* Columna derecha: calculadora y swap */}
       <Grow in timeout={1200}>
-        <Box sx={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 370, mt: isMobile ? 4 : 0, position: 'relative', zIndex: 1, height: '100%' }}>
-          <Box sx={{ flex: 1 }} />
+        <Box sx={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 370, mt: isMobile ? 4 : 0, position: 'relative', zIndex: 1, height: 'auto', justifyContent: 'center' }}>
           <Box sx={{ textAlign: 'center', mb: 1 }}>
             <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 400, fontSize: { xs: 22, md: 28 }, color: '#222', mb: 0.5, lineHeight: 1.1 }}>
               Tipo de cambio para hoy
@@ -103,7 +102,6 @@ const HeroSection = () => {
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
             <Calculator swap={swap} onSwap={handleSwap} swapActive={fade || swap} />
           </Box>
-          <Box sx={{ flex: 1 }} />
         </Box>
       </Grow>
     </Box>
