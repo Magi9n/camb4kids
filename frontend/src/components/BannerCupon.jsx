@@ -15,18 +15,23 @@ const BannerCupon = () => {
   return (
     <Box
       sx={{
-        width: '100vw',
+        position: 'relative',
+        width: '100%',
+        left: '50%',
+        right: '50%',
+        marginLeft: '-50vw',
+        marginRight: '-50vw',
+        minWidth: '100vw',
         maxWidth: '100vw',
         minHeight: isMobile ? 110 : 100,
         height: isMobile ? 120 : 100,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         px: 0,
         py: 0,
         background: `linear-gradient(90deg, #23FFBD 0%, #F8F4DD 100%)`,
         borderRadius: 0,
-        position: 'relative',
         overflow: 'hidden',
         mt: 0,
         boxSizing: 'border-box',
@@ -46,15 +51,15 @@ const BannerCupon = () => {
         }}
       />
       {/* Contenido */}
-      <Box sx={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', ml: { xs: 0, md: 2 } }}>
-        <Typography sx={{ color: 'white', fontFamily: 'Open Sans, sans-serif', fontWeight: 400, lineHeight: 1, fontSize: '3.8rem', mb: 0, mt: 0 }}>
-          Usa el cupon
-        </Typography>
-        <Typography sx={{ color: 'white', fontFamily: 'Open Sans, sans-serif', fontWeight: 700, lineHeight: 1, fontSize: '3.8rem', mb: 0, mt: 0 }}>
-          &gt; Dolero23
-        </Typography>
-      </Box>
-      <Box sx={{ position: 'relative', zIndex: 1, ml: { xs: 0.5, md: 1.5 }, display: 'flex', alignItems: 'center', height: '100%' }}>
+      <Box sx={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: { xs: 1, md: 2 } }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-end' }}>
+          <Typography sx={{ color: 'white', fontFamily: 'Open Sans, sans-serif', fontWeight: 400, lineHeight: 1, fontSize: '3rem', mb: 0, mt: 0 }}>
+            Usa el cupon
+          </Typography>
+          <Typography sx={{ color: 'white', fontFamily: 'Open Sans, sans-serif', fontWeight: 700, lineHeight: 1, fontSize: '3rem', mb: 0, mt: 0 }}>
+            &gt; Dolero23
+          </Typography>
+        </Box>
         <Button
           sx={{
             background: 'black',
