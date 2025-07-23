@@ -57,7 +57,7 @@ const BannerCupon = () => {
           }}
         />
         {/* Contenido */}
-        <Box sx={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: { xs: 16, md: 32 } }}>
+        <Box sx={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: { xs: 32, md: 64 } }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-end' }}>
             <Typography sx={{ color: 'white', fontFamily: 'Open Sans, sans-serif', fontWeight: 400, lineHeight: 1, fontSize: '3rem', mb: 0, mt: 0 }}>
               Usa el cupon
