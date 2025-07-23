@@ -6,51 +6,62 @@ import Grid from '@mui/material/Grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/rates/current'; // Cambia esto si tu backend está en otro host
+const API_RATE = '/api/rates/current';
+const API_SETTINGS = '/api/admin/settings';
 
 const Calculator = () => {
   const [rate, setRate] = useState(null);
+  const [buyPercent, setBuyPercent] = useState(1);
+  const [sellPercent, setSellPercent] = useState(1);
   const [pen, setPen] = useState('');
   const [usd, setUsd] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchRate = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(API_URL);
-        setRate(res.data.rate);
+        const [rateRes, settingsRes] = await Promise.all([
+          axios.get(API_RATE),
+          axios.get(API_SETTINGS),
+        ]);
+        setRate(rateRes.data.rate);
+        setBuyPercent(settingsRes.data.buyPercent || 1);
+        setSellPercent(settingsRes.data.sellPercent || 1);
         setLoading(false);
       } catch (err) {
         setError('No se pudo obtener la tasa de cambio.');
         setLoading(false);
       }
     };
-    fetchRate();
+    fetchData();
   }, []);
 
-  // Conversión PEN a USD
+  // Conversión PEN a USD (usando precio de compra)
   const handlePenChange = (e) => {
     const value = e.target.value.replace(/[^0-9.]/g, '');
     setPen(value);
     if (rate && value) {
-      setUsd((parseFloat(value) / rate).toFixed(2));
+      setUsd((parseFloat(value) / (rate * buyPercent)).toFixed(2));
     } else {
       setUsd('');
     }
   };
 
-  // Conversión USD a PEN
+  // Conversión USD a PEN (usando precio de venta)
   const handleUsdChange = (e) => {
     const value = e.target.value.replace(/[^0-9.]/g, '');
     setUsd(value);
     if (rate && value) {
-      setPen((parseFloat(value) * rate).toFixed(2));
+      setPen((parseFloat(value) * rate * sellPercent).toFixed(2));
     } else {
       setPen('');
     }
   };
+
+  const precioCompra = rate ? (rate * buyPercent).toFixed(4) : '';
+  const precioVenta = rate ? (rate * sellPercent).toFixed(4) : '';
 
   return (
     <Box sx={{ p: 3, borderRadius: 2, boxShadow: 2, background: 'white' }}>
@@ -66,7 +77,8 @@ const Calculator = () => {
       ) : (
         <>
           <Typography variant="subtitle1" sx={{ mb: 2 }}>
-            Tasa actual: <b>1 USD = {rate} PEN</b>
+            <b>Precio de compra:</b> 1 USD = {precioCompra} PEN<br />
+            <b>Precio de venta:</b> 1 USD = {precioVenta} PEN
           </Typography>
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} sm={6}>
