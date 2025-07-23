@@ -104,20 +104,20 @@ const HeroSection = () => {
             </Typography>
           </Box>
           {/* Bloque de precios centrado */}
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3, gap: 1 }}>
-            <Box sx={{ mb: 1 }}>
-              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#057c39', fontSize: 18, textAlign: 'center', lineHeight: 1 }}>
-                Compramos
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3, gap: 2 }}>
+            <Box sx={{ mb: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 20, textAlign: 'center', lineHeight: 1 }}>
+                Compramos:
               </Typography>
-              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 22, textAlign: 'center', lineHeight: 1 }}>
+              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#057c39', fontSize: 26, textAlign: 'center', lineHeight: 1, mt: 1 }}>
                 {precioCompra || '--'}
               </Typography>
             </Box>
-            <Box>
-              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#e67e22', fontSize: 18, textAlign: 'center', lineHeight: 1 }}>
-                Vendemos
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 20, textAlign: 'center', lineHeight: 1 }}>
+                Vendemos:
               </Typography>
-              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 22, textAlign: 'center', lineHeight: 1 }}>
+              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#e67e22', fontSize: 26, textAlign: 'center', lineHeight: 1, mt: 1 }}>
                 {precioVenta || '--'}
               </Typography>
             </Box>
