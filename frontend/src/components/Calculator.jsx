@@ -17,7 +17,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
   const [usd, setUsd] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [editing, setEditing] = useState('send'); // 'send' o 'receive'
+  const [editing, setEditing] = useState('send');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,10 +116,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
           {/* Bloque superior: Enví­as */}
           <Box sx={{
             background: sendColor,
-            borderTopLeftRadius: 80,
-            borderTopRightRadius: 80,
-            borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0,
+            borderRadius: 999,
             px: 4,
             py: 1.1,
             width: '100%',
@@ -127,10 +124,10 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
             alignItems: 'center',
             justifyContent: 'space-between',
             boxShadow: '0 2px 12px 0 rgba(0,0,0,0.04)',
-            mb: 0,
             minHeight: 80,
             position: 'relative',
             zIndex: 2,
+            mb: 2.5,
           }}>
             <Box>
               <Typography sx={{ color: labelColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 18, mb: 0.5 }}>{sendLabel}</Typography>
@@ -159,7 +156,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
             </Typography>
           </Box>
           {/* Swap funcional superpuesto */}
-          <Box sx={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
+          <Box sx={{ position: 'absolute', left: '50%', top: 'calc(50% + 2px)', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
             <Box
               onClick={onSwap}
               sx={{
@@ -183,10 +180,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
           {/* Bloque inferior: Recibes */}
           <Box sx={{
             background: receiveColor,
-            borderBottomLeftRadius: 80,
-            borderBottomRightRadius: 80,
-            borderTopLeftRadius: 0,
-            borderTopRightRadius: 0,
+            borderRadius: 999,
             px: 4,
             py: 1.1,
             width: '100%',
@@ -194,7 +188,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
             alignItems: 'center',
             justifyContent: 'space-between',
             minHeight: 80,
-            mt: 0,
+            mt: 2.5,
             position: 'relative',
             zIndex: 1,
           }}>
