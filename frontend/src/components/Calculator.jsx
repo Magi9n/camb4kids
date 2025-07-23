@@ -102,9 +102,25 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
 
   return (
     <Box sx={{ width: 400, maxWidth: '100%', background: 'transparent', fontFamily: 'Roboto, sans-serif', mx: 'auto' }}>
-      <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 400, color: '#222', fontSize: 16, textAlign: 'center', mb: 2 }}>
-        <span>Compramos: <b>{precioCompra}</b></span> &nbsp; &nbsp; <span>Vendemos: <b>{precioVenta}</b></span>
-      </Typography>
+      {/* Bloque de precios superior */}
+      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, mb: 2, width: '100%' }}>
+        <Box sx={{ flex: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 18, textAlign: 'center', lineHeight: 1 }}>
+            Compramos:
+          </Typography>
+          <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#057c39', fontSize: 22, textAlign: 'center', lineHeight: 1, mt: 0.5 }}>
+            {precioCompra || '--'}
+          </Typography>
+        </Box>
+        <Box sx={{ flex: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 18, textAlign: 'center', lineHeight: 1 }}>
+            Vendemos:
+          </Typography>
+          <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#e67e22', fontSize: 22, textAlign: 'center', lineHeight: 1, mt: 0.5 }}>
+            {precioVenta || '--'}
+          </Typography>
+        </Box>
+      </Box>
       {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', my: 3 }}>
           <CircularProgress />
