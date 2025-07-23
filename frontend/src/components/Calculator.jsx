@@ -9,7 +9,7 @@ import axios from 'axios';
 const API_RATE = '/api/rates/current';
 const API_MARGINS = '/api/admin/public-margins';
 
-const Calculator = ({ overrideBuyPercent, overrideSellPercent }) => {
+const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap }) => {
   const [rate, setRate] = useState(null);
   const [buyPercent, setBuyPercent] = useState(1);
   const [sellPercent, setSellPercent] = useState(1);
@@ -64,11 +64,14 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent }) => {
     }
   };
 
+  // Swap: invierte los campos y la lógica
+  const isSwapped = !!swap;
+
   const precioCompra = rate ? (rate * buy).toFixed(4) : '';
   const precioVenta = rate ? (rate * sell).toFixed(4) : '';
 
   return (
-    <Box sx={{ p: 3, borderRadius: 2, boxShadow: 2, background: 'white' }}>
+    <Box sx={{ p: 3, borderRadius: 2, boxShadow: 2, background: 'white', minWidth: 320 }}>
       <Typography variant="h5" fontWeight="bold" gutterBottom>
         Calculadora de cambio en tiempo real
       </Typography>
@@ -85,28 +88,57 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent }) => {
             <b>Precio de venta:</b> 1 USD = {precioVenta} PEN
           </Typography>
           <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Monto en Soles (PEN)"
-                variant="outlined"
-                fullWidth
-                value={pen}
-                onChange={handlePenChange}
-                inputProps={{ inputMode: 'decimal' }}
-                autoComplete="off"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Monto en Dólares (USD)"
-                variant="outlined"
-                fullWidth
-                value={usd}
-                onChange={handleUsdChange}
-                inputProps={{ inputMode: 'decimal' }}
-                autoComplete="off"
-              />
-            </Grid>
+            {isSwapped ? (
+              <>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Monto en Dólares (USD)"
+                    variant="outlined"
+                    fullWidth
+                    value={usd}
+                    onChange={handleUsdChange}
+                    inputProps={{ inputMode: 'decimal' }}
+                    autoComplete="off"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Monto en Soles (PEN)"
+                    variant="outlined"
+                    fullWidth
+                    value={pen}
+                    onChange={handlePenChange}
+                    inputProps={{ inputMode: 'decimal' }}
+                    autoComplete="off"
+                  />
+                </Grid>
+              </>
+            ) : (
+              <>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Monto en Soles (PEN)"
+                    variant="outlined"
+                    fullWidth
+                    value={pen}
+                    onChange={handlePenChange}
+                    inputProps={{ inputMode: 'decimal' }}
+                    autoComplete="off"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Monto en Dólares (USD)"
+                    variant="outlined"
+                    fullWidth
+                    value={usd}
+                    onChange={handleUsdChange}
+                    inputProps={{ inputMode: 'decimal' }}
+                    autoComplete="off"
+                  />
+                </Grid>
+              </>
+            )}
           </Grid>
         </>
       )}

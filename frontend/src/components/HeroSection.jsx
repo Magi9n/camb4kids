@@ -48,45 +48,49 @@ const HeroSection = () => {
     <Box
       sx={{
         width: '100%',
-        minHeight: isMobile ? 480 : 340,
+        minHeight: isMobile ? 600 : 400,
         display: 'flex',
         flexDirection: isMobile ? 'column' : 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'center',
-        bgcolor: 'transparent',
+        bgcolor: '#c6ffd1',
         px: { xs: 2, md: 8 },
         py: { xs: 4, md: 6 },
         gap: { xs: 4, md: 0 },
         position: 'relative',
       }}
     >
-      {/* Lottie a la izquierda */}
-      <Grow in timeout={900}>
-        <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth: 220 }}>
-          <DotLottieReact
-            src="https://lottie.host/46664ffb-e12d-4087-9bb4-9315ef7eb6be/XjwAOYmMzU.lottie"
-            loop
-            autoplay
-            style={{ width: isMobile ? 180 : 260, height: isMobile ? 180 : 260 }}
-          />
-        </Box>
-      </Grow>
-      {/* Texto en el centro */}
-      <Fade in timeout={1200}>
-        <Box sx={{ flex: 2, textAlign: isMobile ? 'center' : 'left', px: { xs: 0, md: 4 }, py: { xs: 2, md: 0 } }}>
-          <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 400, fontSize: { xs: 28, md: 38 }, color: '#222', mb: 1 }}>
-            Tu cambio digital
-          </Typography>
-          <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 700, fontSize: { xs: 32, md: 44 }, color: '#057c39', mb: 1 }}>
-            de confianza en PERÚ
-          </Typography>
-        </Box>
-      </Fade>
-      {/* Calculadora a la derecha con flecha animada */}
+      {/* Columna izquierda: texto y lottie */}
+      <Box sx={{ flex: 1.5, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minWidth: 220 }}>
+        <Fade in timeout={1200}>
+          <Box sx={{ textAlign: 'center', mb: 2 }}>
+            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 400, fontSize: { xs: 28, md: 38 }, color: '#222', mb: 1 }}>
+              Tu cambio digital
+            </Typography>
+            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 700, fontSize: { xs: 32, md: 44 }, color: '#057c39', mb: 1 }}>
+              de confianza en PERÚ
+            </Typography>
+          </Box>
+        </Fade>
+        <Grow in timeout={900}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+            <DotLottieReact
+              src="https://lottie.host/46664ffb-e12d-4087-9bb4-9315ef7eb6be/XjwAOYmMzU.lottie"
+              loop
+              autoplay
+              style={{ width: isMobile ? 180 : 260, height: isMobile ? 180 : 260 }}
+            />
+          </Box>
+        </Grow>
+      </Box>
+      {/* Columna derecha: calculadora y swap */}
       <Grow in timeout={1200}>
-        <Box sx={{ flex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: 320 }}>
+        <Box sx={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minWidth: 320, mt: isMobile ? 4 : 0 }}>
+          <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 400, fontSize: { xs: 18, md: 22 }, color: '#222', mb: 1, textAlign: 'center' }}>
+            Tipo de cambio para hoy en <b style={{ color: '#057c39' }}>MangosCash</b>
+          </Typography>
           <Fade in={!fade} timeout={400}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
               <Calculator swap={swap} />
               <ArrowButton active={swap ? 1 : 0} onClick={handleSwap} sx={{ mx: { xs: 1, md: 2 } }}>
                 <SwapVertIcon sx={{ fontSize: 38, color: '#057c39', transition: 'transform 0.4s cubic-bezier(.68,-0.55,.27,1.55)' }} />
