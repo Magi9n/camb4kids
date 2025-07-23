@@ -64,10 +64,10 @@ const HeroSection = () => {
       <Box sx={{ flex: 1.5, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', minWidth: 320 }}>
         <Fade in timeout={1200}>
           <Box sx={{ textAlign: 'left', mb: 2, width: '100%' }}>
-            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 400, fontSize: { xs: 28, md: 38 }, color: '#222', mb: 1 }}>
+            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 700, fontSize: { xs: 38, md: 54 }, color: '#222', mb: 1 }}>
               Tu cambio digital
             </Typography>
-            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 700, fontSize: { xs: 32, md: 44 }, color: '#057c39', mb: 1 }}>
+            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 900, fontSize: { xs: 44, md: 62 }, color: '#057c39', mb: 1 }}>
               de confianza en PERÚ
             </Typography>
           </Box>
@@ -86,15 +86,17 @@ const HeroSection = () => {
       {/* Columna derecha: calculadora y swap */}
       <Grow in timeout={1200}>
         <Box sx={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minWidth: 320, mt: isMobile ? 4 : 0 }}>
-          <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 400, fontSize: { xs: 18, md: 22 }, color: '#222', mb: 1, textAlign: 'center' }}>
-            Tipo de cambio para hoy en <b style={{ color: '#057c39' }}>MangosCash</b>
-          </Typography>
+          <Box sx={{ textAlign: 'center', mb: 2 }}>
+            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 400, fontSize: { xs: 22, md: 28 }, color: '#222', mb: 0, lineHeight: 1 }}>
+              Tipo de cambio para hoy
+            </Typography>
+            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 800, fontSize: { xs: 22, md: 28 }, color: '#111', mt: 0.5, lineHeight: 1 }}>
+              en MangosCash
+            </Typography>
+          </Box>
           <Fade in={!fade} timeout={400}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-              <Calculator swap={swap} />
-              <ArrowButton active={swap ? 1 : 0} onClick={handleSwap} sx={{ mx: { xs: 1, md: 2 } }}>
-                <SwapVertIcon sx={{ fontSize: 38, color: '#057c39', transition: 'transform 0.4s cubic-bezier(.68,-0.55,.27,1.55)' }} />
-              </ArrowButton>
+              <Calculator swap={swap} onSwap={handleSwap} swapActive={fade || swap} />
             </Box>
           </Fade>
         </Box>

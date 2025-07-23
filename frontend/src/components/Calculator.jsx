@@ -4,13 +4,12 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import SwapVertIcon from '@mui/icons-material/SwapVert';
 
 const API_RATE = '/api/rates/current';
 const API_MARGINS = '/api/admin/public-margins';
 
-const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap }) => {
+const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swapActive }) => {
   const [rate, setRate] = useState(null);
   const [buyPercent, setBuyPercent] = useState(1);
   const [sellPercent, setSellPercent] = useState(1);
@@ -18,6 +17,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap }) => {
   const [usd, setUsd] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [editing, setEditing] = useState('send'); // 'send' o 'receive'
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,22 +44,42 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap }) => {
   const isSwapped = !!swap;
 
   // Lógica de conversión
-  const handlePenChange = (e) => {
+  const handleSendChange = (e) => {
     const value = e.target.value.replace(/[^0-9.]/g, '');
-    setPen(value);
-    if (rate && value) {
-      setUsd((parseFloat(value) / (rate * buy)).toFixed(2));
+    setEditing('send');
+    if (isSwapped) {
+      setUsd(value);
+      if (rate && value) {
+        setPen((parseFloat(value) * rate * sell).toFixed(2));
+      } else {
+        setPen('');
+      }
     } else {
-      setUsd('');
+      setPen(value);
+      if (rate && value) {
+        setUsd((parseFloat(value) / (rate * buy)).toFixed(2));
+      } else {
+        setUsd('');
+      }
     }
   };
-  const handleUsdChange = (e) => {
+  const handleReceiveChange = (e) => {
     const value = e.target.value.replace(/[^0-9.]/g, '');
-    setUsd(value);
-    if (rate && value) {
-      setPen((parseFloat(value) * rate * sell).toFixed(2));
+    setEditing('receive');
+    if (isSwapped) {
+      setPen(value);
+      if (rate && value) {
+        setUsd((parseFloat(value) / (rate * buy)).toFixed(2));
+      } else {
+        setUsd('');
+      }
     } else {
-      setPen('');
+      setUsd(value);
+      if (rate && value) {
+        setPen((parseFloat(value) * rate * sell).toFixed(2));
+      } else {
+        setPen('');
+      }
     }
   };
 
@@ -70,7 +90,8 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap }) => {
   const receiveValue = isSwapped ? pen : usd;
   const sendCurrency = isSwapped ? '$' : 'S/';
   const receiveCurrency = isSwapped ? 'S/' : '$';
-  const sendOnChange = isSwapped ? handleUsdChange : handlePenChange;
+  const sendOnChange = handleSendChange;
+  const receiveOnChange = handleReceiveChange;
   const receiveColor = '#49b87a';
   const sendColor = '#fff';
   const labelColor = '#057c39';
@@ -80,7 +101,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap }) => {
   const precioVenta = rate ? (rate * sell).toFixed(4) : '';
 
   return (
-    <Box sx={{ width: 370, maxWidth: '100%', background: 'transparent', fontFamily: 'Roboto, sans-serif' }}>
+    <Box sx={{ width: 340, maxWidth: '100%', background: 'transparent', fontFamily: 'Roboto, sans-serif' }}>
       <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 400, color: '#222', fontSize: 16, textAlign: 'center', mb: 1 }}>
         <span>Compramos: <b>{precioCompra}</b></span> &nbsp; &nbsp; <span>Vendemos: <b>{precioVenta}</b></span>
       </Typography>
@@ -95,19 +116,20 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap }) => {
           {/* Bloque superior: Enví­as */}
           <Box sx={{
             background: sendColor,
-            borderTopLeftRadius: 40,
-            borderTopRightRadius: 40,
+            borderTopLeftRadius: 32,
+            borderTopRightRadius: 32,
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
-            px: 4,
-            py: 2.5,
+            px: 3,
+            py: 2,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             boxShadow: '0 2px 12px 0 rgba(0,0,0,0.04)',
+            mb: 1.5,
           }}>
             <Box>
-              <Typography sx={{ color: labelColor, fontWeight: 500, fontFamily: 'Roboto, sans-serif', fontSize: 18, mb: 0.5 }}>{sendLabel}</Typography>
+              <Typography sx={{ color: labelColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 17, mb: 0.5 }}>{sendLabel}</Typography>
               <TextField
                 variant="standard"
                 value={sendValue}
@@ -115,8 +137,8 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap }) => {
                 InputProps={{
                   disableUnderline: true,
                   style: {
-                    fontWeight: 700,
-                    fontSize: 28,
+                    fontWeight: 900,
+                    fontSize: 36,
                     color: valueColor,
                     fontFamily: 'Roboto, sans-serif',
                     background: 'transparent',
@@ -124,45 +146,60 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap }) => {
                   inputMode: 'decimal',
                   autoComplete: 'off',
                 }}
-                sx={{ width: 140, background: 'transparent', mt: 0.5 }}
+                sx={{ width: 120, background: 'transparent', mt: 0.5 }}
                 placeholder="0.00"
               />
             </Box>
-            <Typography sx={{ color: valueColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 36, ml: 2 }}>
+            <Typography sx={{ color: valueColor, fontWeight: 900, fontFamily: 'Roboto, sans-serif', fontSize: 38, ml: 2 }}>
               {sendCurrency}
             </Typography>
           </Box>
-          {/* Botón swap centrado */}
-          <Box sx={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 2 }}>
-            <Box sx={{ background: '#222', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)' }}>
-              <CurrencyExchangeIcon sx={{ color: '#fff', fontSize: 32 }} />
+          {/* Swap funcional al centro */}
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', my: 0.5 }}>
+            <Box
+              onClick={onSwap}
+              sx={{
+                background: '#111',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)',
+                cursor: 'pointer',
+                transition: 'transform 0.4s cubic-bezier(.68,-0.55,.27,1.55)',
+                transform: swapActive ? 'rotate(180deg) scale(1.1)' : 'rotate(0deg) scale(1)',
+              }}
+            >
+              <SwapVertIcon sx={{ color: '#fff', fontSize: 32, transition: 'color 0.2s' }} />
             </Box>
           </Box>
           {/* Bloque inferior: Recibes */}
           <Box sx={{
             background: receiveColor,
-            borderBottomLeftRadius: 40,
-            borderBottomRightRadius: 40,
+            borderBottomLeftRadius: 32,
+            borderBottomRightRadius: 32,
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
-            px: 4,
-            py: 2.5,
+            px: 3,
+            py: 2,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            mt: -2,
+            mt: 0,
           }}>
             <Box>
-              <Typography sx={{ color: labelColor, fontWeight: 500, fontFamily: 'Roboto, sans-serif', fontSize: 18, mb: 0.5 }}>{receiveLabel}</Typography>
+              <Typography sx={{ color: labelColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 17, mb: 0.5 }}>{receiveLabel}</Typography>
               <TextField
                 variant="standard"
                 value={receiveValue}
-                disabled
+                onChange={receiveOnChange}
                 InputProps={{
                   disableUnderline: true,
                   style: {
-                    fontWeight: 700,
-                    fontSize: 28,
+                    fontWeight: 900,
+                    fontSize: 36,
                     color: valueColor,
                     fontFamily: 'Roboto, sans-serif',
                     background: 'transparent',
@@ -170,11 +207,11 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap }) => {
                   inputMode: 'decimal',
                   autoComplete: 'off',
                 }}
-                sx={{ width: 140, background: 'transparent', mt: 0.5 }}
+                sx={{ width: 120, background: 'transparent', mt: 0.5 }}
                 placeholder="0.00"
               />
             </Box>
-            <Typography sx={{ color: valueColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 36, ml: 2 }}>
+            <Typography sx={{ color: valueColor, fontWeight: 900, fontFamily: 'Roboto, sans-serif', fontSize: 38, ml: 2 }}>
               {receiveCurrency}
             </Typography>
           </Box>
