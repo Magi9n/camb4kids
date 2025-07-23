@@ -11,6 +11,15 @@ import AdminPanel from './pages/AdminPanel';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
+  React.useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      html, body { overflow-x: hidden !important; margin: 0; padding: 0; }
+      #root { overflow-x: hidden !important; }
+    `;
+    document.head.appendChild(style);
+    return () => { document.head.removeChild(style); };
+  }, []);
   return (
     <AuthProvider>
       <Router>
