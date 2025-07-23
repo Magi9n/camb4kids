@@ -13,12 +13,14 @@ import HowItWorks from '../components/HowItWorks';
 import SimulatorSection from '../components/SimulatorSection';
 import CouponsSection from '../components/CouponsSection';
 import BannerCupon from '../components/BannerCupon';
+import HeroSection from '../components/HeroSection';
 
 const LandingPage = () => {
   return (
     <>
       <Header />
       <BannerCupon />
+      <HeroSection />
       <HeroStats />
       <BanksSection />
       <BenefitsSection />
