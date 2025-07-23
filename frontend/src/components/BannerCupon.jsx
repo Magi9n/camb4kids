@@ -17,8 +17,8 @@ const BannerCupon = () => {
       sx={{
         width: '100vw',
         maxWidth: '100%',
-        minHeight: isMobile ? 80 : 70,
-        height: isMobile ? 90 : 70,
+        minHeight: isMobile ? 110 : 100,
+        height: isMobile ? 120 : 100,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
