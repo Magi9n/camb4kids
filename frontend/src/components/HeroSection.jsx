@@ -85,7 +85,7 @@ const HeroSection = () => {
       </Box>
       {/* Columna derecha: calculadora y swap */}
       <Grow in timeout={1200}>
-        <Box sx={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minWidth: 370, mt: isMobile ? 4 : 0, position: 'relative', zIndex: 1, height: '100%', justifySelf: 'center' }}>
+        <Box sx={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minWidth: 370, mt: isMobile ? 4 : 0, position: 'relative', zIndex: 1, height: '100vh', justifySelf: 'center' }}>
           <Box sx={{ textAlign: 'center', mb: 1 }}>
             <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 400, fontSize: { xs: 22, md: 28 }, color: '#222', mb: 0.5, lineHeight: 1.1 }}>
               Tipo de cambio para hoy
@@ -94,11 +94,14 @@ const HeroSection = () => {
               en <b style={{ color: '#111', fontWeight: 800 }}>MangosCash</b>
             </Typography>
           </Box>
-          <Fade in={!fade} timeout={400}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
-              <Calculator swap={swap} onSwap={handleSwap} swapActive={fade || swap} />
-            </Box>
-          </Fade>
+          <Box sx={{ mb: 1 }}>
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 400, color: '#222', fontSize: 16, textAlign: 'center' }}>
+              <span>Compramos: <b>{/* El precio se muestra en Calculator */}</b></span> &nbsp; &nbsp; <span>Vendemos: <b>{/* El precio se muestra en Calculator */}</b></span>
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
+            <Calculator swap={swap} onSwap={handleSwap} swapActive={fade || swap} />
+          </Box>
         </Box>
       </Grow>
     </Box>
