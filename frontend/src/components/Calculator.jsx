@@ -156,7 +156,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
             </Typography>
           </Box>
           {/* Swap funcional superpuesto */}
-          <Box sx={{ position: 'absolute', left: '58%', top: 'calc(50% + 2px)', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
+          <Box sx={{ position: 'absolute', left: '65%', top: 'calc(50% + 2px)', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
             <Box
               onClick={onSwap}
               sx={{
