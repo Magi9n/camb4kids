@@ -35,6 +35,9 @@ const HeroSection = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [swap, setSwap] = useState(false);
   const [fade, setFade] = useState(false);
+  // Estado para los precios
+  const [precioCompra, setPrecioCompra] = useState('');
+  const [precioVenta, setPrecioVenta] = useState('');
 
   const handleSwap = () => {
     setFade(true);
@@ -42,6 +45,12 @@ const HeroSection = () => {
       setSwap((s) => !s);
       setFade(false);
     }, 350);
+  };
+
+  // Función para recibir precios desde Calculator
+  const handlePricesChange = (compra, venta) => {
+    setPrecioCompra(compra);
+    setPrecioVenta(venta);
   };
 
   return (
@@ -86,7 +95,7 @@ const HeroSection = () => {
       {/* Columna derecha: calculadora y swap */}
       <Grow in timeout={1200}>
         <Box sx={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 370, mt: isMobile ? 4 : 0, position: 'relative', zIndex: 1, height: 'auto', justifyContent: 'center' }}>
-          <Box sx={{ textAlign: 'center', mb: 1 }}>
+          <Box sx={{ textAlign: 'center', mb: 2 }}>
             <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 400, fontSize: { xs: 22, md: 28 }, color: '#222', mb: 0.5, lineHeight: 1.1 }}>
               Tipo de cambio para hoy
             </Typography>
@@ -94,13 +103,28 @@ const HeroSection = () => {
               en <b style={{ color: '#111', fontWeight: 800 }}>MangosCash</b>
             </Typography>
           </Box>
-          <Box sx={{ mb: 1 }}>
-            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 400, color: '#222', fontSize: 16, textAlign: 'center' }}>
-              <span>Compramos: <b>{/* El precio se muestra en Calculator */}</b></span> &nbsp; &nbsp; <span>Vendemos: <b>{/* El precio se muestra en Calculator */}</b></span>
-            </Typography>
+          {/* Bloque de precios centrado */}
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3, gap: 1 }}>
+            <Box sx={{ mb: 1 }}>
+              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#057c39', fontSize: 18, textAlign: 'center', lineHeight: 1 }}>
+                Compramos
+              </Typography>
+              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 22, textAlign: 'center', lineHeight: 1 }}>
+                {precioCompra || '--'}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#e67e22', fontSize: 18, textAlign: 'center', lineHeight: 1 }}>
+                Vendemos
+              </Typography>
+              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 22, textAlign: 'center', lineHeight: 1 }}>
+                {precioVenta || '--'}
+              </Typography>
+            </Box>
           </Box>
+          {/* Calculadora */}
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
-            <Calculator swap={swap} onSwap={handleSwap} swapActive={fade || swap} />
+            <Calculator swap={swap} onSwap={handleSwap} swapActive={fade || swap} onPricesChange={handlePricesChange} />
           </Box>
         </Box>
       </Grow>
