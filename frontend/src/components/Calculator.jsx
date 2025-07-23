@@ -129,8 +129,8 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
             zIndex: 2,
             mb: 1.2,
           }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <Typography sx={{ color: labelColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 16, mb: 0, lineHeight: 1 }}>{sendLabel}</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', ml: 2 }}>
+              <Typography sx={{ color: labelColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 16, mb: 0.2, lineHeight: 1 }}>{sendLabel}</Typography>
               <TextField
                 variant="standard"
                 value={sendValue}
@@ -147,7 +147,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
                   inputMode: 'decimal',
                   autoComplete: 'off',
                 }}
-                sx={{ width: 120, background: 'transparent', mt: 0.2 }}
+                sx={{ width: 120, background: 'transparent', mt: 0 }}
                 placeholder="0.00"
               />
             </Box>
@@ -192,8 +192,8 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
             position: 'relative',
             zIndex: 1,
           }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <Typography sx={{ color: labelColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 16, mb: 0, lineHeight: 1 }}>{receiveLabel}</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', ml: 2 }}>
+              <Typography sx={{ color: labelColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 16, mb: 0.2, lineHeight: 1 }}>{receiveLabel}</Typography>
               <TextField
                 variant="standard"
                 value={receiveValue}
@@ -210,7 +210,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
                   inputMode: 'decimal',
                   autoComplete: 'off',
                 }}
-                sx={{ width: 120, background: 'transparent', mt: 0.2 }}
+                sx={{ width: 120, background: 'transparent', mt: 0 }}
                 placeholder="0.00"
               />
             </Box>
