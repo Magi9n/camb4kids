@@ -22,7 +22,7 @@ const BannerCupon = () => {
         marginLeft: '-50vw',
         marginRight: '-50vw',
         maxWidth: '100vw',
-        overflow: 'hidden',
+        overflowX: 'hidden',
         background: 'transparent',
         mt: 0,
         boxSizing: 'border-box',
@@ -38,7 +38,7 @@ const BannerCupon = () => {
           justifyContent: 'center',
           px: 0,
           py: 0,
-          background: `linear-gradient(90deg, #23FFBD 0%, #F8F4DD 100%)`,
+          background: `linear-gradient(90deg, #23FFBD 0%, rgba(35,255,189,1) 40%, rgba(248,244,221,0.7) 100%)`,
           borderRadius: 0,
           position: 'relative',
           overflow: 'hidden',
@@ -53,13 +53,14 @@ const BannerCupon = () => {
             width: '100%',
             height: '100%',
             zIndex: 0,
-            background: `url(${bgCupon}) center/cover no-repeat`,
+            background: `url(${bgCupon}) right center/cover no-repeat`,
             opacity: 0.18,
             filter: 'blur(0.5px)',
+            pointerEvents: 'none',
           }}
         />
         {/* Contenido */}
-        <Box sx={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: { xs: 3, md: 6 } }}>
+        <Box sx={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: { xs: 6, md: 14 } }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-end' }}>
             <Typography sx={{ color: 'white', fontFamily: 'Open Sans, sans-serif', fontWeight: 400, lineHeight: 1, fontSize: '3rem', mb: 0, mt: 0 }}>
               Usa el cupon
