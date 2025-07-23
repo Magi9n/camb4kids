@@ -102,7 +102,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
 
   return (
     <Box sx={{ width: 340, maxWidth: '100%', background: 'transparent', fontFamily: 'Roboto, sans-serif' }}>
-      <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 400, color: '#222', fontSize: 16, textAlign: 'center', mb: 1 }}>
+      <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 400, color: '#222', fontSize: 16, textAlign: 'center', mb: 2 }}>
         <span>Compramos: <b>{precioCompra}</b></span> &nbsp; &nbsp; <span>Vendemos: <b>{precioVenta}</b></span>
       </Typography>
       {loading ? (
@@ -113,20 +113,42 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
         <Typography color="error">{error}</Typography>
       ) : (
         <Box sx={{ position: 'relative', width: '100%' }}>
+          {/* Swap funcional al centro */}
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: -2, zIndex: 2, position: 'relative' }}>
+            <Box
+              onClick={onSwap}
+              sx={{
+                background: '#111',
+                borderRadius: '50%',
+                width: 48,
+                height: 48,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)',
+                cursor: 'pointer',
+                transition: 'transform 0.4s cubic-bezier(.68,-0.55,.27,1.55)',
+                transform: swapActive ? 'rotate(180deg) scale(1.1)' : 'rotate(0deg) scale(1)',
+                zIndex: 2,
+              }}
+            >
+              <SwapVertIcon sx={{ color: '#fff', fontSize: 32, transition: 'color 0.2s' }} />
+            </Box>
+          </Box>
           {/* Bloque superior: Enví­as */}
           <Box sx={{
             background: sendColor,
-            borderTopLeftRadius: 32,
-            borderTopRightRadius: 32,
+            borderTopLeftRadius: 999,
+            borderTopRightRadius: 999,
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
             px: 3,
-            py: 2,
+            py: 1.2,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             boxShadow: '0 2px 12px 0 rgba(0,0,0,0.04)',
-            mb: 1.5,
+            mb: 0,
           }}>
             <Box>
               <Typography sx={{ color: labelColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 17, mb: 0.5 }}>{sendLabel}</Typography>
@@ -154,36 +176,15 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
               {sendCurrency}
             </Typography>
           </Box>
-          {/* Swap funcional al centro */}
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', my: 0.5 }}>
-            <Box
-              onClick={onSwap}
-              sx={{
-                background: '#111',
-                borderRadius: '50%',
-                width: 48,
-                height: 48,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)',
-                cursor: 'pointer',
-                transition: 'transform 0.4s cubic-bezier(.68,-0.55,.27,1.55)',
-                transform: swapActive ? 'rotate(180deg) scale(1.1)' : 'rotate(0deg) scale(1)',
-              }}
-            >
-              <SwapVertIcon sx={{ color: '#fff', fontSize: 32, transition: 'color 0.2s' }} />
-            </Box>
-          </Box>
           {/* Bloque inferior: Recibes */}
           <Box sx={{
             background: receiveColor,
-            borderBottomLeftRadius: 32,
-            borderBottomRightRadius: 32,
+            borderBottomLeftRadius: 999,
+            borderBottomRightRadius: 999,
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
             px: 3,
-            py: 2,
+            py: 1.2,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',

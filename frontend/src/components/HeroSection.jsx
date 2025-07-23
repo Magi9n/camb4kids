@@ -61,7 +61,7 @@ const HeroSection = () => {
       }}
     >
       {/* Columna izquierda: texto y lottie */}
-      <Box sx={{ flex: 1.5, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', minWidth: 320 }}>
+      <Box sx={{ flex: 1.5, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', minWidth: 320, mr: { xs: 0, md: 6 } }}>
         <Fade in timeout={1200}>
           <Box sx={{ textAlign: 'left', mb: 2, width: '100%' }}>
             <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 700, fontSize: { xs: 38, md: 54 }, color: '#222', mb: 1 }}>
@@ -85,13 +85,13 @@ const HeroSection = () => {
       </Box>
       {/* Columna derecha: calculadora y swap */}
       <Grow in timeout={1200}>
-        <Box sx={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minWidth: 320, mt: isMobile ? 4 : 0 }}>
-          <Box sx={{ textAlign: 'center', mb: 2 }}>
-            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 400, fontSize: { xs: 22, md: 28 }, color: '#222', mb: 0, lineHeight: 1 }}>
+        <Box sx={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minWidth: 320, mt: isMobile ? 4 : 0 }}>
+          <Box sx={{ textAlign: 'center', mb: 3 }}>
+            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 400, fontSize: { xs: 22, md: 28 }, color: '#222', mb: 0.5, lineHeight: 1.1 }}>
               Tipo de cambio para hoy
             </Typography>
-            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 800, fontSize: { xs: 22, md: 28 }, color: '#111', mt: 0.5, lineHeight: 1 }}>
-              en MangosCash
+            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 400, fontSize: { xs: 22, md: 28 }, color: '#111', lineHeight: 1.1 }}>
+              en <b style={{ color: '#111', fontWeight: 800 }}>MangosCash</b>
             </Typography>
           </Box>
           <Fade in={!fade} timeout={400}>
