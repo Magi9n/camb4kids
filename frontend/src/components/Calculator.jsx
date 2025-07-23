@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 
 const API_RATE = '/api/rates/current';
 const API_MARGINS = '/api/admin/public-margins';
@@ -38,11 +39,11 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap }) => {
     fetchData();
   }, []);
 
-  // Si se pasan overrides desde el admin, usarlos
   const buy = overrideBuyPercent !== undefined ? overrideBuyPercent : buyPercent;
   const sell = overrideSellPercent !== undefined ? overrideSellPercent : sellPercent;
+  const isSwapped = !!swap;
 
-  // Conversión PEN a USD (usando precio de compra)
+  // Lógica de conversión
   const handlePenChange = (e) => {
     const value = e.target.value.replace(/[^0-9.]/g, '');
     setPen(value);
@@ -52,8 +53,6 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap }) => {
       setUsd('');
     }
   };
-
-  // Conversión USD a PEN (usando precio de venta)
   const handleUsdChange = (e) => {
     const value = e.target.value.replace(/[^0-9.]/g, '');
     setUsd(value);
@@ -64,16 +63,26 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap }) => {
     }
   };
 
-  // Swap: invierte los campos y la lógica
-  const isSwapped = !!swap;
+  // Textos y colores según swap
+  const sendLabel = isSwapped ? 'Enví­as dólares' : 'Enví­as soles';
+  const receiveLabel = isSwapped ? 'Recibes soles' : 'Recibes dólares';
+  const sendValue = isSwapped ? usd : pen;
+  const receiveValue = isSwapped ? pen : usd;
+  const sendCurrency = isSwapped ? '$' : 'S/';
+  const receiveCurrency = isSwapped ? 'S/' : '$';
+  const sendOnChange = isSwapped ? handleUsdChange : handlePenChange;
+  const receiveColor = '#49b87a';
+  const sendColor = '#fff';
+  const labelColor = '#057c39';
+  const valueColor = '#057c39';
 
   const precioCompra = rate ? (rate * buy).toFixed(4) : '';
   const precioVenta = rate ? (rate * sell).toFixed(4) : '';
 
   return (
-    <Box sx={{ p: 3, borderRadius: 2, boxShadow: 2, background: 'white', minWidth: 320 }}>
-      <Typography variant="h5" fontWeight="bold" gutterBottom>
-        Calculadora de cambio en tiempo real
+    <Box sx={{ width: 370, maxWidth: '100%', background: 'transparent', fontFamily: 'Roboto, sans-serif' }}>
+      <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 400, color: '#222', fontSize: 16, textAlign: 'center', mb: 1 }}>
+        <span>Compramos: <b>{precioCompra}</b></span> &nbsp; &nbsp; <span>Vendemos: <b>{precioVenta}</b></span>
       </Typography>
       {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', my: 3 }}>
@@ -82,65 +91,94 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap }) => {
       ) : error ? (
         <Typography color="error">{error}</Typography>
       ) : (
-        <>
-          <Typography variant="subtitle1" sx={{ mb: 2 }}>
-            <b>Precio de compra:</b> 1 USD = {precioCompra} PEN<br />
-            <b>Precio de venta:</b> 1 USD = {precioVenta} PEN
-          </Typography>
-          <Grid container spacing={2} alignItems="center">
-            {isSwapped ? (
-              <>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Monto en Dólares (USD)"
-                    variant="outlined"
-                    fullWidth
-                    value={usd}
-                    onChange={handleUsdChange}
-                    inputProps={{ inputMode: 'decimal' }}
-                    autoComplete="off"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Monto en Soles (PEN)"
-                    variant="outlined"
-                    fullWidth
-                    value={pen}
-                    onChange={handlePenChange}
-                    inputProps={{ inputMode: 'decimal' }}
-                    autoComplete="off"
-                  />
-                </Grid>
-              </>
-            ) : (
-              <>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Monto en Soles (PEN)"
-                    variant="outlined"
-                    fullWidth
-                    value={pen}
-                    onChange={handlePenChange}
-                    inputProps={{ inputMode: 'decimal' }}
-                    autoComplete="off"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Monto en Dólares (USD)"
-                    variant="outlined"
-                    fullWidth
-                    value={usd}
-                    onChange={handleUsdChange}
-                    inputProps={{ inputMode: 'decimal' }}
-                    autoComplete="off"
-                  />
-                </Grid>
-              </>
-            )}
-          </Grid>
-        </>
+        <Box sx={{ position: 'relative', width: '100%' }}>
+          {/* Bloque superior: Enví­as */}
+          <Box sx={{
+            background: sendColor,
+            borderTopLeftRadius: 40,
+            borderTopRightRadius: 40,
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
+            px: 4,
+            py: 2.5,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            boxShadow: '0 2px 12px 0 rgba(0,0,0,0.04)',
+          }}>
+            <Box>
+              <Typography sx={{ color: labelColor, fontWeight: 500, fontFamily: 'Roboto, sans-serif', fontSize: 18, mb: 0.5 }}>{sendLabel}</Typography>
+              <TextField
+                variant="standard"
+                value={sendValue}
+                onChange={sendOnChange}
+                InputProps={{
+                  disableUnderline: true,
+                  style: {
+                    fontWeight: 700,
+                    fontSize: 28,
+                    color: valueColor,
+                    fontFamily: 'Roboto, sans-serif',
+                    background: 'transparent',
+                  },
+                  inputMode: 'decimal',
+                  autoComplete: 'off',
+                }}
+                sx={{ width: 140, background: 'transparent', mt: 0.5 }}
+                placeholder="0.00"
+              />
+            </Box>
+            <Typography sx={{ color: valueColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 36, ml: 2 }}>
+              {sendCurrency}
+            </Typography>
+          </Box>
+          {/* Botón swap centrado */}
+          <Box sx={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 2 }}>
+            <Box sx={{ background: '#222', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)' }}>
+              <CurrencyExchangeIcon sx={{ color: '#fff', fontSize: 32 }} />
+            </Box>
+          </Box>
+          {/* Bloque inferior: Recibes */}
+          <Box sx={{
+            background: receiveColor,
+            borderBottomLeftRadius: 40,
+            borderBottomRightRadius: 40,
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            px: 4,
+            py: 2.5,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            mt: -2,
+          }}>
+            <Box>
+              <Typography sx={{ color: labelColor, fontWeight: 500, fontFamily: 'Roboto, sans-serif', fontSize: 18, mb: 0.5 }}>{receiveLabel}</Typography>
+              <TextField
+                variant="standard"
+                value={receiveValue}
+                disabled
+                InputProps={{
+                  disableUnderline: true,
+                  style: {
+                    fontWeight: 700,
+                    fontSize: 28,
+                    color: valueColor,
+                    fontFamily: 'Roboto, sans-serif',
+                    background: 'transparent',
+                  },
+                  inputMode: 'decimal',
+                  autoComplete: 'off',
+                }}
+                sx={{ width: 140, background: 'transparent', mt: 0.5 }}
+                placeholder="0.00"
+              />
+            </Box>
+            <Typography sx={{ color: valueColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 36, ml: 2 }}>
+              {receiveCurrency}
+            </Typography>
+          </Box>
+        </Box>
       )}
     </Box>
   );

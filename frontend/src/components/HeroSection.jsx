@@ -61,9 +61,9 @@ const HeroSection = () => {
       }}
     >
       {/* Columna izquierda: texto y lottie */}
-      <Box sx={{ flex: 1.5, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minWidth: 220 }}>
+      <Box sx={{ flex: 1.5, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', minWidth: 320 }}>
         <Fade in timeout={1200}>
-          <Box sx={{ textAlign: 'center', mb: 2 }}>
+          <Box sx={{ textAlign: 'left', mb: 2, width: '100%' }}>
             <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 400, fontSize: { xs: 28, md: 38 }, color: '#222', mb: 1 }}>
               Tu cambio digital
             </Typography>
@@ -78,7 +78,7 @@ const HeroSection = () => {
               src="https://lottie.host/46664ffb-e12d-4087-9bb4-9315ef7eb6be/XjwAOYmMzU.lottie"
               loop
               autoplay
-              style={{ width: isMobile ? 180 : 260, height: isMobile ? 180 : 260 }}
+              style={{ width: isMobile ? 260 : 400, height: isMobile ? 260 : 400 }}
             />
           </Box>
         </Grow>
