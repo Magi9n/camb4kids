@@ -14,6 +14,12 @@ export class AdminSetting {
   @Column({ default: '20:00' })
   cronEnd: string;
 
+  @Column('decimal', { precision: 5, scale: 4, default: 1 })
+  buyPercent: number;
+
+  @Column('decimal', { precision: 5, scale: 4, default: 1 })
+  sellPercent: number;
+
   @UpdateDateColumn()
   updatedAt: Date;
 } 
