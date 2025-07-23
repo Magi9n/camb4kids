@@ -102,7 +102,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
 
   return (
     <Box sx={{ width: 400, maxWidth: '100%', background: 'transparent', fontFamily: 'Roboto, sans-serif', mx: 'auto' }}>
-      <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 400, color: '#222', fontSize: 16, textAlign: 'center', mb: 3 }}>
+      <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 400, color: '#222', fontSize: 16, textAlign: 'center', mb: 2 }}>
         <span>Compramos: <b>{precioCompra}</b></span> &nbsp; &nbsp; <span>Vendemos: <b>{precioVenta}</b></span>
       </Typography>
       {loading ? (
@@ -117,20 +117,20 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
           <Box sx={{
             background: sendColor,
             borderRadius: 999,
-            px: 4,
-            py: 1.1,
-            width: '100%',
+            px: 3,
+            py: 0.7,
+            width: '92%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             boxShadow: '0 2px 12px 0 rgba(0,0,0,0.04)',
-            minHeight: 80,
+            minHeight: 62,
             position: 'relative',
             zIndex: 2,
-            mb: 2.5,
+            mb: 1.2,
           }}>
-            <Box>
-              <Typography sx={{ color: labelColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 18, mb: 0.5 }}>{sendLabel}</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <Typography sx={{ color: labelColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 16, mb: 0, lineHeight: 1 }}>{sendLabel}</Typography>
               <TextField
                 variant="standard"
                 value={sendValue}
@@ -139,7 +139,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
                   disableUnderline: true,
                   style: {
                     fontWeight: 900,
-                    fontSize: 40,
+                    fontSize: 32,
                     color: valueColor,
                     fontFamily: 'Roboto, sans-serif',
                     background: 'transparent',
@@ -147,23 +147,23 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
                   inputMode: 'decimal',
                   autoComplete: 'off',
                 }}
-                sx={{ width: 160, background: 'transparent', mt: 0.5 }}
+                sx={{ width: 120, background: 'transparent', mt: 0.2 }}
                 placeholder="0.00"
               />
             </Box>
-            <Typography sx={{ color: valueColor, fontWeight: 900, fontFamily: 'Roboto, sans-serif', fontSize: 48, ml: 2 }}>
+            <Typography sx={{ color: valueColor, fontWeight: 900, fontFamily: 'Roboto, sans-serif', fontSize: 38, ml: 2 }}>
               {sendCurrency}
             </Typography>
           </Box>
           {/* Swap funcional superpuesto */}
-          <Box sx={{ position: 'absolute', left: '50%', top: 'calc(50% + 2px)', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
+          <Box sx={{ position: 'absolute', left: '58%', top: 'calc(50% + 2px)', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
             <Box
               onClick={onSwap}
               sx={{
                 background: '#111',
                 borderRadius: '50%',
-                width: 64,
-                height: 64,
+                width: 54,
+                height: 54,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -174,26 +174,26 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
                 zIndex: 10,
               }}
             >
-              <SwapVertIcon sx={{ color: '#fff', fontSize: 38, transition: 'color 0.2s' }} />
+              <SwapVertIcon sx={{ color: '#fff', fontSize: 30, transition: 'color 0.2s' }} />
             </Box>
           </Box>
           {/* Bloque inferior: Recibes */}
           <Box sx={{
             background: receiveColor,
             borderRadius: 999,
-            px: 4,
-            py: 1.1,
-            width: '100%',
+            px: 3,
+            py: 0.7,
+            width: '92%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            minHeight: 80,
-            mt: 2.5,
+            minHeight: 62,
+            mt: 1.2,
             position: 'relative',
             zIndex: 1,
           }}>
-            <Box>
-              <Typography sx={{ color: labelColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 18, mb: 0.5 }}>{receiveLabel}</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <Typography sx={{ color: labelColor, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 16, mb: 0, lineHeight: 1 }}>{receiveLabel}</Typography>
               <TextField
                 variant="standard"
                 value={receiveValue}
@@ -202,7 +202,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
                   disableUnderline: true,
                   style: {
                     fontWeight: 900,
-                    fontSize: 40,
+                    fontSize: 32,
                     color: valueColor,
                     fontFamily: 'Roboto, sans-serif',
                     background: 'transparent',
@@ -210,11 +210,11 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
                   inputMode: 'decimal',
                   autoComplete: 'off',
                 }}
-                sx={{ width: 160, background: 'transparent', mt: 0.5 }}
+                sx={{ width: 120, background: 'transparent', mt: 0.2 }}
                 placeholder="0.00"
               />
             </Box>
-            <Typography sx={{ color: valueColor, fontWeight: 900, fontFamily: 'Roboto, sans-serif', fontSize: 48, ml: 2 }}>
+            <Typography sx={{ color: valueColor, fontWeight: 900, fontFamily: 'Roboto, sans-serif', fontSize: 38, ml: 2 }}>
               {receiveCurrency}
             </Typography>
           </Box>
