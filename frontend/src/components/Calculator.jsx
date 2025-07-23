@@ -9,7 +9,7 @@ import axios from 'axios';
 const API_RATE = '/api/rates/current';
 const API_SETTINGS = '/api/admin/settings';
 
-const Calculator = () => {
+const Calculator = ({ overrideBuyPercent, overrideSellPercent }) => {
   const [rate, setRate] = useState(null);
   const [buyPercent, setBuyPercent] = useState(1);
   const [sellPercent, setSellPercent] = useState(1);
@@ -38,12 +38,16 @@ const Calculator = () => {
     fetchData();
   }, []);
 
+  // Si se pasan overrides desde el admin, usarlos
+  const buy = overrideBuyPercent !== undefined ? overrideBuyPercent : buyPercent;
+  const sell = overrideSellPercent !== undefined ? overrideSellPercent : sellPercent;
+
   // Conversión PEN a USD (usando precio de compra)
   const handlePenChange = (e) => {
     const value = e.target.value.replace(/[^0-9.]/g, '');
     setPen(value);
     if (rate && value) {
-      setUsd((parseFloat(value) / (rate * buyPercent)).toFixed(2));
+      setUsd((parseFloat(value) / (rate * buy)).toFixed(2));
     } else {
       setUsd('');
     }
@@ -54,14 +58,14 @@ const Calculator = () => {
     const value = e.target.value.replace(/[^0-9.]/g, '');
     setUsd(value);
     if (rate && value) {
-      setPen((parseFloat(value) * rate * sellPercent).toFixed(2));
+      setPen((parseFloat(value) * rate * sell).toFixed(2));
     } else {
       setPen('');
     }
   };
 
-  const precioCompra = rate ? (rate * buyPercent).toFixed(4) : '';
-  const precioVenta = rate ? (rate * sellPercent).toFixed(4) : '';
+  const precioCompra = rate ? (rate * buy).toFixed(4) : '';
+  const precioVenta = rate ? (rate * sell).toFixed(4) : '';
 
   return (
     <Box sx={{ p: 3, borderRadius: 2, boxShadow: 2, background: 'white' }}>

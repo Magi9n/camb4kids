@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
+import Calculator from '../components/Calculator';
 
 const API_URL = '/api/admin/settings';
 
@@ -16,14 +17,18 @@ const AdminPanel = () => {
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [liveBuy, setLiveBuy] = useState(1);
+  const [liveSell, setLiveSell] = useState(1);
 
   useEffect(() => {
     const fetchSettings = async () => {
       try {
         setLoading(true);
         const res = await axios.get(API_URL);
-        setBuyPercent((res.data.buyPercent * 100).toString());
-        setSellPercent((res.data.sellPercent * 100).toString());
+        setBuyPercent((res.data.buyPercent * 100).toFixed(4));
+        setSellPercent((res.data.sellPercent * 100).toFixed(4));
+        setLiveBuy(res.data.buyPercent);
+        setLiveSell(res.data.sellPercent);
         setLoading(false);
       } catch (err) {
         setError('No se pudo cargar la configuración.');
@@ -32,6 +37,12 @@ const AdminPanel = () => {
     };
     fetchSettings();
   }, []);
+
+  // Actualiza los valores en tiempo real para la calculadora
+  useEffect(() => {
+    setLiveBuy(buyPercent ? parseFloat(buyPercent) / 100 : 1);
+    setLiveSell(sellPercent ? parseFloat(sellPercent) / 100 : 1);
+  }, [buyPercent, sellPercent]);
 
   const handleSave = async () => {
     setSaving(true);
@@ -72,7 +83,7 @@ const AdminPanel = () => {
               onChange={e => setBuyPercent(e.target.value)}
               fullWidth
               sx={{ mb: 2 }}
-              inputProps={{ min: 0, max: 200, step: 0.01 }}
+              inputProps={{ min: 0, max: 200, step: '0.0001' }}
             />
             <TextField
               label="Porcentaje de venta (%)"
@@ -81,7 +92,7 @@ const AdminPanel = () => {
               onChange={e => setSellPercent(e.target.value)}
               fullWidth
               sx={{ mb: 2 }}
-              inputProps={{ min: 0, max: 200, step: 0.01 }}
+              inputProps={{ min: 0, max: 200, step: '0.0001' }}
             />
             <Button
               variant="contained"
@@ -96,6 +107,12 @@ const AdminPanel = () => {
             {error && <Typography color="error" mt={2}>{error}</Typography>}
           </>
         )}
+      </Paper>
+      <Paper sx={{ p: 3, maxWidth: 600, mb: 4 }}>
+        <Typography variant="h6" fontWeight={700} mb={2}>
+          Vista previa de la calculadora (en tiempo real)
+        </Typography>
+        <Calculator overrideBuyPercent={liveBuy} overrideSellPercent={liveSell} />
       </Paper>
     </Box>
   );
