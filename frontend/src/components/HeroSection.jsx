@@ -85,8 +85,8 @@ const HeroSection = () => {
           <Box
             sx={{
               width: '100%',
-              maxWidth: isMobile ? 380 : 520,
-              maxHeight: isMobile ? 380 : 520,
+              maxWidth: 800,
+              maxHeight: 800,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -97,7 +97,7 @@ const HeroSection = () => {
               src="https://lottie.host/793ff47d-c46b-4c87-a567-da0a9fb2df11/X2rUyK0Cn4.lottie"
               loop
               autoplay
-              style={{ width: '100%', height: '100%' }}
+              style={{ width: 800, height: 800, maxWidth: '100%', maxHeight: '100%' }}
             />
           </Box>
         </Grow>
