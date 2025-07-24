@@ -50,6 +50,16 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
   const sell = overrideSellPercent !== undefined ? overrideSellPercent : sellPercent;
   const isSwapped = !!swap;
 
+  // Calcular automáticamente el equivalente en dólares al cargar la página si pen tiene valor y no está en modo swap
+  useEffect(() => {
+    if (!isSwapped && rate && pen && usd === '') {
+      setUsd((parseFloat(pen) / (rate * buy)).toFixed(2));
+    }
+    if (isSwapped && rate && usd && pen === '') {
+      setPen((parseFloat(usd) * rate * sell).toFixed(2));
+    }
+  }, [rate, buy, sell, pen, usd, isSwapped]);
+
   // Lógica de conversión
   const handleSendChange = (e) => {
     const value = e.target.value.replace(/[^0-9.]/g, '');

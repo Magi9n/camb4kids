@@ -78,9 +78,18 @@ const HeroSection = () => {
       }}
     >
       {/* Columna izquierda: texto y lottie */}
-      <Box sx={{ flex: 2.2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', minWidth: 420, mr: { xs: 0, md: 8 }, position: 'relative', zIndex: 2 }}>
+      <Box sx={{ flex: 2.2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', minWidth: 420, mr: { xs: 0, md: 8 }, position: 'relative', zIndex: 2, overflow: 'visible' }}>
+        {/* Lottie como fondo */}
+        <Box sx={{ position: 'absolute', left: 0, top: -40, width: '100%', height: 340, zIndex: 1, pointerEvents: 'none', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
+          <DotLottieReact
+            src="https://lottie.host/0a4be2ac-465d-4049-93db-469aff42e55c/rfadlw8YP6.lottie"
+            loop
+            autoplay
+            style={{ width: 340, height: 340, opacity: 0.85 }}
+          />
+        </Box>
         <Fade in timeout={1200}>
-          <Box sx={{ textAlign: 'left', mb: 2, width: '100%', zIndex: 3, position: 'relative' }}>
+          <Box sx={{ textAlign: 'left', mb: 2, width: '100%', zIndex: 2, position: 'relative' }}>
             <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 700, fontSize: { xs: 38, md: 54 }, color: '#222', mb: 1, lineHeight: 1.1 }}>
               Tu cambio digital
             </Typography>
@@ -89,26 +98,6 @@ const HeroSection = () => {
             </Typography>
           </Box>
         </Fade>
-        <Grow in timeout={900}>
-          <Box
-            sx={{
-              width: '100%',
-              maxWidth: 800,
-              maxHeight: 800,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              mx: 'auto',
-            }}
-          >
-            <DotLottieReact
-              src="https://lottie.host/0a4be2ac-465d-4049-93db-469aff42e55c/rfadlw8YP6.lottie"
-              loop
-              autoplay
-              style={{ width: 800, height: 800, maxWidth: '100%', maxHeight: '100%' }}
-            />
-          </Box>
-        </Grow>
       </Box>
       {/* Columna derecha: calculadora y swap */}
       <Grow in timeout={1200}>
