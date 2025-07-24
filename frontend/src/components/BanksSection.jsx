@@ -12,7 +12,7 @@ const BanksSection = () => (
   <Box sx={{ bgcolor: '#fff', py: 3, px: { xs: 1, md: 6 }, borderBottom: '1px solid #eee' }}>
     <Grid container spacing={4} justifyContent="center">
       <Grid item xs={12} md={6}>
-        <Paper elevation={2} sx={{ p: 2, textAlign: 'center', height: '100%' }}>
+        <Paper elevation={2} sx={{ p: 2, textAlign: 'center', height: '100%', background: 'linear-gradient(180deg, #f5f6fa 0%, #fff 100%)' }}>
           <Typography 
             variant="subtitle1"
             sx={{ fontFamily: 'Play, sans-serif', color: '#057c39', fontWeight: 700, textAlign: 'left', display: 'flex', alignItems: 'center', gap: 1 }}
@@ -27,7 +27,7 @@ const BanksSection = () => (
         </Paper>
       </Grid>
       <Grid item xs={12} md={6}>
-        <Paper elevation={2} sx={{ p: 2, textAlign: 'center', height: '100%' }}>
+        <Paper elevation={2} sx={{ p: 2, textAlign: 'center', height: '100%', background: 'linear-gradient(180deg, #f5f6fa 0%, #fff 100%)' }}>
           <Typography 
             variant="subtitle1"
             sx={{ fontFamily: 'Play, sans-serif', color: '#057c39', fontWeight: 700, textAlign: 'left', display: 'flex', alignItems: 'center', gap: 1 }}
