@@ -14,6 +14,7 @@ import SimulatorSection from '../components/SimulatorSection';
 import CouponsSection from '../components/CouponsSection';
 import BannerCupon from '../components/BannerCupon';
 import HeroSection from '../components/HeroSection';
+import AlertBlock from '../components/AlertBlock';
 
 const LandingPage = () => {
   return (
@@ -24,6 +25,7 @@ const LandingPage = () => {
       <HeroStats />
       <BanksSection />
       <BenefitsSection />
+      <AlertBlock />
       <SubscribeBox />
       <HowItWorks />
       <SimulatorSection />

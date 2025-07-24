@@ -12,6 +12,7 @@ import { User } from './modules/auth/entities/user.entity';
 import { Order } from './modules/orders/entities/order.entity';
 import { ExchangeRate } from './modules/rates/entities/exchange-rate.entity';
 import { AdminSetting } from './modules/admin/entities/admin-setting.entity';
+import { AlertsModule } from './modules/alerts/alerts.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { AdminSetting } from './modules/admin/entities/admin-setting.entity';
     RatesModule,
     OrdersModule,
     AdminModule,
+    AlertsModule,
   ],
 })
 export class AppModule {} 

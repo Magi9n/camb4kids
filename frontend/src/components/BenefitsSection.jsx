@@ -7,7 +7,7 @@ import empresario from '../assets/empresario.json';
 
 const BenefitsSection = () => (
   <Fade in timeout={1200}>
-    <Box sx={{ py: 6, textAlign: 'center', bgcolor: '#fff', fontFamily: 'Roboto, sans-serif' }}>
+    <Box sx={{ py: 6, pb: 10, textAlign: 'center', bgcolor: '#fff', fontFamily: 'Roboto, sans-serif' }}>
       <Typography variant="h3" fontWeight={700} sx={{ color: '#179c46', fontFamily: 'Roboto, sans-serif', mb: 1 }}>
         Beneficios de MangosCash
       </Typography>
