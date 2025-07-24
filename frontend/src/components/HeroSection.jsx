@@ -85,8 +85,8 @@ const HeroSection = () => {
           <Box
             sx={{
               width: '100%',
-              maxWidth: isMobile ? 340 : 480,
-              maxHeight: isMobile ? 340 : 480,
+              maxWidth: isMobile ? 380 : 520,
+              maxHeight: isMobile ? 380 : 520,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
