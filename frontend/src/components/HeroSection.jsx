@@ -94,7 +94,7 @@ const HeroSection = () => {
             }}
           >
             <DotLottieReact
-              src="https://lottie.host/793ff47d-c46b-4c87-a567-da0a9fb2df11/X2rUyK0Cn4.lottie"
+              src="https://lottie.host/0a4be2ac-465d-4049-93db-469aff42e55c/rfadlw8YP6.lottie"
               loop
               autoplay
               style={{ width: 800, height: 800, maxWidth: '100%', maxHeight: '100%' }}
