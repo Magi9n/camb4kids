@@ -68,11 +68,11 @@ const HeroSection = () => {
         minHeight: isMobile ? 600 : 500,
         display: 'flex',
         flexDirection: isMobile ? 'column' : 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
         bgcolor: '#c6ffd1',
-        px: { xs: 2, md: 8 },
-        py: { xs: 4, md: 6 },
+        px: { xs: 1, md: 2 },
+        py: { xs: 1, md: 2 },
         gap: { xs: 4, md: 0 },
         position: 'relative',
       }}
@@ -89,11 +89,11 @@ const HeroSection = () => {
           />
         </Box>
         <Fade in timeout={1200}>
-          <Box sx={{ textAlign: 'left', mb: 2, width: '100%', zIndex: 2, position: 'relative' }}>
-            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 700, fontSize: { xs: 38, md: 54 }, color: '#222', mb: 1, lineHeight: 1.1 }}>
+          <Box sx={{ textAlign: 'left', mb: 2, width: '100%', zIndex: 2, position: 'relative', mt: 0 }}>
+            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 700, fontSize: { xs: 38, md: 54 }, color: '#222', mb: 1, lineHeight: 1.1, mt: 0 }}>
               Tu cambio digital
             </Typography>
-            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 900, fontSize: { xs: 44, md: 62 }, color: '#057c39', mb: 1, lineHeight: 1.1 }}>
+            <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 900, fontSize: { xs: 44, md: 62 }, color: '#057c39', mb: 1, lineHeight: 1.1, mt: 0 }}>
               de confianza en PERÚ
             </Typography>
           </Box>
