@@ -10,6 +10,8 @@ import { useTheme } from '@mui/material/styles';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 import WalletIcon from '../assets/wallet.svg';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useNavigate } from 'react-router-dom';
 
 const ArrowButton = styled(Box)(({ theme, active }) => ({
   display: 'flex',
@@ -32,6 +34,7 @@ const ArrowButton = styled(Box)(({ theme, active }) => ({
 }));
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [swap, setSwap] = useState(false);
@@ -81,7 +84,7 @@ const HeroSection = () => {
       {/* Columna izquierda: texto y lottie */}
       <Box sx={{ flex: 2.2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', minWidth: 420, mr: { xs: 0, md: 8 }, position: 'relative', zIndex: 2, overflow: 'visible' }}>
         {/* Lottie como fondo */}
-        <Box sx={{ position: 'absolute', left: 0, top: 90, width: '100%', height: 480, zIndex: 1, pointerEvents: 'none', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
+        <Box sx={{ position: 'absolute', left: 0, top: 140, width: '100%', height: 480, zIndex: 1, pointerEvents: 'none', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
           <DotLottieReact
             src="https://lottie.host/0a4be2ac-465d-4049-93db-469aff42e55c/rfadlw8YP6.lottie"
             loop
@@ -124,6 +127,31 @@ const HeroSection = () => {
             <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 20, ml: 1 }}>
               S/. {ahorro}
             </Typography>
+          </Box>
+          {/* Botón Inicia tu cambio */}
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4, width: '100%' }}>
+            <button
+              onClick={() => navigate('/login')}
+              style={{
+                background: '#057c39',
+                color: 'white',
+                fontFamily: 'Roboto, sans-serif',
+                fontWeight: 500,
+                fontSize: 38,
+                border: 'none',
+                borderRadius: 40,
+                padding: '18px 54px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 16,
+                cursor: 'pointer',
+                boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)',
+                transition: 'background 0.2s',
+              }}
+            >
+              Inicia tu cambio
+              <ArrowForwardIcon sx={{ fontSize: 38, ml: 1 }} />
+            </button>
           </Box>
         </Box>
       </Grow>
