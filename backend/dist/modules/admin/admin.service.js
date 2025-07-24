@@ -40,12 +40,16 @@ let AdminService = class AdminService {
                 variationPercent: 0.02,
                 cronStart: '08:00',
                 cronEnd: '20:00',
+                buyPercent: 1,
+                sellPercent: 1,
             });
             await this.settingsRepo.save(settings);
         }
         const result = {
             id: settings.id,
             variationPercent: settings.variationPercent,
+            buyPercent: settings.buyPercent,
+            sellPercent: settings.sellPercent,
             cronStart: settings.cronStart,
             cronEnd: settings.cronEnd,
             updatedAt: settings.updatedAt,
@@ -60,10 +64,18 @@ let AdminService = class AdminService {
                 variationPercent: 0.02,
                 cronStart: '08:00',
                 cronEnd: '20:00',
+                buyPercent: 1,
+                sellPercent: 1,
             });
         }
         if (dto.variationPercent !== undefined) {
             settings.variationPercent = dto.variationPercent;
+        }
+        if (dto.buyPercent !== undefined) {
+            settings.buyPercent = dto.buyPercent;
+        }
+        if (dto.sellPercent !== undefined) {
+            settings.sellPercent = dto.sellPercent;
         }
         if (dto.cronStart !== undefined) {
             settings.cronStart = dto.cronStart;
@@ -76,6 +88,8 @@ let AdminService = class AdminService {
         return {
             id: settings.id,
             variationPercent: settings.variationPercent,
+            buyPercent: settings.buyPercent,
+            sellPercent: settings.sellPercent,
             cronStart: settings.cronStart,
             cronEnd: settings.cronEnd,
             updatedAt: settings.updatedAt,

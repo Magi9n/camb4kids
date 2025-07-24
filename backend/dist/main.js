@@ -11,7 +11,15 @@ async function bootstrap() {
     const logger = new common_2.Logger('Bootstrap');
     app.use((0, helmet_1.default)());
     app.enableCors({
-        origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+        origin: (origin, callback) => {
+            const allowed = process.env.FRONTEND_URL;
+            if (!origin || !allowed || origin === allowed) {
+                callback(null, true);
+            }
+            else {
+                callback(new Error('No permitido por CORS'));
+            }
+        },
         credentials: true,
     });
     app.useGlobalPipes(new common_1.ValidationPipe({
@@ -26,8 +34,9 @@ async function bootstrap() {
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('api', app, document);
+    app.setGlobalPrefix('api');
     const port = process.env.PORT || 3000;
-    await app.listen(port);
+    await app.listen(port, '0.0.0.0');
     logger.log(`Aplicación ejecutándose en puerto ${port}`);
 }
 bootstrap();

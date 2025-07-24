@@ -17,6 +17,8 @@ export declare class AdminService {
     updateSettings(dto: UpdateSettingsDto): Promise<{
         id: number;
         variationPercent: number;
+        buyPercent: number;
+        sellPercent: number;
         cronStart: string;
         cronEnd: string;
         updatedAt: Date;

@@ -3,62 +3,256 @@ nohup: ignoring input
 > cambio-backend@1.0.0 start:prod
 > node dist/main
 
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +34ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCacheModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mThrottlerModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mScheduleModule dependencies initialized[39m[38;5;3m +1ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +145ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mRatesModule dependencies initialized[39m[38;5;3m +2ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +1ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAdminModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:21 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mOrdersModule dependencies initialized[39m[38;5;3m +1ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/auth}:[39m[38;5;3m +43ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/register, POST} route[39m[38;5;3m +3ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/verify-email, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/complete-profile, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/login, POST} route[39m[38;5;3m +1ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/refresh, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/logout, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mOrdersController {/orders}:[39m[38;5;3m +1ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders/history, GET} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders/:id, GET} route[39m[38;5;3m +1ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/orders/:id/status, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAdminController {/admin}:[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/settings, GET} route[39m[38;5;3m +1ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/settings, PUT} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/orders, GET} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/orders/:id, PUT} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/stats, GET} route[39m[38;5;3m +1ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/cache/clear, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/admin/cache/stats, GET} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +13ms[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:46:22 PM [32m    LOG[39m [38;5;3m[Bootstrap] [39m[32mAplicación ejecutándose en puerto 3000[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:47:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5591[39m
-
-==============================
-
-Enviando correo de verificación a: ivan.ugarten@gmail.com
-
-Este es tu código de verificación
-
-El código para confirmar tu correo es: 
-
-7653
-
-Este código tiene validez por 30 minutos desde que fue generado.
-
-==============================
-
-[32m[Nest] 3936059  - [39m07/21/2025, 10:48:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5591[39m
-[32m[Nest] 3936059  - [39m07/21/2025, 10:49:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5591[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +60ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCacheModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mThrottlerModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mScheduleModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +355ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mRatesModule dependencies initialized[39m[38;5;3m +6ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAdminModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:51 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mOrdersModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +99ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/register, POST} route[39m[38;5;3m +6ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/verify-email, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/complete-profile, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/refresh, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/logout, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mRatesController {/api/rates}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/rates/current, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/rates/history, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mOrdersController {/api/orders}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/orders, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/orders/history, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/orders/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/orders/:id/status, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAdminController {/api/admin}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/admin/settings, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/admin/settings, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/admin/orders, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/admin/orders/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/admin/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/admin/cache/clear, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/admin/cache/stats, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/admin/public-margins, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +27ms[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:57:52 PM [32m    LOG[39m [38;5;3m[Bootstrap] [39m[32mAplicación ejecutándose en puerto 3000[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:58:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 5:59:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:00:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:01:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:02:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:03:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:04:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:05:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:06:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:07:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:08:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:09:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:10:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:11:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:12:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:13:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:14:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:15:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:16:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:17:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:18:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:19:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:20:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:21:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:22:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:23:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:24:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:25:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:26:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:27:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:28:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:29:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:30:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:31:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:32:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:33:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:34:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:35:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:36:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:37:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:38:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:39:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:40:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:41:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:42:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:43:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:44:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:45:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:46:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:47:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:48:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:49:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:50:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:51:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:52:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:53:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:54:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:55:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:56:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:57:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:58:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 6:59:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:00:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:01:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:02:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:03:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:04:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:05:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:06:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:07:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:08:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:09:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:10:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:11:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:12:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:13:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:14:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:15:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:16:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:17:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:18:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:19:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5528[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:20:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5418[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:21:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5418[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:22:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5416[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:23:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5416[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:24:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5416[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:25:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5412[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:26:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5412[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:27:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5412[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:28:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5412[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:29:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5412[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:30:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5412[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:31:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5412[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:32:15 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5412[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:33:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5412[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:34:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.541[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:35:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5398[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:36:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5392[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:37:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5392[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:38:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5375[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:39:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5375[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:40:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5375[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:41:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5374[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:42:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5368[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:43:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5368[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:44:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5368[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:45:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5368[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:46:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5374[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:47:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5374[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:48:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5374[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:49:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5374[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:50:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5374[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:51:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5374[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:52:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5374[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:53:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5374[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:54:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5374[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:55:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5374[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:56:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5382[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:57:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5382[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:58:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5382[39m
+[32m[Nest] 162276  - [39m07/24/2025, 7:59:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5382[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:00:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5381[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:01:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5381[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:02:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5381[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:03:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5381[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:04:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5381[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:05:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5381[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:06:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5381[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:07:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5381[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:08:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5377[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:09:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5377[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:10:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5375[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:11:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5375[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:12:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5375[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:13:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5375[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:14:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5375[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:15:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5375[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:16:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5375[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:17:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5375[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:18:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5364[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:19:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5363[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:20:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5363[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:21:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5362[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:22:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5362[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:23:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5362[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:24:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5375[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:25:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5375[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:26:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5375[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:27:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5382[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:28:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.539[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:29:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.539[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:30:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5405[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:31:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5405[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:32:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5405[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:33:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5405[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:34:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5405[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:35:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5405[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:36:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5405[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:37:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5405[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:38:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5407[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:39:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5407[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:40:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5407[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:41:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5407[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:42:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5407[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:43:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5407[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:44:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5407[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:45:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5407[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:46:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5407[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:47:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:48:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:49:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:50:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:51:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:52:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:53:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:54:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:55:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:56:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:57:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:58:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 8:59:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:00:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:01:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:02:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:03:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:04:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:05:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:06:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:07:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:08:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:09:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:10:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:11:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:12:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:13:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:14:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:15:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:16:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:17:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:18:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:19:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:20:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:21:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:22:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:23:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:24:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m
+[32m[Nest] 162276  - [39m07/24/2025, 9:25:10 PM [32m    LOG[39m [38;5;3m[RatesService] [39m[32mTasa actualizada: 3.5409[39m

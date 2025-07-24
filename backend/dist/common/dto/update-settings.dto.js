@@ -23,6 +23,20 @@ __decorate([
 ], UpdateSettingsDto.prototype, "variationPercent", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.Min)(0),
+    (0, class_validator_1.Max)(2),
+    __metadata("design:type", Number)
+], UpdateSettingsDto.prototype, "buyPercent", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.Min)(0),
+    (0, class_validator_1.Max)(2),
+    __metadata("design:type", Number)
+], UpdateSettingsDto.prototype, "sellPercent", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.Matches)(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, {
         message: 'Formato de hora inválido (HH:MM)',

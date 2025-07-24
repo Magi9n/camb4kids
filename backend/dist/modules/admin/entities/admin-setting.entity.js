@@ -31,6 +31,14 @@ __decorate([
     __metadata("design:type", String)
 ], AdminSetting.prototype, "cronEnd", void 0);
 __decorate([
+    (0, typeorm_1.Column)('decimal', { precision: 5, scale: 4, default: 1 }),
+    __metadata("design:type", Number)
+], AdminSetting.prototype, "buyPercent", void 0);
+__decorate([
+    (0, typeorm_1.Column)('decimal', { precision: 5, scale: 4, default: 1 }),
+    __metadata("design:type", Number)
+], AdminSetting.prototype, "sellPercent", void 0);
+__decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
 ], AdminSetting.prototype, "updatedAt", void 0);

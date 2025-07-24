@@ -10,6 +10,7 @@ exports.RatesModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const rates_service_1 = require("./rates.service");
+const rates_controller_1 = require("./rates.controller");
 const exchange_rate_entity_1 = require("./entities/exchange-rate.entity");
 let RatesModule = class RatesModule {
 };
@@ -17,7 +18,7 @@ exports.RatesModule = RatesModule;
 exports.RatesModule = RatesModule = __decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forFeature([exchange_rate_entity_1.ExchangeRate])],
-        controllers: [],
+        controllers: [rates_controller_1.RatesController],
         providers: [rates_service_1.RatesService],
         exports: [rates_service_1.RatesService],
     })

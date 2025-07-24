@@ -45,15 +45,26 @@ let AdminController = class AdminController {
     async getCacheStats() {
         return this.adminService.getCacheStats();
     }
+    async getPublicMargins() {
+        const settings = await this.adminService.getSettings();
+        return {
+            buyPercent: settings.buyPercent,
+            sellPercent: settings.sellPercent,
+        };
+    }
 };
 exports.AdminController = AdminController;
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('admin'),
     (0, common_1.Get)('settings'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AdminController.prototype, "getSettings", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('admin'),
     (0, common_1.Put)('settings'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -61,6 +72,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AdminController.prototype, "updateSettings", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('admin'),
     (0, common_1.Get)('orders'),
     __param(0, (0, common_1.Query)('page', new common_1.DefaultValuePipe(1), common_1.ParseIntPipe)),
     __param(1, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(20), common_1.ParseIntPipe)),
@@ -70,6 +83,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AdminController.prototype, "getOrders", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('admin'),
     (0, common_1.Put)('orders/:id'),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
@@ -78,27 +93,37 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AdminController.prototype, "updateOrder", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('admin'),
     (0, common_1.Get)('stats'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AdminController.prototype, "getStats", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('admin'),
     (0, common_1.Post)('cache/clear'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AdminController.prototype, "clearCache", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('admin'),
     (0, common_1.Get)('cache/stats'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AdminController.prototype, "getCacheStats", null);
+__decorate([
+    (0, common_1.Get)('public-margins'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AdminController.prototype, "getPublicMargins", null);
 exports.AdminController = AdminController = __decorate([
     (0, common_1.Controller)('admin'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('admin'),
     __metadata("design:paramtypes", [admin_service_1.AdminService])
 ], AdminController);
 //# sourceMappingURL=admin.controller.js.map

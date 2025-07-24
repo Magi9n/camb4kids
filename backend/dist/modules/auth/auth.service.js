@@ -19,16 +19,32 @@ const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./entities/user.entity");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const nodemailer = require('nodemailer');
 function generateCode() {
     return Math.floor(1000 + Math.random() * 9000).toString();
 }
-function sendVerificationEmail(email, code) {
-    console.log(`\n==============================\n`);
-    console.log(`Enviando correo de verificación a: ${email}`);
-    console.log(`\nEste es tu código de verificación\n`);
-    console.log(`El código para confirmar tu correo es: \n\n${code}\n`);
-    console.log(`Este código tiene validez por 30 minutos desde que fue generado.`);
-    console.log(`\n==============================\n`);
+async function sendVerificationEmail(email, code) {
+    try {
+        const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,
+            port: parseInt(process.env.SMTP_PORT || '587'),
+            secure: false,
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS,
+            },
+        });
+        await transporter.sendMail({
+            from: process.env.SMTP_FROM,
+            to: email,
+            subject: 'Código de verificación',
+            text: `Tu código de verificación es: ${code}\nEste código es válido por 30 minutos.`,
+        });
+        console.log(`[EMAIL] Correo de verificación enviado a: ${email}`);
+    }
+    catch (err) {
+        console.error('[EMAIL] Error al enviar correo de verificación:', err);
+    }
 }
 let AuthService = class AuthService {
     constructor(userRepo) {
@@ -51,7 +67,7 @@ let AuthService = class AuthService {
             name: '',
         });
         await this.userRepo.save(user);
-        sendVerificationEmail(dto.email, code);
+        await sendVerificationEmail(dto.email, code);
         return { message: 'Registro exitoso. Revisa tu correo para el código de verificación.' };
     }
     async verifyEmail(dto) {

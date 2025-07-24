@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const dotenv = require("dotenv");
+dotenv.config();
 const typeorm_1 = require("typeorm");
 const user_entity_1 = require("../modules/auth/entities/user.entity");
 const order_entity_1 = require("../modules/orders/entities/order.entity");

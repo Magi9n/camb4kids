@@ -3,5 +3,7 @@ export declare class AdminSetting {
     variationPercent: number;
     cronStart: string;
     cronEnd: string;
+    buyPercent: number;
+    sellPercent: number;
     updatedAt: Date;
 }

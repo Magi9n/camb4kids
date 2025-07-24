@@ -8,6 +8,8 @@ export declare class AdminController {
     updateSettings(dto: UpdateSettingsDto): Promise<{
         id: number;
         variationPercent: number;
+        buyPercent: number;
+        sellPercent: number;
         cronStart: string;
         cronEnd: string;
         updatedAt: Date;
@@ -31,5 +33,9 @@ export declare class AdminController {
         total: number;
         valid: number;
         expired: number;
+    }>;
+    getPublicMargins(): Promise<{
+        buyPercent: any;
+        sellPercent: any;
     }>;
 }
