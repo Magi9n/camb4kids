@@ -4,7 +4,7 @@ import CountUp from 'react-countup';
 
 const stats = [
   { label: 'transacciones realizadas', value: 100000, prefix: '+', suffix: '', duration: 2 },
-  { label: 'de soles transferidos', value: 8000000000, prefix: '+', suffix: '', duration: 2, format: v => `${(v/1e9).toFixed(1)} mil millones` },
+  { label: 'de soles transferidos', value: 8000000000, prefix: '+', suffix: '', duration: 2, format: v => `${Math.round(v/1e9)} mil millones` },
   { label: 'de usuarios registrados', value: 20000, prefix: '+', suffix: '', duration: 2 },
 ];
 
@@ -23,6 +23,8 @@ const HeroStats = () => {
                 separator="," 
                 suffix={stat.suffix}
                 formattingFn={stat.format}
+                enableScrollSpy
+                scrollSpyOnce
               />
               {stat.format && !stat.suffix ? '' : stat.suffix}
             </Typography>
