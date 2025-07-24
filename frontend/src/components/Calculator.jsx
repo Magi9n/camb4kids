@@ -134,7 +134,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
           <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 18, textAlign: 'center', lineHeight: 1 }}>
             Compramos:
           </Typography>
-          <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#057c39', fontSize: 22, textAlign: 'center', lineHeight: 1, mt: 0.5 }}>
+          <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 400, color: '#222', fontSize: 16, textAlign: 'center', lineHeight: 1, mt: 0.5 }}>
             {precioCompra || '--'}
           </Typography>
         </Box>
@@ -142,7 +142,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
           <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 18, textAlign: 'center', lineHeight: 1 }}>
             Vendemos:
           </Typography>
-          <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#e67e22', fontSize: 22, textAlign: 'center', lineHeight: 1, mt: 0.5 }}>
+          <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 400, color: '#222', fontSize: 16, textAlign: 'center', lineHeight: 1, mt: 0.5 }}>
             {precioVenta || '--'}
           </Typography>
         </Box>

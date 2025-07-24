@@ -129,7 +129,7 @@ const HeroSection = () => {
             </Typography>
           </Box>
           {/* Botón Inicia tu cambio */}
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, mb: 3, width: '100%' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, mb: 8, width: '100%' }}>
             <button
               onClick={() => navigate('/login')}
               style={{
