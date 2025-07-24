@@ -84,7 +84,7 @@ const HeroSection = () => {
         <Grow in timeout={900}>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
             <DotLottieReact
-              src="https://lottie.host/46664ffb-e12d-4087-9bb4-9315ef7eb6be/XjwAOYmMzU.lottie"
+              src="https://lottie.host/793ff47d-c46b-4c87-a567-da0a9fb2df11/X2rUyK0Cn4.lottie"
               loop
               autoplay
               style={{ width: isMobile ? 320 : 440, height: isMobile ? 320 : 440 }}
