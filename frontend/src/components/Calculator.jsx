@@ -129,7 +129,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
   return (
     <Box sx={{ width: 400, maxWidth: '100%', background: 'transparent', fontFamily: 'Roboto, sans-serif', mx: 'auto' }}>
       {/* Bloque de precios superior */}
-      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, mb: 2, width: '100%' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, mb: 3, width: '100%' }}>
         <Box sx={{ flex: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 18, textAlign: 'center', lineHeight: 1 }}>
             Compramos:
