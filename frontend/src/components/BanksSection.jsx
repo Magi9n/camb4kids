@@ -17,7 +17,7 @@ const BanksSection = () => (
             variant="subtitle1"
             sx={{ fontFamily: 'Play, sans-serif', color: '#057c39', fontWeight: 700, textAlign: 'left', display: 'flex', alignItems: 'center', gap: 1 }}
           >
-            <img src={truenoIcon} alt="trueno" style={{ width: 28, height: 28, marginRight: 8, filter: 'invert(36%) sepia(97%) saturate(747%) hue-rotate(92deg) brightness(93%) contrast(101%)' }} />
+            <img src={truenoIcon} alt="trueno" style={{ width: 22, height: 22, marginRight: 4, filter: 'invert(36%) sepia(97%) saturate(747%) hue-rotate(92deg) brightness(93%) contrast(101%)' }} />
             Transferencias inmediatas <span style={{ fontWeight: 400 }}>(15 minutos)</span>
           </Typography>
           <Box mt={2} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 3 }}>
@@ -32,7 +32,7 @@ const BanksSection = () => (
             variant="subtitle1"
             sx={{ fontFamily: 'Play, sans-serif', color: '#057c39', fontWeight: 700, textAlign: 'left', display: 'flex', alignItems: 'center', gap: 1 }}
           >
-            <img src={relojIcon} alt="reloj" style={{ width: 28, height: 28, marginRight: 8, filter: 'invert(36%) sepia(97%) saturate(747%) hue-rotate(92deg) brightness(93%) contrast(101%)' }} />
+            <img src={relojIcon} alt="reloj" style={{ width: 22, height: 22, marginRight: 4, filter: 'invert(36%) sepia(97%) saturate(747%) hue-rotate(92deg) brightness(93%) contrast(101%)' }} />
             Transferencias interbancarias <span style={{ fontWeight: 400 }}>(24 hrs)</span>
           </Typography>
           <Box mt={2} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 3 }}>
