@@ -71,8 +71,9 @@ const HeroSection = () => {
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
         bgcolor: '#c6ffd1',
-        px: { xs: 1, md: 2 },
-        py: { xs: 1, md: 2 },
+        px: { xs: 2, md: 6 },
+        pt: { xs: 3, md: 6 },
+        pb: { xs: 2, md: 4 },
         gap: { xs: 4, md: 0 },
         position: 'relative',
       }}
