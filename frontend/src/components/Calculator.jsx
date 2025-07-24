@@ -221,7 +221,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
           </Box>
           {/* Bloque inferior: Recibes */}
           <Box sx={{
-            background: receiveColor,
+            background: 'rgba(73,184,122,0.26)',
             borderRadius: 999,
             px: 3,
             py: 0.7,

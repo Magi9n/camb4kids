@@ -73,7 +73,7 @@ const HeroSection = () => {
         flexDirection: isMobile ? 'column' : 'row',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        bgcolor: '#c6ffd1',
+        bgcolor: 'rgba(198,255,209,0.26)',
         px: { xs: 2, md: 6 },
         pt: { xs: 3, md: 6 },
         pb: { xs: 2, md: 4 },
