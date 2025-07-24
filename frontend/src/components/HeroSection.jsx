@@ -78,14 +78,14 @@ const HeroSection = () => {
       }}
     >
       {/* Columna izquierda: texto y lottie */}
-      <Box sx={{ flex: 2.2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', minWidth: 420, mr: { xs: 0, md: 8 }, position: 'relative', zIndex: 2, overflow: 'visible' }}>
+      <Box sx={{ flex: 2.2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', minWidth: 420, mr: { xs: 0, md: 8 }, position: 'relative', zIndex: 2, overflow: 'visible' }}>
         {/* Lottie como fondo */}
-        <Box sx={{ position: 'absolute', left: 0, top: -40, width: '100%', height: 340, zIndex: 1, pointerEvents: 'none', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
+        <Box sx={{ position: 'absolute', left: 0, top: -60, width: '100%', height: 480, zIndex: 1, pointerEvents: 'none', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
           <DotLottieReact
             src="https://lottie.host/0a4be2ac-465d-4049-93db-469aff42e55c/rfadlw8YP6.lottie"
             loop
             autoplay
-            style={{ width: 340, height: 340, opacity: 0.85 }}
+            style={{ width: 480, height: 480, opacity: 0.85 }}
           />
         </Box>
         <Fade in timeout={1200}>
