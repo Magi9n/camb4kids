@@ -82,12 +82,22 @@ const HeroSection = () => {
           </Box>
         </Fade>
         <Grow in timeout={900}>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+          <Box
+            sx={{
+              width: '100%',
+              maxWidth: isMobile ? 340 : 480,
+              maxHeight: isMobile ? 340 : 480,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              mx: 'auto',
+            }}
+          >
             <DotLottieReact
               src="https://lottie.host/793ff47d-c46b-4c87-a567-da0a9fb2df11/X2rUyK0Cn4.lottie"
               loop
               autoplay
-              style={{ width: isMobile ? 320 : 440, height: isMobile ? 320 : 440 }}
+              style={{ width: '100%', height: '100%' }}
             />
           </Box>
         </Grow>
