@@ -81,7 +81,7 @@ const HeroSection = () => {
       {/* Columna izquierda: texto y lottie */}
       <Box sx={{ flex: 2.2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', minWidth: 420, mr: { xs: 0, md: 8 }, position: 'relative', zIndex: 2, overflow: 'visible' }}>
         {/* Lottie como fondo */}
-        <Box sx={{ position: 'absolute', left: 0, top: 20, width: '100%', height: 480, zIndex: 1, pointerEvents: 'none', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
+        <Box sx={{ position: 'absolute', left: 0, top: 48, width: '100%', height: 480, zIndex: 1, pointerEvents: 'none', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
           <DotLottieReact
             src="https://lottie.host/0a4be2ac-465d-4049-93db-469aff42e55c/rfadlw8YP6.lottie"
             loop
@@ -103,7 +103,7 @@ const HeroSection = () => {
       {/* Columna derecha: calculadora y swap */}
       <Grow in timeout={1200}>
         <Box sx={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 370, mt: isMobile ? 4 : 0, position: 'relative', zIndex: 1, height: 'auto', justifyContent: 'center', pt: { xs: 1, md: 2 } }}>
-          <Box sx={{ textAlign: 'center', mb: 2 }}>
+          <Box sx={{ textAlign: 'center', mb: 1.5 }}>
             <Typography sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: 400, fontSize: { xs: 22, md: 28 }, color: '#222', mb: 0.5, lineHeight: 1.1 }}>
               Tipo de cambio para hoy
             </Typography>
