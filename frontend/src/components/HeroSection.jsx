@@ -132,6 +132,7 @@ const HeroSection = () => {
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, mb: 8, width: '100%' }}>
             <button
               onClick={() => navigate('/login')}
+              className="neon-btn-inicia-cambio"
               style={{
                 background: '#057c39',
                 color: 'white',
@@ -146,12 +147,19 @@ const HeroSection = () => {
                 gap: 10,
                 cursor: 'pointer',
                 boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)',
-                transition: 'background 0.2s',
+                transition: 'box-shadow 0.25s, transform 0.18s',
+                outline: 'none',
               }}
             >
               Inicia tu cambio
               <ArrowForwardIcon sx={{ fontSize: 24, ml: 1 }} />
             </button>
+            <style>{`
+              .neon-btn-inicia-cambio:hover, .neon-btn-inicia-cambio:focus {
+                box-shadow: 0 0 0 3px #23ffbd, 0 0 12px 2px #057c39, 0 2px 12px 0 rgba(0,0,0,0.10);
+                transform: scale(1.045);
+              }
+            `}</style>
           </Box>
         </Box>
       </Grow>
