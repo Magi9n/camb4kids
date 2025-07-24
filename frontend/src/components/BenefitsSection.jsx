@@ -14,10 +14,10 @@ const BenefitsSection = () => (
       <Typography variant="h4" fontWeight={400} sx={{ color: '#111', fontFamily: 'Roboto, sans-serif', mb: 5 }}>
         Tu casa de cambio digital en PERÚ
       </Typography>
-      <Grid container spacing={1} justifyContent="center" alignItems="center">
+      <Grid container spacing={0.5} justifyContent="center" alignItems="center">
         {/* Cuadro 1: Dolero23 */}
         <Grid item xs={12} md={4}>
-          <Paper elevation={0} sx={{ p: 3, textAlign: 'left', borderRadius: 16, minHeight: 260, minWidth: 260, maxWidth: 300, height: 260, width: '100%', bgcolor: '#f7f8fa', boxShadow: '0 6px 24px 0 rgba(0,0,0,0.10)', mx: 'auto', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <Paper elevation={0} sx={{ p: 4, textAlign: 'left', borderRadius: 20, minHeight: 320, minWidth: 320, maxWidth: 340, height: 320, width: '100%', bgcolor: '#f7f8fa', boxShadow: '0 8px 32px 0 rgba(0,0,0,0.12)', mx: 'auto', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: 28, color: '#111', mb: 0.5 }}>
               Cupón <span style={{ color: '#179c46', fontWeight: 700, fontFamily: 'Roboto, sans-serif' }}>DOLERO23</span>
             </Typography>
@@ -31,7 +31,7 @@ const BenefitsSection = () => (
         </Grid>
         {/* Cuadro 2: Preferencial */}
         <Grid item xs={12} md={4}>
-          <Paper elevation={0} sx={{ p: 3, textAlign: 'left', borderRadius: 16, minHeight: 260, minWidth: 260, maxWidth: 300, height: 260, width: '100%', bgcolor: '#baffd7', boxShadow: '0 6px 24px 0 rgba(0,0,0,0.10)', mx: 'auto', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <Paper elevation={0} sx={{ p: 4, textAlign: 'left', borderRadius: 20, minHeight: 320, minWidth: 320, maxWidth: 340, height: 320, width: '100%', bgcolor: '#baffd7', boxShadow: '0 8px 32px 0 rgba(0,0,0,0.12)', mx: 'auto', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: 28, color: '#111', mb: 0.5 }}>
               Cupón <span style={{ color: '#179c46', fontWeight: 700, fontFamily: 'Roboto, sans-serif' }}>PREFERENCIAL</span>
             </Typography>
@@ -45,7 +45,7 @@ const BenefitsSection = () => (
         </Grid>
         {/* Cuadro 3: Empresarial */}
         <Grid item xs={12} md={4}>
-          <Paper elevation={0} sx={{ p: 3, textAlign: 'left', borderRadius: 16, minHeight: 260, minWidth: 260, maxWidth: 300, height: 260, width: '100%', bgcolor: '#d6ffe9', boxShadow: '0 6px 24px 0 rgba(0,0,0,0.10)', mx: 'auto', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <Paper elevation={0} sx={{ p: 4, textAlign: 'left', borderRadius: 20, minHeight: 320, minWidth: 320, maxWidth: 340, height: 320, width: '100%', bgcolor: '#d6ffe9', boxShadow: '0 8px 32px 0 rgba(0,0,0,0.12)', mx: 'auto', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: 28, color: '#111', mb: 0.5 }}>
               Cupón <span style={{ color: '#179c46', fontWeight: 700, fontFamily: 'Roboto, sans-serif' }}>EMPRESARIAL</span>
             </Typography>
