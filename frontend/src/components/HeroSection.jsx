@@ -129,7 +129,7 @@ const HeroSection = () => {
             </Typography>
           </Box>
           {/* Botón Inicia tu cambio */}
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4, width: '100%' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, mb: 3, width: '100%' }}>
             <button
               onClick={() => navigate('/login')}
               style={{
@@ -137,20 +137,20 @@ const HeroSection = () => {
                 color: 'white',
                 fontFamily: 'Roboto, sans-serif',
                 fontWeight: 500,
-                fontSize: 38,
+                fontSize: 22,
                 border: 'none',
-                borderRadius: 40,
-                padding: '18px 54px',
+                borderRadius: 32,
+                padding: '10px 32px',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 16,
+                gap: 10,
                 cursor: 'pointer',
                 boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)',
                 transition: 'background 0.2s',
               }}
             >
               Inicia tu cambio
-              <ArrowForwardIcon sx={{ fontSize: 38, ml: 1 }} />
+              <ArrowForwardIcon sx={{ fontSize: 24, ml: 1 }} />
             </button>
           </Box>
         </Box>
