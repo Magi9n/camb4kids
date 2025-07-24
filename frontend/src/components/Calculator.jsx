@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 const API_RATE = '/api/rates/current';
 const API_MARGINS = '/api/admin/public-margins';
@@ -40,19 +39,12 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
     fetchData();
   }, []);
 
-  // Calcular USD inicial al cargar la tasa
+  // Notificar al padre cada vez que pen cambie
   useEffect(() => {
-    if (rate && pen && !isSwapped) {
-      setUsd((parseFloat(pen) / (rate * buy)).toFixed(2));
-    }
-  }, [rate, buy]);
-
-  // Callback para exponer el monto en soles al padre
-  useEffect(() => {
-    if (typeof window !== 'undefined' && typeof onPenChange === 'function') {
+    if (typeof onPenChange === 'function') {
       onPenChange(pen);
     }
-  }, [pen]);
+  }, [pen, onPenChange]);
 
   const buy = overrideBuyPercent !== undefined ? overrideBuyPercent : buyPercent;
   const sell = overrideSellPercent !== undefined ? overrideSellPercent : sellPercent;
@@ -114,9 +106,6 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
 
   const precioCompra = rate ? (rate * buy).toFixed(4) : '';
   const precioVenta = rate ? (rate * sell).toFixed(4) : '';
-
-  // Cálculo del ahorro
-  const ahorro = pen && !isNaN(parseFloat(pen)) ? (parseFloat(pen) * 0.0225).toFixed(2) : '0.00';
 
   return (
     <Box sx={{ width: 400, maxWidth: '100%', background: 'transparent', fontFamily: 'Roboto, sans-serif', mx: 'auto' }}>
@@ -254,16 +243,6 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
           </Box>
         </Box>
       )}
-      {/* Bloque de ahorro */}
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 3, bgcolor: '#f6fff6', borderRadius: 3, py: 1.2, px: 2, boxShadow: '0 2px 8px 0 rgba(5,124,57,0.07)' }}>
-        <AccountBalanceWalletIcon sx={{ color: '#057c39', fontSize: 32, mr: 1.5 }} />
-        <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#057c39', fontSize: 18, mr: 1 }}>
-          Ahorro aproximado:
-        </Typography>
-        <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 20 }}>
-          S/. {ahorro}
-        </Typography>
-      </Box>
     </Box>
   );
 };

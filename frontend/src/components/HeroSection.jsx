@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Fade from '@mui/material/Fade';
@@ -9,6 +9,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
+import WalletIcon from '../assets/wallet.svg';
 
 const ArrowButton = styled(Box)(({ theme, active }) => ({
   display: 'flex',
@@ -38,6 +39,13 @@ const HeroSection = () => {
   // Estado para los precios
   const [precioCompra, setPrecioCompra] = useState('');
   const [precioVenta, setPrecioVenta] = useState('');
+  // Estado para el ahorro y el valor de pen
+  const [penValue, setPenValue] = useState('1000');
+  const ahorro = useMemo(() => {
+    const penNum = parseFloat(penValue);
+    if (isNaN(penNum)) return '0.00';
+    return (penNum * 0.0225).toFixed(2);
+  }, [penValue]);
 
   const handleSwap = () => {
     setFade(true);
@@ -115,7 +123,17 @@ const HeroSection = () => {
           </Box>
           {/* Calculadora */}
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
-            <Calculator swap={swap} onSwap={handleSwap} swapActive={fade || swap} onPricesChange={handlePricesChange} />
+            <Calculator swap={swap} onSwap={handleSwap} swapActive={fade || swap} onPricesChange={handlePricesChange} onPenChange={setPenValue} />
+          </Box>
+          {/* Ahorro aproximado */}
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 3, gap: 1 }}>
+            <img src={WalletIcon} alt="Wallet" style={{ width: 32, height: 32, marginRight: 10 }} />
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#057c39', fontSize: 18 }}>
+              Ahorro aproximado:
+            </Typography>
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#222', fontSize: 20, ml: 1 }}>
+              S/. {ahorro}
+            </Typography>
           </Box>
         </Box>
       </Grow>
