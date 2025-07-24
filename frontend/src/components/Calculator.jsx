@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
+import peruFlag from '../assets/peru.svg';
+import usaFlag from '../assets/USA.svg';
 
 const API_RATE = '/api/rates/current';
 const API_MARGINS = '/api/admin/public-margins';
@@ -116,6 +118,8 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
   const receiveValue = isSwapped ? pen : usd;
   const sendCurrency = isSwapped ? '$' : 'S/';
   const receiveCurrency = isSwapped ? 'S/' : '$';
+  const sendFlag = isSwapped ? usaFlag : peruFlag;
+  const receiveFlag = isSwapped ? peruFlag : usaFlag;
   const sendOnChange = handleSendChange;
   const receiveOnChange = handleReceiveChange;
   const receiveColor = '#49b87a';
@@ -189,13 +193,16 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
                   inputMode: 'decimal',
                   autoComplete: 'off',
                 }}
-                sx={{ width: 120, background: 'transparent', mt: 0 }}
+                sx={{ width: 180, background: 'transparent', mt: 0 }}
                 placeholder="0.00"
               />
             </Box>
-            <Typography sx={{ color: valueColor, fontWeight: 900, fontFamily: 'Roboto, sans-serif', fontSize: 38, ml: 2 }}>
-              {sendCurrency}
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
+              <img src={sendFlag} alt="flag" style={{ height: 32, width: 'auto', marginRight: 6 }} />
+              <Typography sx={{ color: valueColor, fontWeight: 900, fontFamily: 'Roboto, sans-serif', fontSize: 38 }}>
+                {sendCurrency}
+              </Typography>
+            </Box>
           </Box>
           {/* Swap funcional superpuesto */}
           <Box sx={{ position: 'absolute', left: '65%', top: 'calc(50% + 2px)', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
@@ -252,13 +259,16 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
                   inputMode: 'decimal',
                   autoComplete: 'off',
                 }}
-                sx={{ width: 120, background: 'transparent', mt: 0 }}
+                sx={{ width: 180, background: 'transparent', mt: 0 }}
                 placeholder="0.00"
               />
             </Box>
-            <Typography sx={{ color: valueColor, fontWeight: 900, fontFamily: 'Roboto, sans-serif', fontSize: 38, ml: 2 }}>
-              {receiveCurrency}
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
+              <img src={receiveFlag} alt="flag" style={{ height: 32, width: 'auto', marginRight: 6 }} />
+              <Typography sx={{ color: valueColor, fontWeight: 900, fontFamily: 'Roboto, sans-serif', fontSize: 38 }}>
+                {receiveCurrency}
+              </Typography>
+            </Box>
           </Box>
         </Box>
       )}
