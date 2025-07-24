@@ -41,7 +41,7 @@ const Header = () => {
     <AppBar position="static" elevation={0} sx={{ bgcolor: 'white', fontFamily: 'Roboto, sans-serif', borderBottom: '1px solid #e0e0e0' }}>
       <Toolbar sx={{ minHeight: 64, px: { xs: 1, md: 4 } }}>
         <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-          <img src={logo} alt="DolarNet" style={{ height: 58, marginRight: 10, marginLeft: 44, maxWidth: 200 }} />
+          <img src={logo} alt="DolarNet" style={{ height: 58, marginRight: 10, marginLeft: 44, maxWidth: 200, paddingTop: 4, paddingBottom: 4 }} />
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mr: 2 }}>
           <Box component="span" sx={menuHoverStyle}>Nosotros</Box>

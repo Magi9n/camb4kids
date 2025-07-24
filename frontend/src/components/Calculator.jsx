@@ -61,8 +61,16 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
   }, [rate, buy, sell, pen, usd, isSwapped]);
 
   // Lógica de conversión
+  const limitToTwoDecimals = (val) => {
+    // Permite solo dos decimales
+    if (!val) return '';
+    const match = val.match(/^\d*(\.\d{0,2})?/);
+    return match ? match[0] : '';
+  };
+
   const handleSendChange = (e) => {
-    const value = e.target.value.replace(/[^0-9.]/g, '');
+    let value = e.target.value.replace(/[^0-9.]/g, '');
+    value = limitToTwoDecimals(value);
     setEditing('send');
     if (isSwapped) {
       setUsd(value);
@@ -81,7 +89,8 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
     }
   };
   const handleReceiveChange = (e) => {
-    const value = e.target.value.replace(/[^0-9.]/g, '');
+    let value = e.target.value.replace(/[^0-9.]/g, '');
+    value = limitToTwoDecimals(value);
     setEditing('receive');
     if (isSwapped) {
       setPen(value);
