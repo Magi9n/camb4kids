@@ -18,8 +18,8 @@ const BanksSection = () => (
             Transferencias inmediatas <span style={{ fontWeight: 400 }}>(15 minutos)</span>
           </Typography>
           <Box mt={2} display="flex" justifyContent="center" alignItems="center" gap={3}>
-            <Fade in timeout={1000}><img src={bcpLogo} alt="BCP" style={{ height: 38, width: 'auto', margin: '0 10px' }} /></Fade>
-            <Fade in timeout={1200}><img src={interbankLogo} alt="Interbank" style={{ height: 38, width: 'auto', margin: '0 10px' }} /></Fade>
+            <Fade in timeout={1000}><img src={bcpLogo} alt="BCP" style={{ maxWidth: 70, width: '100%', height: 'auto', margin: '0 10px' }} /></Fade>
+            <Fade in timeout={1200}><img src={interbankLogo} alt="Interbank" style={{ maxWidth: 70, width: '100%', height: 'auto', margin: '0 10px' }} /></Fade>
           </Box>
         </Paper>
       </Grid>
@@ -32,9 +32,9 @@ const BanksSection = () => (
             Transferencias interbancarias <span style={{ fontWeight: 400 }}>(24 hrs)</span>
           </Typography>
           <Box mt={2} display="flex" justifyContent="center" alignItems="center" gap={3}>
-            <Fade in timeout={1000}><img src={scotiabankLogo} alt="Scotiabank" style={{ height: 38, width: 'auto', margin: '0 10px' }} /></Fade>
-            <Fade in timeout={1200}><img src={bbvaLogo} alt="BBVA" style={{ height: 38, width: 'auto', margin: '0 10px' }} /></Fade>
-            <Fade in timeout={1400}><img src={pichinchaLogo} alt="Pichincha" style={{ height: 38, width: 'auto', margin: '0 10px' }} /></Fade>
+            <Fade in timeout={1000}><img src={scotiabankLogo} alt="Scotiabank" style={{ maxWidth: 70, width: '100%', height: 'auto', margin: '0 10px' }} /></Fade>
+            <Fade in timeout={1200}><img src={bbvaLogo} alt="BBVA" style={{ maxWidth: 70, width: '100%', height: 'auto', margin: '0 10px' }} /></Fade>
+            <Fade in timeout={1400}><img src={pichinchaLogo} alt="Pichincha" style={{ maxWidth: 70, width: '100%', height: 'auto', margin: '0 10px' }} /></Fade>
             <Fade in timeout={1600}><Box fontSize={18} color="#888" sx={{ ml: 1 }}>y otras entidades</Box></Fade>
           </Box>
         </Paper>
