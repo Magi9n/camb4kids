@@ -24,7 +24,7 @@ const BenefitsSection = () => (
             <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 400, fontSize: 20, color: '#222', mb: 0.5 }}>
               Úsalo en tu primer cambio
             </Typography>
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1, pt: 4 }}>
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1, pt: 7 }}>
               <Lottie animationData={dineroconalas} loop autoplay style={{ width: 160, height: 160 }} />
             </Box>
           </Paper>
