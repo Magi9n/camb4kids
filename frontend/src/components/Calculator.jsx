@@ -198,8 +198,8 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
               />
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
-              <img src={sendFlag} alt="flag" style={{ height: 32, width: 'auto', marginRight: 6 }} />
-              <Typography sx={{ color: valueColor, fontWeight: 900, fontFamily: 'Roboto, sans-serif', fontSize: 38 }}>
+              <img src={sendFlag} alt="flag" style={{ height: 22, width: 'auto', marginRight: 4 }} />
+              <Typography sx={{ color: valueColor, fontWeight: 900, fontFamily: 'Roboto, sans-serif', fontSize: 26 }}>
                 {sendCurrency}
               </Typography>
             </Box>
@@ -264,8 +264,8 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
               />
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
-              <img src={receiveFlag} alt="flag" style={{ height: 32, width: 'auto', marginRight: 6 }} />
-              <Typography sx={{ color: valueColor, fontWeight: 900, fontFamily: 'Roboto, sans-serif', fontSize: 38 }}>
+              <img src={receiveFlag} alt="flag" style={{ height: 22, width: 'auto', marginRight: 4 }} />
+              <Typography sx={{ color: valueColor, fontWeight: 900, fontFamily: 'Roboto, sans-serif', fontSize: 26 }}>
                 {receiveCurrency}
               </Typography>
             </Box>
