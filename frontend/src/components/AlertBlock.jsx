@@ -52,6 +52,7 @@ const AlertBlock = () => {
       setModalOpen(true);
       return;
     }
+    // Solo si está logueado continúa
     setLoading(true);
     try {
       let created = false;
