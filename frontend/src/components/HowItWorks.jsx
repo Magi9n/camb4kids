@@ -1,45 +1,66 @@
 import React from 'react';
-import { Box, Typography, Grid, Fade, Paper } from '@mui/material';
-import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import celular1 from '../assets/celular1.webp';
+import celular2 from '../assets/celular2.webp';
 
-const steps = [
-  {
-    icon: <PhoneIphoneIcon sx={{ fontSize: 48, color: 'primary.main' }} />,
-    title: 'Cotiza tu cambio',
-    desc: 'Ingresa el monto que vas a cambiar y cotiza tu cambio.',
-  },
-  {
-    icon: <SwapHorizIcon sx={{ fontSize: 48, color: 'success.main' }} />,
-    title: 'Transfiere',
-    desc: 'Registra la cuenta destino, transfiere el monto a la cuenta.',
-  },
-  {
-    icon: <AccountBalanceWalletIcon sx={{ fontSize: 48, color: 'warning.main' }} />,
-    title: 'Recibe tu cambio',
-    desc: 'Verifica tu operación y recibe tu cambio en tu cuenta.',
-  },
-];
+// Importar Kollektif desde Google Fonts si no está en el proyecto
+const KollektifFont = () => (
+  <style>{`
+    @import url('https://fonts.cdnfonts.com/css/kollektif');
+    .kollektif { font-family: 'Kollektif', Arial, sans-serif; }
+  `}</style>
+);
 
 const HowItWorks = () => (
-  <Box sx={{ py: 6, bgcolor: '#fff' }}>
-    <Typography variant="h4" fontWeight={700} color="success.main" textAlign="center" mb={4}>
+  <Box sx={{ bgcolor: '#f7f7f7', width: '100%', py: 7, px: { xs: 2, md: 8 }, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <KollektifFont />
+    <Typography sx={{ fontFamily: 'Roboto, sans-serif', color: '#057c39', fontWeight: 700, fontSize: 38, mb: 6, textAlign: 'center' }}>
       ¿Cómo Funciona?
     </Typography>
-    <Grid container spacing={4} justifyContent="center">
-      {steps.map((step, i) => (
-        <Grid item xs={12} md={4} key={i}>
-          <Fade in timeout={1000 + i * 300}>
-            <Paper elevation={3} sx={{ p: 4, textAlign: 'center', borderRadius: 4, minHeight: 260 }}>
-              {step.icon}
-              <Typography variant="h6" fontWeight={700} mt={2} mb={1}>{step.title}</Typography>
-              <Typography variant="body1" color="text.secondary">{step.desc}</Typography>
-            </Paper>
-          </Fade>
-        </Grid>
-      ))}
-    </Grid>
+    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'center', alignItems: 'flex-start', gap: { xs: 6, md: 10 }, width: '100%', maxWidth: 1100 }}>
+      {/* Paso 1 */}
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220 }}>
+        <span className="kollektif" style={{ fontSize: 70, color: '#000', fontWeight: 700, marginBottom: 8 }}>1</span>
+        <img src={celular1} alt="Celular 1" style={{ width: 120, marginBottom: 18 }} />
+        <Typography sx={{ fontFamily: 'Roboto, sans-serif', color: '#057c39', fontWeight: 700, fontSize: 22, mb: 1, textAlign: 'center' }}>
+          Cotiza tu cambio
+        </Typography>
+        <Typography sx={{ fontFamily: 'Roboto, sans-serif', color: '#222', fontSize: 16, textAlign: 'center', maxWidth: 220 }}>
+          Ingresa el monto que vas a cambiar y cotiza tu cambio.
+        </Typography>
+      </Box>
+      {/* Paso 2 */}
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220 }}>
+        <span className="kollektif" style={{ fontSize: 70, color: '#000', fontWeight: 700, marginBottom: 8 }}>2</span>
+        <img src={celular2} alt="Celular 2" style={{ width: 120, marginBottom: 18 }} />
+        <Typography sx={{ fontFamily: 'Roboto, sans-serif', color: '#057c39', fontWeight: 700, fontSize: 22, mb: 1, textAlign: 'center' }}>
+          Transfiere
+        </Typography>
+        <Typography sx={{ fontFamily: 'Roboto, sans-serif', color: '#222', fontSize: 16, textAlign: 'center', maxWidth: 220 }}>
+          Registra la cuenta destino, transfiere el monto a la cuenta.
+        </Typography>
+      </Box>
+      {/* Paso 3 */}
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220 }}>
+        <span className="kollektif" style={{ fontSize: 70, color: '#000', fontWeight: 700, marginBottom: 8 }}>3</span>
+        <Box sx={{ width: 120, height: 120, mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <DotLottieReact
+            src="https://lottie.host/c33fd0da-5f5a-4d83-9949-c39fffda0280/2qCo4p6Mhx.lottie"
+            loop
+            autoplay
+            style={{ width: 120, height: 120 }}
+          />
+        </Box>
+        <Typography sx={{ fontFamily: 'Roboto, sans-serif', color: '#057c39', fontWeight: 700, fontSize: 22, mb: 1, textAlign: 'center' }}>
+          Recibe tu cambio
+        </Typography>
+        <Typography sx={{ fontFamily: 'Roboto, sans-serif', color: '#222', fontSize: 16, textAlign: 'center', maxWidth: 220 }}>
+          Verifica tu operación y recibe tu cambio en tu cuenta.
+        </Typography>
+      </Box>
+    </Box>
   </Box>
 );
 
