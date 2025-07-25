@@ -131,7 +131,7 @@ const AlertBlock = () => {
           }}
           size="large"
           type="submit"
-          disabled={loading || (!buyValue && !sellValue)}
+          disabled={loading || (!buyValue && !sellValue) || !token || !user}
         >
           Crear alerta
         </Button>
