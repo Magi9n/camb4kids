@@ -83,70 +83,68 @@ const AlertBlock = () => {
   };
 
   return (
-    <Box sx={{ bgcolor: '#060e23', py: 3, px: { xs: 1, md: 3 }, width: '100vw', minWidth: '100%', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', justifyContent: 'center', gap: 2, borderRadius: 3, mt: 0, mx: 0 }}>
-      <Box sx={{ flex: 1, textAlign: 'center', color: 'white', fontFamily: 'Roboto, sans-serif', mb: isMobile ? 2 : 0 }}>
-        <Typography sx={{ fontSize: 20, fontWeight: 400, mb: 1 }}>
+    <Box sx={{ bgcolor: '#060e23', py: 3, px: { xs: 1, md: 3 }, width: '100vw', minWidth: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 2, borderRadius: 3, mt: 0, mx: 0 }}>
+      <Box sx={{ flex: '0 0 auto', minWidth: 180, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 1 }}>
+        <Typography sx={{ fontSize: 18, fontWeight: 400 }}>
           Alertar cuando la Compra del dólar esté por encima de
         </Typography>
-        <TextField
-          value={buyValue}
-          onChange={e => {
-            let val = e.target.value.replace(/[^0-9.]/g, '');
-            // Solo permitir 1 entero y hasta 2 decimales
-            val = val.replace(/^(\d)(\d+)/, '$1'); // Solo 1 entero
-            val = val.replace(/(\..{0,2}).*$/, '$1'); // Máximo 2 decimales
-            setBuyValue(val);
-          }}
-          placeholder="Ej: 9.12"
-          sx={{ bgcolor: 'white', borderRadius: 2, width: 90, input: { textAlign: 'center', fontSize: 18, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1 } }}
-          inputProps={{ maxLength: 5 }}
-        />
       </Box>
-      <Box sx={{ flex: 1, textAlign: 'center', color: 'white', fontFamily: 'Roboto, sans-serif', mb: isMobile ? 2 : 0 }}>
-        <Typography sx={{ fontSize: 20, fontWeight: 400, mb: 1 }}>
+      <TextField
+        value={buyValue}
+        onChange={e => {
+          let val = e.target.value.replace(/[^0-9.]/g, '');
+          val = val.replace(/^(\d)(\d+)/, '$1');
+          val = val.replace(/(\..{0,2}).*$/, '$1');
+          setBuyValue(val);
+        }}
+        placeholder="Ej: 9.12"
+        sx={{ bgcolor: 'white', borderRadius: 2, width: 90, mx: 1, input: { textAlign: 'center', fontSize: 18, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1 } }}
+        inputProps={{ maxLength: 5 }}
+      />
+      <Box sx={{ flex: '0 0 auto', minWidth: 180, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 1 }}>
+        <Typography sx={{ fontSize: 18, fontWeight: 400 }}>
           Alertar cuando la Venta del dólar esté por debajo de
         </Typography>
-        <TextField
-          value={sellValue}
-          onChange={e => {
-            let val = e.target.value.replace(/[^0-9.]/g, '');
-            // Solo permitir 1 entero y hasta 2 decimales
-            val = val.replace(/^(\d)(\d+)/, '$1'); // Solo 1 entero
-            val = val.replace(/(\..{0,2}).*$/, '$1'); // Máximo 2 decimales
-            setSellValue(val);
-          }}
-          placeholder="Ej: 9.12"
-          sx={{ bgcolor: 'white', borderRadius: 2, width: 90, input: { textAlign: 'center', fontSize: 18, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1 } }}
-          inputProps={{ maxLength: 5 }}
-        />
       </Box>
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
-        <Button
-          variant="contained"
-          sx={{
-            bgcolor: '#23ffbd',
-            color: '#060e23',
-            fontWeight: 700,
-            fontSize: 32,
-            borderRadius: 999,
-            px: 6,
-            py: 2,
-            boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)',
-            textTransform: 'none',
-            fontFamily: 'Roboto, sans-serif',
-            '&:hover': { bgcolor: '#1be3a2' },
-            mb: 1
-          }}
-          size="large"
-          onClick={handleCreate}
-          disabled={loading || (!buyValue && !sellValue)}
-        >
-          Crear alerta
-        </Button>
-        <Typography sx={{ color: 'white', fontSize: 15, fontFamily: 'Roboto, sans-serif', mt: 0 }}>
+      <TextField
+        value={sellValue}
+        onChange={e => {
+          let val = e.target.value.replace(/[^0-9.]/g, '');
+          val = val.replace(/^(\d)(\d+)/, '$1');
+          val = val.replace(/(\..{0,2}).*$/, '$1');
+          setSellValue(val);
+        }}
+        placeholder="Ej: 9.12"
+        sx={{ bgcolor: 'white', borderRadius: 2, width: 90, mx: 1, input: { textAlign: 'center', fontSize: 18, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1 } }}
+        inputProps={{ maxLength: 5 }}
+      />
+      <Button
+        variant="contained"
+        sx={{
+          bgcolor: '#23ffbd',
+          color: '#060e23',
+          fontWeight: 700,
+          fontSize: 22,
+          borderRadius: 999,
+          px: 4,
+          py: 1.5,
+          boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)',
+          textTransform: 'none',
+          fontFamily: 'Roboto, sans-serif',
+          '&:hover': { bgcolor: '#1be3a2' },
+          ml: 2
+        }}
+        size="large"
+        onClick={handleCreate}
+        disabled={loading || (!buyValue && !sellValue)}
+      >
+        Crear alerta
+      </Button>
+      <Box sx={{ flex: '0 0 auto', minWidth: 120, textAlign: 'left', pl: 2 }}>
+        <Typography sx={{ color: 'white', fontSize: 13, fontFamily: 'Roboto, sans-serif', mt: 0 }}>
           *Tienes que iniciar sesión
         </Typography>
-        {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
+        {error && <Typography color="error" sx={{ mt: 1, fontSize: 13 }}>{error}</Typography>}
       </Box>
       <Dialog
         open={modalOpen}
