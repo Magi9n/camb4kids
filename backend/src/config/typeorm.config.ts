@@ -11,6 +11,8 @@ console.log('DB_HOST:', process.env.DB_HOST);
 console.log('DB_USERNAME:', process.env.DB_USERNAME);
 console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
 console.log('DB_DATABASE:', process.env.DB_DATABASE);
+console.log('Entities glob:', [__dirname + '/../modules/**/*.entity.js']);
+console.log('Migrations glob:', [__dirname + '/../migrations/*.js']);
 
 export default new DataSource({
   type: 'mysql',
