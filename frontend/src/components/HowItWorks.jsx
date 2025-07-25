@@ -37,7 +37,7 @@ const HowItWorks = () => (
       </Box>
       {/* Paso 2 */}
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220, position: 'relative', height: 320 }}>
-        <Box sx={{ position: 'absolute', top: 8, left: 2, zIndex: 2 }}>
+        <Box sx={{ position: 'absolute', top: 8, left: -18, zIndex: 2 }}>
           <span className="kollektif" style={{ fontSize: 70, color: '#000', fontWeight: 700, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.08))' }}>2</span>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 300, width: '100%', mt: 2, pb: 3 }}>
