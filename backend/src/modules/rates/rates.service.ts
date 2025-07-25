@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between } from 'typeorm';
 import { ExchangeRate } from './entities/exchange-rate.entity';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import Redis from 'ioredis';
@@ -23,11 +23,11 @@ export class RatesService {
     });
   }
 
-  // Cron job: cada minuto + 10s
-  @Cron(CronExpression.EVERY_MINUTE, { name: 'fetchRate' })
+  // Cron job: cada 1 minuto y 48 segundos
+  @Cron('48 */1 * * * *', { name: 'fetchRate' })
   async fetchRate() {
     try {
-      await new Promise(res => setTimeout(res, 10000)); // delay de 10s
+      // No delay necesario
       const url = `${this.configService.get('TWELVEDATA_API_URL')}&apikey=${this.configService.get('TWELVEDATA_API_KEY')}`;
       const { data } = await axios.get(url);
       const rate = parseFloat(data.price);
@@ -38,6 +38,12 @@ export class RatesService {
         rate,
       });
       await this.rateRepo.save(exRate);
+      // Eliminar el tipo de cambio más antiguo si hay más de 1
+      const allRates = await this.rateRepo.find({ order: { createdAt: 'ASC' } });
+      if (allRates.length > 1) {
+        const oldest = allRates[0];
+        await this.rateRepo.delete(oldest.id);
+      }
       await this.redis.set('EXCHANGE_RATE_USD_PEN', rate, 'EX', 70);
       this.logger.log(`Tasa actualizada: ${rate}`);
     } catch (e) {
