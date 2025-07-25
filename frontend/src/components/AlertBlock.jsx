@@ -40,21 +40,25 @@ const AlertBlock = () => {
     return '';
   };
 
-  const handleCreate = async () => {
+  const showLoginModal = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setModalContent({
+      title: 'Inicia sesión',
+      message: 'Debes iniciar sesión para crear una alerta. Por favor, inicia sesión para continuar.'
+    });
+    setModalOpen(true);
+  };
+
+  const handleCreate = async (e) => {
+    if (e) e.preventDefault();
     setError('');
     const err = validate();
     if (err) return setError(err);
     if (!token || !user) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      setModalContent({
-        title: 'Inicia sesión',
-        message: 'Debes iniciar sesión para crear una alerta. Por favor, inicia sesión para continuar.'
-      });
-      setModalOpen(true);
+      showLoginModal();
       return;
     }
-    // Solo si está logueado continúa
     setLoading(true);
     try {
       let created = false;
@@ -108,7 +112,7 @@ const AlertBlock = () => {
           inputProps={{ maxLength: 7 }}
         />
       </Box>
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+      <form style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 1 }} onSubmit={handleCreate} autoComplete="off">
         <Button
           variant="contained"
           sx={{
@@ -126,7 +130,7 @@ const AlertBlock = () => {
             mb: 1
           }}
           size="large"
-          onClick={handleCreate}
+          type="submit"
           disabled={loading || (!buyValue && !sellValue)}
         >
           Crear alerta
@@ -135,7 +139,7 @@ const AlertBlock = () => {
           *Tienes que iniciar sesión
         </Typography>
         {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
-      </Box>
+      </form>
       <Dialog
         open={modalOpen}
         TransitionComponent={Transition}
