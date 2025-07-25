@@ -28,21 +28,10 @@ const AlertBlock = () => {
   const [modalContent, setModalContent] = useState({ title: '', message: '' });
   const [loading, setLoading] = useState(false);
   const [currentRate, setCurrentRate] = useState(null);
-  const [userAlerts, setUserAlerts] = useState([]);
 
   React.useEffect(() => {
     api.get('/rates/current').then(res => setCurrentRate(res.data.rate)).catch(() => {});
   }, []);
-
-  React.useEffect(() => {
-    if (token && user) {
-      api.get('/alerts')
-        .then(res => setUserAlerts(res.data))
-        .catch(() => setUserAlerts([]));
-    } else {
-      setUserAlerts([]);
-    }
-  }, [token, user]);
 
   const validate = () => {
     if (!buyValue && !sellValue) return 'Debes ingresar al menos un valor.';
@@ -51,44 +40,21 @@ const AlertBlock = () => {
     return '';
   };
 
-  const showLoginModal = () => {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
-    setModalContent({
-      title: '¡Inicia sesión o crea una cuenta!',
-      message: 'Para crear una alerta personalizada debes iniciar sesión o registrarte. Así podrás recibir notificaciones en tu correo cuando el dólar alcance los valores que te interesan.'
-    });
-    setModalOpen(true);
-  };
-
-  const handleCreate = async (e) => {
-    if (e) e.preventDefault();
+  const handleCreate = async () => {
     setError('');
     const err = validate();
-    if (err) {
-      return setError(err);
-    }
+    if (err) return setError(err);
     if (!token || !user) {
-      showLoginModal();
-      return;
-    }
-
-    // Verificar si ya existe una alerta igual
-    const buyExists = buyValue && userAlerts.some(a => a.type === 'buy' && parseFloat(a.value) === parseFloat(buyValue));
-    const sellExists = sellValue && userAlerts.some(a => a.type === 'sell' && parseFloat(a.value) === parseFloat(sellValue));
-    if (buyExists || sellExists) {
-      let msg = 'Ya tienes una alerta registrada con los siguientes valores:';
-      if (buyExists) msg += `\n- Compra: ${buyValue}`;
-      if (sellExists) msg += `\n- Venta: ${sellValue}`;
-      msg += '\nPuedes modificar o eliminar tus alertas desde tu panel de usuario.';
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
       setModalContent({
-        title: 'Alerta ya registrada',
-        message: msg.replace(/\n/g, '<br />'),
+        title: 'Inicia sesión',
+        message: 'Debes iniciar sesión para crear una alerta. Por favor, inicia sesión para continuar.'
       });
       setModalOpen(true);
       return;
     }
-
+    // Solo si está logueado continúa
     setLoading(true);
     try {
       let created = false;
@@ -108,8 +74,6 @@ const AlertBlock = () => {
         setModalOpen(true);
         setBuyValue('');
         setSellValue('');
-        // Refrescar alertas del usuario
-        api.get('/alerts').then(res => setUserAlerts(res.data)).catch(() => {});
       }
     } catch (e) {
       setError(e.response?.data?.message || 'Error al crear la alerta.');
@@ -119,59 +83,71 @@ const AlertBlock = () => {
   };
 
   return (
-    <Box sx={{ bgcolor: '#060e23', py: 3, px: { xs: 1, md: 3 }, display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', justifyContent: 'center', gap: 2, borderRadius: 3, mt: 0, maxWidth: 600, mx: 'auto' }}>
-      <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', mb: isMobile ? 1.5 : 0 }}>
-        <Typography sx={{ fontSize: 15, fontWeight: 400, color: 'white', fontFamily: 'Roboto, sans-serif', mr: 1, textAlign: 'right', minWidth: 0 }}>
+    <Box sx={{ bgcolor: '#060e23', py: 3, px: { xs: 1, md: 3 }, width: '100vw', minWidth: '100%', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', justifyContent: 'center', gap: 2, borderRadius: 3, mt: 0, mx: 0 }}>
+      <Box sx={{ flex: 1, textAlign: 'center', color: 'white', fontFamily: 'Roboto, sans-serif', mb: isMobile ? 2 : 0 }}>
+        <Typography sx={{ fontSize: 20, fontWeight: 400, mb: 1 }}>
           Alertar cuando la Compra del dólar esté por encima de
         </Typography>
         <TextField
           value={buyValue}
-          onChange={e => setBuyValue(e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'))}
-          placeholder="Ej: 3.229"
+          onChange={e => {
+            let val = e.target.value.replace(/[^0-9.]/g, '');
+            // Solo permitir 1 entero y hasta 2 decimales
+            val = val.replace(/^(\d)(\d+)/, '$1'); // Solo 1 entero
+            val = val.replace(/(\..{0,2}).*$/, '$1'); // Máximo 2 decimales
+            setBuyValue(val);
+          }}
+          placeholder="Ej: 9.12"
           sx={{ bgcolor: 'white', borderRadius: 2, width: 90, input: { textAlign: 'center', fontSize: 18, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1 } }}
-          inputProps={{ maxLength: 7 }}
+          inputProps={{ maxLength: 5 }}
         />
       </Box>
-      <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', mb: isMobile ? 1.5 : 0 }}>
-        <Typography sx={{ fontSize: 15, fontWeight: 400, color: 'white', fontFamily: 'Roboto, sans-serif', mr: 1, textAlign: 'right', minWidth: 0 }}>
+      <Box sx={{ flex: 1, textAlign: 'center', color: 'white', fontFamily: 'Roboto, sans-serif', mb: isMobile ? 2 : 0 }}>
+        <Typography sx={{ fontSize: 20, fontWeight: 400, mb: 1 }}>
           Alertar cuando la Venta del dólar esté por debajo de
         </Typography>
         <TextField
           value={sellValue}
-          onChange={e => setSellValue(e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'))}
-          placeholder="Ej: 3.229"
+          onChange={e => {
+            let val = e.target.value.replace(/[^0-9.]/g, '');
+            // Solo permitir 1 entero y hasta 2 decimales
+            val = val.replace(/^(\d)(\d+)/, '$1'); // Solo 1 entero
+            val = val.replace(/(\..{0,2}).*$/, '$1'); // Máximo 2 decimales
+            setSellValue(val);
+          }}
+          placeholder="Ej: 9.12"
           sx={{ bgcolor: 'white', borderRadius: 2, width: 90, input: { textAlign: 'center', fontSize: 18, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1 } }}
-          inputProps={{ maxLength: 7 }}
+          inputProps={{ maxLength: 5 }}
         />
       </Box>
-      <form style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 1 }} onSubmit={handleCreate} autoComplete="off">
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
         <Button
           variant="contained"
           sx={{
             bgcolor: '#23ffbd',
             color: '#060e23',
             fontWeight: 700,
-            fontSize: 18,
+            fontSize: 32,
             borderRadius: 999,
-            px: 3,
-            py: 1,
-            boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)',
+            px: 6,
+            py: 2,
+            boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)',
             textTransform: 'none',
             fontFamily: 'Roboto, sans-serif',
             '&:hover': { bgcolor: '#1be3a2' },
             mb: 1
           }}
-          size="medium"
-          type="submit"
+          size="large"
+          onClick={handleCreate}
           disabled={loading || (!buyValue && !sellValue)}
         >
           Crear alerta
         </Button>
-        <Typography sx={{ color: 'white', fontSize: 12, fontFamily: 'Roboto, sans-serif', mt: 0 }}>
+        <Typography sx={{ color: 'white', fontSize: 15, fontFamily: 'Roboto, sans-serif', mt: 0 }}>
           *Tienes que iniciar sesión
         </Typography>
-        {error && <Typography color="error" sx={{ mt: 1, fontSize: 13 }}>{error}</Typography>}
-      </form>
+        {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
+      </Box>
       <Dialog
         open={modalOpen}
         TransitionComponent={Transition}
@@ -183,19 +159,10 @@ const AlertBlock = () => {
       >
         <DialogTitle sx={{ fontWeight: 700, fontSize: 28, fontFamily: 'Roboto, sans-serif', color: '#057c39' }}>{modalContent.title}</DialogTitle>
         <DialogContent>
-          <Typography sx={{ fontSize: 18, fontFamily: 'Roboto, sans-serif', color: '#222', mb: 2 }} dangerouslySetInnerHTML={{ __html: modalContent.message }} />
+          <Typography sx={{ fontSize: 18, fontFamily: 'Roboto, sans-serif', color: '#222' }}>{modalContent.message}</Typography>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center', flexDirection: 'column', gap: 1 }}>
-          {modalContent.title.includes('Inicia sesión') ? (
-            <Button
-              onClick={() => window.location.href = '/login'}
-              variant="contained"
-              sx={{ bgcolor: '#057c39', color: 'white', borderRadius: 999, px: 4, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 18, mb: 1 }}
-            >
-              Iniciar sesión
-            </Button>
-          ) : null}
-          <Button onClick={() => setModalOpen(false)} variant="outlined" sx={{ borderColor: '#057c39', color: '#057c39', borderRadius: 999, px: 4, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 18 }}>
+        <DialogActions sx={{ justifyContent: 'center' }}>
+          <Button onClick={() => setModalOpen(false)} variant="contained" sx={{ bgcolor: '#057c39', color: 'white', borderRadius: 999, px: 4, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 18 }}>
             Cerrar
           </Button>
         </DialogActions>
