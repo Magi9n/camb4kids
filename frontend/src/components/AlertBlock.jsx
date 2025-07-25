@@ -52,10 +52,15 @@ const AlertBlock = () => {
 
   const handleCreate = async (e) => {
     if (e) e.preventDefault();
+    console.log('handleCreate called. user:', user, 'token:', token);
     setError('');
     const err = validate();
-    if (err) return setError(err);
+    if (err) {
+      console.log('Validation error:', err);
+      return setError(err);
+    }
     if (!token || !user) {
+      console.log('No session detected, showing login modal.');
       showLoginModal();
       return;
     }
