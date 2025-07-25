@@ -97,7 +97,7 @@ const AlertBlock = () => {
           val = val.replace(/(\..{0,2}).*$/, '$1');
           setBuyValue(val);
         }}
-        placeholder="Ej: 9.12"
+        placeholder="3.12"
         sx={{ bgcolor: 'white', borderRadius: 3, width: 140, mx: 2, input: { textAlign: 'center', fontSize: 28, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1.5 } }}
         inputProps={{ maxLength: 5 }}
       />
@@ -114,7 +114,7 @@ const AlertBlock = () => {
           val = val.replace(/(\..{0,2}).*$/, '$1');
           setSellValue(val);
         }}
-        placeholder="Ej: 9.12"
+        placeholder="3.12"
         sx={{ bgcolor: 'white', borderRadius: 3, width: 140, mx: 2, input: { textAlign: 'center', fontSize: 28, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1.5 } }}
         inputProps={{ maxLength: 5 }}
       />
