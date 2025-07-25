@@ -84,7 +84,7 @@ const AlertBlock = () => {
 
   return (
     <Box sx={{ bgcolor: '#060e23', py: 3, px: { xs: 1, md: 3 }, width: '100vw', minWidth: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 2, borderRadius: 3, mt: 0, mx: 0 }}>
-      <Box sx={{ flex: '0 0 auto', minWidth: 120, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 1 }}>
+      <Box sx={{ flex: '0 0 auto', minWidth: 120, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 1, pl: 4 }}>
         <Typography sx={{ fontSize: 16, fontWeight: 400, whiteSpace: 'nowrap' }}>
           Alertar cuando la Compra del dólar esté por encima de
         </Typography>
@@ -118,7 +118,7 @@ const AlertBlock = () => {
         sx={{ bgcolor: 'white', borderRadius: 3, width: 140, mx: 2, input: { textAlign: 'center', fontSize: 28, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1.5 } }}
         inputProps={{ maxLength: 5 }}
       />
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', ml: 3 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', ml: 3, pr: 4 }}>
         <Button
           variant="contained"
           sx={{
