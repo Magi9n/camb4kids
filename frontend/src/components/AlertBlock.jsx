@@ -84,8 +84,8 @@ const AlertBlock = () => {
 
   return (
     <Box sx={{ bgcolor: '#060e23', py: 3, px: { xs: 1, md: 3 }, width: '100vw', minWidth: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 2, borderRadius: 3, mt: 0, mx: 0 }}>
-      <Box sx={{ flex: '0 0 auto', minWidth: 10, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 0.2 }}>
-        <Typography sx={{ fontSize: 13, fontWeight: 400, whiteSpace: 'nowrap', lineHeight: 1.1 }}>
+      <Box sx={{ flex: '0 0 auto', minWidth: 5, maxWidth: 90, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 0.1 }}>
+        <Typography sx={{ fontSize: 16, fontWeight: 400, lineHeight: 1.1, wordBreak: 'break-word' }}>
           Alertar cuando la Compra del dólar esté por encima de
         </Typography>
       </Box>
@@ -101,8 +101,8 @@ const AlertBlock = () => {
         sx={{ bgcolor: 'white', borderRadius: 3, width: 140, mx: 2, input: { textAlign: 'center', fontSize: 28, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1.5 } }}
         inputProps={{ maxLength: 5 }}
       />
-      <Box sx={{ flex: '0 0 auto', minWidth: 10, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 0.2 }}>
-        <Typography sx={{ fontSize: 13, fontWeight: 400, whiteSpace: 'nowrap', lineHeight: 1.1 }}>
+      <Box sx={{ flex: '0 0 auto', minWidth: 5, maxWidth: 90, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 0.1 }}>
+        <Typography sx={{ fontSize: 16, fontWeight: 400, lineHeight: 1.1, wordBreak: 'break-word' }}>
           Alertar cuando la Venta del dólar esté por debajo de
         </Typography>
       </Box>
@@ -125,17 +125,17 @@ const AlertBlock = () => {
             bgcolor: '#23ffbd',
             color: '#060e23',
             fontWeight: 700,
-            fontSize: 32,
+            fontSize: 20,
             borderRadius: 999,
-            px: 6,
-            py: 2,
-            boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)',
+            px: 4,
+            py: 1,
+            boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)',
             textTransform: 'none',
             fontFamily: 'Roboto, sans-serif',
             '&:hover': { bgcolor: '#1be3a2' },
             mb: 0.5
           }}
-          size="large"
+          size="medium"
           onClick={handleCreate}
           disabled={loading || (!buyValue && !sellValue)}
         >
