@@ -21,6 +21,7 @@ const user_entity_1 = require("./modules/auth/entities/user.entity");
 const order_entity_1 = require("./modules/orders/entities/order.entity");
 const exchange_rate_entity_1 = require("./modules/rates/entities/exchange-rate.entity");
 const admin_setting_entity_1 = require("./modules/admin/entities/admin-setting.entity");
+const alerts_module_1 = require("./modules/alerts/alerts.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -58,6 +59,7 @@ exports.AppModule = AppModule = __decorate([
             rates_module_1.RatesModule,
             orders_module_1.OrdersModule,
             admin_module_1.AdminModule,
+            alerts_module_1.AlertsModule,
         ],
     })
 ], AppModule);
