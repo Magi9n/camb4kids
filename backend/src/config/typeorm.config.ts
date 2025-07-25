@@ -20,7 +20,7 @@ export default new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   entities: [User, Order, ExchangeRate, AdminSetting, Alert],
-  migrations: ['src/migrations/*.ts'],
+  migrations: ['dist/migrations/*.js'],
   migrationsRun: false,
   synchronize: false,
   logging: process.env.NODE_ENV === 'development',
