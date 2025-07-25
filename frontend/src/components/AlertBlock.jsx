@@ -41,8 +41,8 @@ const AlertBlock = () => {
   };
 
   const showLoginModal = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
     setModalContent({
       title: 'Inicia sesión',
       message: 'Debes iniciar sesión para crear una alerta. Por favor, inicia sesión para continuar.'

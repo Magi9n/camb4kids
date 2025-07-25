@@ -7,9 +7,9 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
 
   useEffect(() => {
-    // Cargar token y usuario del localStorage al iniciar
-    const savedToken = localStorage.getItem('token');
-    const savedUser = localStorage.getItem('user');
+    // Cargar token y usuario del sessionStorage al iniciar
+    const savedToken = sessionStorage.getItem('token');
+    const savedUser = sessionStorage.getItem('user');
     if (savedToken && savedUser) {
       setToken(savedToken);
       setUser(JSON.parse(savedUser));
@@ -19,15 +19,15 @@ export function AuthProvider({ children }) {
   const login = (userData, jwt) => {
     setUser(userData);
     setToken(jwt);
-    localStorage.setItem('token', jwt);
-    localStorage.setItem('user', JSON.stringify(userData));
+    sessionStorage.setItem('token', jwt);
+    sessionStorage.setItem('user', JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
     setToken(null);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
   };
 
   return (
