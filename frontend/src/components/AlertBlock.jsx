@@ -119,28 +119,28 @@ const AlertBlock = () => {
   };
 
   return (
-    <Box sx={{ bgcolor: '#060e23', py: 7, px: { xs: 2, md: 8 }, display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', justifyContent: 'center', gap: 4, borderRadius: 4, mt: 0 }}>
-      <Box sx={{ flex: 1, textAlign: 'center', color: 'white', fontFamily: 'Roboto, sans-serif', mb: isMobile ? 2 : 0 }}>
-        <Typography sx={{ fontSize: 20, fontWeight: 400, mb: 1 }}>
+    <Box sx={{ bgcolor: '#060e23', py: 3, px: { xs: 1, md: 3 }, display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', justifyContent: 'center', gap: 2, borderRadius: 3, mt: 0, maxWidth: 600, mx: 'auto' }}>
+      <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', mb: isMobile ? 1.5 : 0 }}>
+        <Typography sx={{ fontSize: 15, fontWeight: 400, color: 'white', fontFamily: 'Roboto, sans-serif', mr: 1, textAlign: 'right', minWidth: 0 }}>
           Alertar cuando la Compra del dólar esté por encima de
         </Typography>
         <TextField
           value={buyValue}
           onChange={e => setBuyValue(e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'))}
           placeholder="Ej: 3.229"
-          sx={{ bgcolor: 'white', borderRadius: 3, width: 140, input: { textAlign: 'center', fontSize: 28, fontWeight: 400, fontFamily: 'Roboto, sans-serif' } }}
+          sx={{ bgcolor: 'white', borderRadius: 2, width: 90, input: { textAlign: 'center', fontSize: 18, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1 } }}
           inputProps={{ maxLength: 7 }}
         />
       </Box>
-      <Box sx={{ flex: 1, textAlign: 'center', color: 'white', fontFamily: 'Roboto, sans-serif', mb: isMobile ? 2 : 0 }}>
-        <Typography sx={{ fontSize: 20, fontWeight: 400, mb: 1 }}>
+      <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', mb: isMobile ? 1.5 : 0 }}>
+        <Typography sx={{ fontSize: 15, fontWeight: 400, color: 'white', fontFamily: 'Roboto, sans-serif', mr: 1, textAlign: 'right', minWidth: 0 }}>
           Alertar cuando la Venta del dólar esté por debajo de
         </Typography>
         <TextField
           value={sellValue}
           onChange={e => setSellValue(e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'))}
           placeholder="Ej: 3.229"
-          sx={{ bgcolor: 'white', borderRadius: 3, width: 140, input: { textAlign: 'center', fontSize: 28, fontWeight: 400, fontFamily: 'Roboto, sans-serif' } }}
+          sx={{ bgcolor: 'white', borderRadius: 2, width: 90, input: { textAlign: 'center', fontSize: 18, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1 } }}
           inputProps={{ maxLength: 7 }}
         />
       </Box>
@@ -151,26 +151,26 @@ const AlertBlock = () => {
             bgcolor: '#23ffbd',
             color: '#060e23',
             fontWeight: 700,
-            fontSize: 32,
+            fontSize: 18,
             borderRadius: 999,
-            px: 6,
-            py: 2,
-            boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)',
+            px: 3,
+            py: 1,
+            boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)',
             textTransform: 'none',
             fontFamily: 'Roboto, sans-serif',
             '&:hover': { bgcolor: '#1be3a2' },
             mb: 1
           }}
-          size="large"
+          size="medium"
           type="submit"
           disabled={loading || (!buyValue && !sellValue)}
         >
           Crear alerta
         </Button>
-        <Typography sx={{ color: 'white', fontSize: 15, fontFamily: 'Roboto, sans-serif', mt: 0 }}>
+        <Typography sx={{ color: 'white', fontSize: 12, fontFamily: 'Roboto, sans-serif', mt: 0 }}>
           *Tienes que iniciar sesión
         </Typography>
-        {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
+        {error && <Typography color="error" sx={{ mt: 1, fontSize: 13 }}>{error}</Typography>}
       </form>
       <Dialog
         open={modalOpen}
