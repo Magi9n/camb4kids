@@ -84,8 +84,8 @@ const AlertBlock = () => {
 
   return (
     <Box sx={{ bgcolor: '#060e23', py: 3, px: { xs: 1, md: 3 }, width: '100vw', minWidth: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 2, borderRadius: 3, mt: 0, mx: 0 }}>
-      <Box sx={{ flex: '0 0 auto', minWidth: 180, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 1 }}>
-        <Typography sx={{ fontSize: 18, fontWeight: 400 }}>
+      <Box sx={{ flex: '0 0 auto', minWidth: 120, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 1 }}>
+        <Typography sx={{ fontSize: 16, fontWeight: 400, whiteSpace: 'nowrap' }}>
           Alertar cuando la Compra del dólar esté por encima de
         </Typography>
       </Box>
@@ -98,11 +98,11 @@ const AlertBlock = () => {
           setBuyValue(val);
         }}
         placeholder="Ej: 9.12"
-        sx={{ bgcolor: 'white', borderRadius: 2, width: 90, mx: 1, input: { textAlign: 'center', fontSize: 18, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1 } }}
+        sx={{ bgcolor: 'white', borderRadius: 3, width: 140, mx: 2, input: { textAlign: 'center', fontSize: 28, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1.5 } }}
         inputProps={{ maxLength: 5 }}
       />
-      <Box sx={{ flex: '0 0 auto', minWidth: 180, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 1 }}>
-        <Typography sx={{ fontSize: 18, fontWeight: 400 }}>
+      <Box sx={{ flex: '0 0 auto', minWidth: 120, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 1 }}>
+        <Typography sx={{ fontSize: 16, fontWeight: 400, whiteSpace: 'nowrap' }}>
           Alertar cuando la Venta del dólar esté por debajo de
         </Typography>
       </Box>
@@ -115,36 +115,36 @@ const AlertBlock = () => {
           setSellValue(val);
         }}
         placeholder="Ej: 9.12"
-        sx={{ bgcolor: 'white', borderRadius: 2, width: 90, mx: 1, input: { textAlign: 'center', fontSize: 18, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1 } }}
+        sx={{ bgcolor: 'white', borderRadius: 3, width: 140, mx: 2, input: { textAlign: 'center', fontSize: 28, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1.5 } }}
         inputProps={{ maxLength: 5 }}
       />
-      <Button
-        variant="contained"
-        sx={{
-          bgcolor: '#23ffbd',
-          color: '#060e23',
-          fontWeight: 700,
-          fontSize: 22,
-          borderRadius: 999,
-          px: 4,
-          py: 1.5,
-          boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)',
-          textTransform: 'none',
-          fontFamily: 'Roboto, sans-serif',
-          '&:hover': { bgcolor: '#1be3a2' },
-          ml: 2
-        }}
-        size="large"
-        onClick={handleCreate}
-        disabled={loading || (!buyValue && !sellValue)}
-      >
-        Crear alerta
-      </Button>
-      <Box sx={{ flex: '0 0 auto', minWidth: 120, textAlign: 'left', pl: 2 }}>
-        <Typography sx={{ color: 'white', fontSize: 13, fontFamily: 'Roboto, sans-serif', mt: 0 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', ml: 3 }}>
+        <Button
+          variant="contained"
+          sx={{
+            bgcolor: '#23ffbd',
+            color: '#060e23',
+            fontWeight: 700,
+            fontSize: 32,
+            borderRadius: 999,
+            px: 6,
+            py: 2,
+            boxShadow: '0 2px 12px 0 rgba(0,0,0,0.10)',
+            textTransform: 'none',
+            fontFamily: 'Roboto, sans-serif',
+            '&:hover': { bgcolor: '#1be3a2' },
+            mb: 0.5
+          }}
+          size="large"
+          onClick={handleCreate}
+          disabled={loading || (!buyValue && !sellValue)}
+        >
+          Crear alerta
+        </Button>
+        <Typography sx={{ color: 'white', fontSize: 15, fontFamily: 'Roboto, sans-serif', mt: 0 }}>
           *Tienes que iniciar sesión
         </Typography>
-        {error && <Typography color="error" sx={{ mt: 1, fontSize: 13 }}>{error}</Typography>}
+        {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
       </Box>
       <Dialog
         open={modalOpen}
