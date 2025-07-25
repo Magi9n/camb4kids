@@ -21,9 +21,13 @@ const HowItWorks = () => (
     </Typography>
     <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'center', alignItems: 'flex-start', gap: { xs: 6, md: 10 }, width: '100%', maxWidth: 1100 }}>
       {/* Paso 1 */}
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220 }}>
-        <span className="kollektif" style={{ fontSize: 70, color: '#000', fontWeight: 700, marginBottom: 8 }}>1</span>
-        <img src={celular1} alt="Celular 1" style={{ width: 120, marginBottom: 18 }} />
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220, position: 'relative', height: 220 }}>
+        <Box sx={{ position: 'absolute', top: 0, left: 0, zIndex: 2 }}>
+          <span className="kollektif" style={{ fontSize: 70, color: '#000', fontWeight: 700 }}>1</span>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 170, width: '100%', mt: 2 }}>
+          <img src={celular1} alt="Celular 1" style={{ height: 150, objectFit: 'contain' }} />
+        </Box>
         <Typography sx={{ fontFamily: 'Roboto, sans-serif', color: '#057c39', fontWeight: 700, fontSize: 22, mb: 1, textAlign: 'center' }}>
           Cotiza tu cambio
         </Typography>
@@ -32,9 +36,13 @@ const HowItWorks = () => (
         </Typography>
       </Box>
       {/* Paso 2 */}
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220 }}>
-        <span className="kollektif" style={{ fontSize: 70, color: '#000', fontWeight: 700, marginBottom: 8 }}>2</span>
-        <img src={celular2} alt="Celular 2" style={{ width: 120, marginBottom: 18 }} />
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220, position: 'relative', height: 220 }}>
+        <Box sx={{ position: 'absolute', top: 0, left: 0, zIndex: 2 }}>
+          <span className="kollektif" style={{ fontSize: 70, color: '#000', fontWeight: 700 }}>2</span>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 170, width: '100%', mt: 2 }}>
+          <img src={celular2} alt="Celular 2" style={{ height: 150, objectFit: 'contain' }} />
+        </Box>
         <Typography sx={{ fontFamily: 'Roboto, sans-serif', color: '#057c39', fontWeight: 700, fontSize: 22, mb: 1, textAlign: 'center' }}>
           Transfiere
         </Typography>
@@ -43,14 +51,16 @@ const HowItWorks = () => (
         </Typography>
       </Box>
       {/* Paso 3 */}
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220 }}>
-        <span className="kollektif" style={{ fontSize: 70, color: '#000', fontWeight: 700, marginBottom: 8 }}>3</span>
-        <Box sx={{ width: 120, height: 120, mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220, position: 'relative', height: 220 }}>
+        <Box sx={{ position: 'absolute', top: 0, left: 0, zIndex: 2 }}>
+          <span className="kollektif" style={{ fontSize: 70, color: '#000', fontWeight: 700 }}>3</span>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 170, width: '100%', mt: 2 }}>
           <DotLottieReact
             src="https://lottie.host/c33fd0da-5f5a-4d83-9949-c39fffda0280/2qCo4p6Mhx.lottie"
             loop
             autoplay
-            style={{ width: 120, height: 120 }}
+            style={{ height: 150, width: 120 }}
           />
         </Box>
         <Typography sx={{ fontFamily: 'Roboto, sans-serif', color: '#057c39', fontWeight: 700, fontSize: 22, mb: 1, textAlign: 'center' }}>
