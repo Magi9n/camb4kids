@@ -16,6 +16,8 @@ export class AlertsService {
   ) {}
 
   async createAlert(dto: CreateAlertDto, user: User) {
+    console.log('AlertRepo metadata:', this.alertRepo.metadata);
+    console.log('AlertRepo target:', this.alertRepo.target);
     const current = await this.ratesService.getCurrent();
     if (!current.rate) throw new BadRequestException('No se pudo obtener la tasa actual');
     // Validación lógica
