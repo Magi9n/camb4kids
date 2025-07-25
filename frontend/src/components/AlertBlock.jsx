@@ -84,8 +84,8 @@ const AlertBlock = () => {
 
   return (
     <Box sx={{ bgcolor: '#060e23', py: 3, px: { xs: 1, md: 3 }, width: '100vw', minWidth: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 2, borderRadius: 3, mt: 0, mx: 0 }}>
-      <Box sx={{ flex: '0 0 auto', minWidth: 80, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 1 }}>
-        <Typography sx={{ fontSize: 16, fontWeight: 400, whiteSpace: 'nowrap' }}>
+      <Box sx={{ flex: '0 0 auto', minWidth: 10, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 0.2 }}>
+        <Typography sx={{ fontSize: 13, fontWeight: 400, whiteSpace: 'nowrap', lineHeight: 1.1 }}>
           Alertar cuando la Compra del dólar esté por encima de
         </Typography>
       </Box>
@@ -101,8 +101,8 @@ const AlertBlock = () => {
         sx={{ bgcolor: 'white', borderRadius: 3, width: 140, mx: 2, input: { textAlign: 'center', fontSize: 28, fontWeight: 400, fontFamily: 'Roboto, sans-serif', p: 1.5 } }}
         inputProps={{ maxLength: 5 }}
       />
-      <Box sx={{ flex: '0 0 auto', minWidth: 80, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 1 }}>
-        <Typography sx={{ fontSize: 16, fontWeight: 400, whiteSpace: 'nowrap' }}>
+      <Box sx={{ flex: '0 0 auto', minWidth: 10, textAlign: 'right', color: 'white', fontFamily: 'Roboto, sans-serif', pr: 0.2 }}>
+        <Typography sx={{ fontSize: 13, fontWeight: 400, whiteSpace: 'nowrap', lineHeight: 1.1 }}>
           Alertar cuando la Venta del dólar esté por debajo de
         </Typography>
       </Box>
