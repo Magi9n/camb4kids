@@ -44,8 +44,8 @@ const AlertBlock = () => {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('user');
     setModalContent({
-      title: 'Inicia sesión',
-      message: 'Debes iniciar sesión para crear una alerta. Por favor, inicia sesión para continuar.'
+      title: '¡Inicia sesión o crea una cuenta!',
+      message: 'Para crear una alerta personalizada debes iniciar sesión o registrarte. Así podrás recibir notificaciones en tu correo cuando el dólar alcance los valores que te interesan.'
     });
     setModalOpen(true);
   };
@@ -136,7 +136,7 @@ const AlertBlock = () => {
           }}
           size="large"
           type="submit"
-          disabled={loading || (!buyValue && !sellValue) || !token || !user}
+          disabled={loading || (!buyValue && !sellValue)}
         >
           Crear alerta
         </Button>
@@ -156,10 +156,19 @@ const AlertBlock = () => {
       >
         <DialogTitle sx={{ fontWeight: 700, fontSize: 28, fontFamily: 'Roboto, sans-serif', color: '#057c39' }}>{modalContent.title}</DialogTitle>
         <DialogContent>
-          <Typography sx={{ fontSize: 18, fontFamily: 'Roboto, sans-serif', color: '#222' }}>{modalContent.message}</Typography>
+          <Typography sx={{ fontSize: 18, fontFamily: 'Roboto, sans-serif', color: '#222', mb: 2 }}>{modalContent.message}</Typography>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center' }}>
-          <Button onClick={() => setModalOpen(false)} variant="contained" sx={{ bgcolor: '#057c39', color: 'white', borderRadius: 999, px: 4, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 18 }}>
+        <DialogActions sx={{ justifyContent: 'center', flexDirection: 'column', gap: 1 }}>
+          {modalContent.title.includes('Inicia sesión') ? (
+            <Button
+              onClick={() => window.location.href = '/login'}
+              variant="contained"
+              sx={{ bgcolor: '#057c39', color: 'white', borderRadius: 999, px: 4, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 18, mb: 1 }}
+            >
+              Iniciar sesión
+            </Button>
+          ) : null}
+          <Button onClick={() => setModalOpen(false)} variant="outlined" sx={{ borderColor: '#057c39', color: '#057c39', borderRadius: 999, px: 4, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 18 }}>
             Cerrar
           </Button>
         </DialogActions>
