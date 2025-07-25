@@ -84,4 +84,8 @@ MangosCash`;
       text,
     });
   }
+
+  async getAlertsForUser(user: User) {
+    return this.alertRepo.find({ where: { user: { id: user.id } }, order: { createdAt: 'DESC' } });
+  }
 } 

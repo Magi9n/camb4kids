@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Request, Get } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { AlertsService } from './alerts.service';
 import { CreateAlertDto } from './alert.dto';
@@ -11,5 +11,10 @@ export class AlertsController {
   @Post()
   async create(@Body() dto: CreateAlertDto, @Request() req) {
     return this.alertsService.createAlert(dto, req.user);
+  }
+
+  @Get()
+  async findAll(@Request() req) {
+    return this.alertsService.getAlertsForUser(req.user);
   }
 } 

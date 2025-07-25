@@ -28,10 +28,21 @@ const AlertBlock = () => {
   const [modalContent, setModalContent] = useState({ title: '', message: '' });
   const [loading, setLoading] = useState(false);
   const [currentRate, setCurrentRate] = useState(null);
+  const [userAlerts, setUserAlerts] = useState([]);
 
   React.useEffect(() => {
     api.get('/rates/current').then(res => setCurrentRate(res.data.rate)).catch(() => {});
   }, []);
+
+  React.useEffect(() => {
+    if (token && user) {
+      api.get('/alerts')
+        .then(res => setUserAlerts(res.data))
+        .catch(() => setUserAlerts([]));
+    } else {
+      setUserAlerts([]);
+    }
+  }, [token, user]);
 
   const validate = () => {
     if (!buyValue && !sellValue) return 'Debes ingresar al menos un valor.';
@@ -52,18 +63,32 @@ const AlertBlock = () => {
 
   const handleCreate = async (e) => {
     if (e) e.preventDefault();
-    console.log('handleCreate called. user:', user, 'token:', token);
     setError('');
     const err = validate();
     if (err) {
-      console.log('Validation error:', err);
       return setError(err);
     }
     if (!token || !user) {
-      console.log('No session detected, showing login modal.');
       showLoginModal();
       return;
     }
+
+    // Verificar si ya existe una alerta igual
+    const buyExists = buyValue && userAlerts.some(a => a.type === 'buy' && parseFloat(a.value) === parseFloat(buyValue));
+    const sellExists = sellValue && userAlerts.some(a => a.type === 'sell' && parseFloat(a.value) === parseFloat(sellValue));
+    if (buyExists || sellExists) {
+      let msg = 'Ya tienes una alerta registrada con los siguientes valores:';
+      if (buyExists) msg += `\n- Compra: ${buyValue}`;
+      if (sellExists) msg += `\n- Venta: ${sellValue}`;
+      msg += '\nPuedes modificar o eliminar tus alertas desde tu panel de usuario.';
+      setModalContent({
+        title: 'Alerta ya registrada',
+        message: msg.replace(/\n/g, '<br />'),
+      });
+      setModalOpen(true);
+      return;
+    }
+
     setLoading(true);
     try {
       let created = false;
@@ -83,6 +108,8 @@ const AlertBlock = () => {
         setModalOpen(true);
         setBuyValue('');
         setSellValue('');
+        // Refrescar alertas del usuario
+        api.get('/alerts').then(res => setUserAlerts(res.data)).catch(() => {});
       }
     } catch (e) {
       setError(e.response?.data?.message || 'Error al crear la alerta.');
@@ -156,7 +183,7 @@ const AlertBlock = () => {
       >
         <DialogTitle sx={{ fontWeight: 700, fontSize: 28, fontFamily: 'Roboto, sans-serif', color: '#057c39' }}>{modalContent.title}</DialogTitle>
         <DialogContent>
-          <Typography sx={{ fontSize: 18, fontFamily: 'Roboto, sans-serif', color: '#222', mb: 2 }}>{modalContent.message}</Typography>
+          <Typography sx={{ fontSize: 18, fontFamily: 'Roboto, sans-serif', color: '#222', mb: 2 }} dangerouslySetInnerHTML={{ __html: modalContent.message }} />
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'center', flexDirection: 'column', gap: 1 }}>
           {modalContent.title.includes('Inicia sesión') ? (
