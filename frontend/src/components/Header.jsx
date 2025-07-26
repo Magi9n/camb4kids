@@ -3,7 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import Menu from '@mui/material/Menu';
+import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
@@ -46,12 +46,10 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMenuClick = (event) => {
-    console.log('Menú abierto - anchorEl:', event.currentTarget);
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
-    console.log('Menú cerrado');
     setAnchorEl(null);
   };
 
@@ -83,12 +81,7 @@ const Header = () => {
           display: 'flex', 
           alignItems: 'center', 
           gap: 3, 
-          mr: 2,
-          ...(user && token ? { ml: -2 } : {}),
-          // Debug temporal
-          border: user && token ? '2px solid red' : 'none',
-          minWidth: user && token ? 'auto' : 'auto',
-          width: user && token ? 'fit-content' : 'auto'
+          mr: 2
         }}>
           <Box component="span" sx={menuHoverStyle}>Nosotros</Box>
           <Box component="span" sx={menuHoverStyle}>Empresas</Box>
@@ -100,11 +93,7 @@ const Header = () => {
               display: 'flex', 
               alignItems: 'center', 
               gap: 1, 
-              position: 'relative', 
-              zIndex: 9999,
-              // Debug temporal
-              border: '2px solid blue',
-              minWidth: 'fit-content'
+              position: 'relative'
             }}>
               <Button
                 onClick={handleMenuClick}
@@ -132,21 +121,24 @@ const Header = () => {
                   {getUserDisplayName()}
                 </Typography>
               </Button>
-              <Menu
-                anchorEl={anchorEl}
+              <Popover
                 open={Boolean(anchorEl)}
+                anchorEl={anchorEl}
                 onClose={handleMenuClose}
-                disablePortal={false}
-                keepMounted={false}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
                 PaperProps={{
                   sx: {
                     mt: 1,
                     minWidth: 180,
                     boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
                     borderRadius: 2,
-                    zIndex: 9999,
-                    // Debug temporal
-                    border: '2px solid green',
                     '& .MuiMenuItem-root': {
                       fontFamily: 'Roboto, sans-serif',
                       fontSize: 14,
@@ -155,8 +147,13 @@ const Header = () => {
                     }
                   }
                 }}
-                // Forzar posicionamiento absoluto
-                style={{ position: 'absolute' }}
+                slotProps={{
+                  paper: {
+                    style: {
+                      position: 'fixed'
+                    }
+                  }
+                }}
               >
                 <MenuItem onClick={() => handleMenuOption('/')}>
                   <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500 }}>
@@ -197,7 +194,7 @@ const Header = () => {
                     🚪 Cerrar Sesión
                   </Typography>
                 </MenuItem>
-              </Menu>
+              </Popover>
             </Box>
           ) : (
             // Usuario no logueado - Mostrar botones de login/register
