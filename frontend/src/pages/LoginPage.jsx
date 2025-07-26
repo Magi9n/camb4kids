@@ -31,7 +31,7 @@ const LoginPage = () => {
       title: 'Calcula tu cambio',
       desc: React.createElement(React.Fragment, null, [
         'Utiliza nuestra calculadora para conocer el ',
-        <span key="1" style={{ color: '#057c39', fontWeight: 700 }}>tipo de cambio</span>,
+        <span key="1" style={{ color: '#005a7c', fontWeight: 700 }}>tipo de cambio</span>,
         ' en tiempo real y tomar la mejor decisión.'
       ]),
     },
@@ -40,7 +40,7 @@ const LoginPage = () => {
       title: 'Transfiere con seguridad',
       desc: React.createElement(React.Fragment, null, [
         'Envía tu ',
-        <span key="2" style={{ color: '#057c39', fontWeight: 700 }}>dinero</span>,
+        <span key="2" style={{ color: '#005a7c', fontWeight: 700 }}>dinero</span>,
         ' desde tu banco favorito y nosotros nos encargamos del resto.'
       ]),
     },
@@ -49,7 +49,7 @@ const LoginPage = () => {
       title: 'Recibe tu cambio',
       desc: React.createElement(React.Fragment, null, [
         'El monto cambiado será ',
-        <span key="3" style={{ color: '#057c39', fontWeight: 700 }}>depositado</span>,
+        <span key="3" style={{ color: '#005a7c', fontWeight: 700 }}>depositado</span>,
         ' en tu cuenta de destino de forma rápida y segura.'
       ]),
     },
