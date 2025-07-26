@@ -84,7 +84,7 @@ const Header = () => {
           
           {user && token ? (
             // Usuario logueado - Mostrar nombre con menú desplegable
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, position: 'relative' }}>
               <Button
                 onClick={handleMenuClick}
                 sx={{
@@ -115,6 +115,14 @@ const Header = () => {
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
                 PaperProps={{
                   sx: {
                     mt: 1,
@@ -129,6 +137,15 @@ const Header = () => {
                     }
                   }
                 }}
+                slotProps={{
+                  paper: {
+                    style: {
+                      transform: 'none !important'
+                    }
+                  }
+                }}
+                keepMounted
+                disablePortal={false}
               >
                 <MenuItem onClick={() => handleMenuOption('/')}>
                   <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500 }}>
