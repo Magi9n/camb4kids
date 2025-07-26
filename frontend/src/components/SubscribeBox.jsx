@@ -102,7 +102,7 @@ const SubscribeBox = () => {
         py: 5,
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         maxWidth: 450,
         width: '90%',
         position: 'relative',
@@ -115,7 +115,7 @@ const SubscribeBox = () => {
           fontWeight: 700, 
           fontSize: 36, 
           mb: 3, 
-          textAlign: 'center', 
+          textAlign: 'left', 
           letterSpacing: 1,
           textTransform: 'uppercase'
         }}>
@@ -126,7 +126,7 @@ const SubscribeBox = () => {
           fontFamily: 'Roboto, sans-serif', 
           color: '#000', 
           fontSize: 20, 
-          textAlign: 'center', 
+          textAlign: 'left', 
           mb: 5,
           maxWidth: 400
         }}>
@@ -151,19 +151,29 @@ const SubscribeBox = () => {
             error={!!emailError}
             helperText={emailError}
             sx={{ 
-              bgcolor: 'white', 
+              bgcolor: '#fcf9f9', 
               borderRadius: 2,
               '& .MuiOutlinedInput-root': {
                 borderRadius: 2,
+                fontFamily: 'Roboto, sans-serif',
+                textAlign: 'center',
                 '& fieldset': {
-                  borderColor: emailError ? '#d32f2f' : '#ccc',
+                  border: 'none',
                 },
                 '&:hover fieldset': {
-                  borderColor: emailError ? '#d32f2f' : '#999',
+                  border: 'none',
                 },
                 '&.Mui-focused fieldset': {
-                  borderColor: emailError ? '#d32f2f' : '#057c39',
+                  border: 'none',
                 },
+                '& input': {
+                  textAlign: 'center',
+                  fontFamily: 'Roboto, sans-serif',
+                },
+                '& input::placeholder': {
+                  textAlign: 'center',
+                  fontFamily: 'Roboto, sans-serif',
+                }
               }
             }}
           />
@@ -180,7 +190,7 @@ const SubscribeBox = () => {
               fontSize: 22, 
               textTransform: 'none',
               boxShadow: '0 2px 8px 0 rgba(0,0,0,0.15)',
-              width: '100%',
+              width: '60%',
               '&:hover': {
                 bgcolor: '#046a30',
                 boxShadow: '0 4px 12px 0 rgba(0,0,0,0.2)',
