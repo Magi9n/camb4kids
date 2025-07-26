@@ -84,22 +84,20 @@ const LoginPage = () => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          px: 6,
-          py: 8,
+          px: 8,
+          py: 10,
           boxShadow: '8px 0 32px 0 rgba(0,0,0,0.04)',
           animation: show ? 'slideInLeft 1s cubic-bezier(.77,0,.18,1) forwards' : 'none',
           position: 'relative',
-          zIndex: 2
+          zIndex: 2,
         }}>
-          <img src={LOGOMANGOCASHPARADO} alt="MangosCash" style={{ width: 120, marginBottom: 32 }} />
+          <img src={LOGOMANGOCASHPARADO} alt="MangosCash" style={{ width: 200, marginBottom: 48 }} />
           {leftTexts.map((item, idx) => (
-            <Box key={idx} sx={{ display: 'flex', alignItems: 'flex-start', mb: 5, width: '100%' }}>
-              <Box sx={{ bgcolor: '#057c39', borderRadius: 2, p: 1, display: 'flex', alignItems: 'center', minWidth: 48, minHeight: 48, mr: 2 }}>
-                <img src={item.icon} alt="icono" style={{ width: 32, height: 32, marginRight: 16 }} />
-              </Box>
+            <Box key={idx} sx={{ display: 'flex', alignItems: 'center', mb: 6, width: '100%', justifyContent: 'center' }}>
+              <img src={item.icon} alt="icono" style={{ width: 54, height: 54, marginRight: 24 }} />
               <Box>
-                <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: 20, mb: 0.5, letterSpacing: 0.2 }}>{item.title}</Typography>
-                <Typography sx={{ color: '#fff', fontWeight: 400, fontSize: 16, lineHeight: 1.4 }}>{item.desc}</Typography>
+                <Typography sx={{ color: '#222', fontWeight: 700, fontSize: 24, mb: 1, letterSpacing: 0.2, textAlign: 'center' }}>{item.title}</Typography>
+                <Typography sx={{ color: '#222', fontWeight: 400, fontSize: 18, lineHeight: 1.4, textAlign: 'center' }}>{item.desc}</Typography>
               </Box>
             </Box>
           ))}
@@ -144,6 +142,12 @@ const LoginPage = () => {
             <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
               Ingresar
             </Button>
+            <Typography sx={{ mt: 2, textAlign: 'right', color: '#005a7c', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => navigate('/forgot-password')}>
+              ¿Olvidaste tu contraseña?
+            </Typography>
+            <Typography sx={{ mt: 2, textAlign: 'center', color: '#005a7c', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => navigate('/register')}>
+              ¿No tienes cuenta? Regístrate aquí
+            </Typography>
           </form>
         </Box>
       </Fade>
