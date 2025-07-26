@@ -192,13 +192,15 @@ const Footer = () => {
               Horarios
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Typography sx={{ 
-                fontFamily: 'Roboto, sans-serif', 
-                color: '#8b8e96', 
-                fontSize: 14
-              }}>
-                Lunes A Viernes{' '}
-                <Typography component="span" sx={{ 
+              <Box>
+                <Typography sx={{ 
+                  fontFamily: 'Roboto, sans-serif', 
+                  color: '#8b8e96', 
+                  fontSize: 14
+                }}>
+                  Lunes A Viernes
+                </Typography>
+                <Typography sx={{ 
                   fontFamily: 'Roboto, sans-serif', 
                   color: 'white', 
                   fontWeight: 700, 
@@ -206,14 +208,16 @@ const Footer = () => {
                 }}>
                   9:00 AM – 7:00 PM
                 </Typography>
-              </Typography>
-              <Typography sx={{ 
-                fontFamily: 'Roboto, sans-serif', 
-                color: '#8b8e96', 
-                fontSize: 14
-              }}>
-                Sábado{' '}
-                <Typography component="span" sx={{ 
+              </Box>
+              <Box>
+                <Typography sx={{ 
+                  fontFamily: 'Roboto, sans-serif', 
+                  color: '#8b8e96', 
+                  fontSize: 14
+                }}>
+                  Sábado
+                </Typography>
+                <Typography sx={{ 
                   fontFamily: 'Roboto, sans-serif', 
                   color: 'white', 
                   fontWeight: 700, 
@@ -221,14 +225,16 @@ const Footer = () => {
                 }}>
                   9:00 AM – 2:00 PM
                 </Typography>
-              </Typography>
-              <Typography sx={{ 
-                fontFamily: 'Roboto, sans-serif', 
-                color: '#8b8e96', 
-                fontSize: 14
-              }}>
-                Atención Por WhatsApp{' '}
-                <Typography component="span" sx={{ 
+              </Box>
+              <Box>
+                <Typography sx={{ 
+                  fontFamily: 'Roboto, sans-serif', 
+                  color: '#8b8e96', 
+                  fontSize: 14
+                }}>
+                  Atención Por WhatsApp
+                </Typography>
+                <Typography sx={{ 
                   fontFamily: 'Roboto, sans-serif', 
                   color: 'white', 
                   fontWeight: 700, 
@@ -236,7 +242,7 @@ const Footer = () => {
                 }}>
                   +51 929 382 969
                 </Typography>
-              </Typography>
+              </Box>
             </Box>
           </Grid>
         </Grid>
@@ -248,7 +254,7 @@ const Footer = () => {
           borderTop: '1px solid #333',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           gap: 2
         }}>
           <img 
@@ -265,7 +271,8 @@ const Footer = () => {
             color: '#8b8e96', 
             fontSize: 12, 
             textAlign: 'center',
-            lineHeight: 1.4
+            lineHeight: 1.4,
+            width: '100%'
           }}>
             © {new Date().getFullYear()} MangosCash. Todos los derechos reservados. | 
             Plataforma de cambio digital segura y confiable en Perú.
