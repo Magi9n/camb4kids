@@ -72,7 +72,7 @@ const LoginPage = () => {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', width: '100vw', display: 'flex', fontFamily: 'Roboto, sans-serif', background: '#F6F6F9' }}>
+    <Box sx={{ minHeight: '100vh', height: '100vh', width: '100vw', display: 'flex', fontFamily: 'Roboto, sans-serif', background: '#F6F6F9', overflow: 'hidden' }}>
       {/* Bloque izquierdo */}
       <Fade in={show} timeout={900} style={{ transitionDelay: show ? '100ms' : '0ms' }}>
         <Box sx={{
@@ -85,11 +85,13 @@ const LoginPage = () => {
           alignItems: 'center',
           justifyContent: 'center',
           px: 12,
-          py: 10,
+          py: 6,
+          height: '100vh',
           boxShadow: '8px 0 32px 0 rgba(0,0,0,0.04)',
           animation: show ? 'slideInLeft 1s cubic-bezier(.77,0,.18,1) forwards' : 'none',
           position: 'relative',
           zIndex: 2,
+          overflow: 'hidden',
         }}>
           <img src={LOGOMANGOCASHPARADO} alt="MangosCash" style={{ width: 200, marginBottom: 48, display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
           {leftTexts.map((item, idx) => (
@@ -107,48 +109,54 @@ const LoginPage = () => {
       <Fade in={show} timeout={900} style={{ transitionDelay: show ? '300ms' : '0ms' }}>
         <Box sx={{
           flex: 1,
+          minWidth: 340,
+          maxWidth: 480,
+          bgcolor: '#F6F6F9',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
           px: 6,
-          py: 8,
-          boxShadow: '8px 0 32px 0 rgba(0,0,0,0.04)',
+          py: 6,
+          height: '100vh',
+          boxShadow: '-8px 0 32px 0 rgba(0,0,0,0.04)',
           animation: show ? 'slideInRight 1s cubic-bezier(.77,0,.18,1) forwards' : 'none',
-          position: 'relative',
-          zIndex: 2
+          zIndex: 1,
+          overflow: 'hidden',
         }}>
-          <Typography variant="h5" fontWeight="bold" gutterBottom>Iniciar sesión</Typography>
-          <form onSubmit={handleSubmit}>
-            <TextField
-              label="Email"
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              fullWidth
-              margin="normal"
-              required
-            />
-            <TextField
-              label="Contraseña"
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              fullWidth
-              margin="normal"
-              required
-            />
-            {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
-            <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-              Ingresar
-            </Button>
-            <Typography sx={{ mt: 2, textAlign: 'right', color: '#005a7c', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => navigate('/forgot-password')}>
-              ¿Olvidaste tu contraseña?
-            </Typography>
-            <Typography sx={{ mt: 2, textAlign: 'center', color: '#005a7c', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => navigate('/register')}>
-              ¿No tienes cuenta? Regístrate aquí
-            </Typography>
-          </form>
+          <Box sx={{ width: '100%', maxWidth: 370, mx: 'auto', bgcolor: 'white', borderRadius: 4, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.04)', p: 5 }}>
+            <Typography variant="h5" fontWeight="bold" gutterBottom>Iniciar sesión</Typography>
+            <form onSubmit={handleSubmit}>
+              <TextField
+                label="Email"
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                fullWidth
+                margin="normal"
+                required
+              />
+              <TextField
+                label="Contraseña"
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                fullWidth
+                margin="normal"
+                required
+              />
+              {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
+              <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+                Ingresar
+              </Button>
+              <Typography sx={{ mt: 2, textAlign: 'right', color: '#005a7c', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => navigate('/forgot-password')}>
+                ¿Olvidaste tu contraseña?
+              </Typography>
+              <Typography sx={{ mt: 2, textAlign: 'center', color: '#005a7c', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => navigate('/register')}>
+                ¿No tienes cuenta? Regístrate aquí
+              </Typography>
+            </form>
+          </Box>
         </Box>
       </Fade>
     </Box>
