@@ -150,50 +150,56 @@ const SubscribeBox = () => {
           width: '100%', 
           alignItems: 'center'
         }}>
-          <TextField
-            fullWidth
-            size="medium"
-            variant="outlined"
-            placeholder="Tu correo electrónico"
-            value={email}
-            onChange={handleEmailChange}
-            disabled={loading}
-            error={!!emailError}
-            helperText={emailError}
-            sx={{ 
-              bgcolor: '#fcf9f9', 
-              borderRadius: 2,
-              '& .MuiOutlinedInput-root': {
+          <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <TextField
+              fullWidth
+              size="medium"
+              variant="outlined"
+              placeholder="Tu correo electrónico"
+              value={email}
+              onChange={handleEmailChange}
+              disabled={loading}
+              error={!!emailError}
+              sx={{ 
+                bgcolor: '#fcf9f9', 
                 borderRadius: 2,
-                fontFamily: 'Roboto, sans-serif',
-                textAlign: 'center',
-                '& fieldset': {
-                  border: 'none',
-                },
-                '&:hover fieldset': {
-                  border: 'none',
-                },
-                '&.Mui-focused fieldset': {
-                  border: 'none',
-                },
-                '& input': {
-                  textAlign: 'center',
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
                   fontFamily: 'Roboto, sans-serif',
-                },
-                '& input::placeholder': {
                   textAlign: 'center',
-                  fontFamily: 'Roboto, sans-serif',
+                  '& fieldset': {
+                    border: 'none',
+                  },
+                  '&:hover fieldset': {
+                    border: 'none',
+                  },
+                  '&.Mui-focused fieldset': {
+                    border: 'none',
+                  },
+                  '& input': {
+                    textAlign: 'center',
+                    fontFamily: 'Roboto, sans-serif',
+                  },
+                  '& input::placeholder': {
+                    textAlign: 'center',
+                    fontFamily: 'Roboto, sans-serif',
+                  }
                 }
-              },
-              '& .MuiFormHelperText-root': {
-                bgcolor: 'transparent',
+              }}
+            />
+            {emailError && (
+              <Typography sx={{ 
                 color: '#d32f2f',
                 fontFamily: 'Roboto, sans-serif',
                 fontSize: 14,
-                margin: '4px 0 0 0'
-              }
-            }}
-          />
+                mt: 1,
+                textAlign: 'center',
+                bgcolor: 'transparent'
+              }}>
+                {emailError}
+              </Typography>
+            )}
+          </Box>
           <Button
             variant="contained"
             sx={{ 
