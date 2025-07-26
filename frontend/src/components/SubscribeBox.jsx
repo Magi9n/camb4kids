@@ -7,6 +7,7 @@ const SubscribeBox = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showDuplicateModal, setShowDuplicateModal] = useState(false);
   const [emailError, setEmailError] = useState('');
 
   const validateEmail = (email) => {
@@ -50,7 +51,12 @@ const SubscribeBox = () => {
         setEmail('');
       } else {
         const error = await response.json();
-        alert(error.message || 'Error al suscribirse');
+        if (response.status === 409) {
+          // Error de suscripción duplicada
+          setShowDuplicateModal(true);
+        } else {
+          alert(error.message || 'Error al suscribirse');
+        }
       }
     } catch (error) {
       alert('Error de conexión. Por favor intenta nuevamente.');
@@ -61,6 +67,10 @@ const SubscribeBox = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
+  };
+
+  const handleCloseDuplicateModal = () => {
+    setShowDuplicateModal(false);
   };
 
   return (
@@ -174,6 +184,13 @@ const SubscribeBox = () => {
                   textAlign: 'center',
                   fontFamily: 'Roboto, sans-serif',
                 }
+              },
+              '& .MuiFormHelperText-root': {
+                bgcolor: 'transparent',
+                color: '#d32f2f',
+                fontFamily: 'Roboto, sans-serif',
+                fontSize: 14,
+                margin: '4px 0 0 0'
               }
             }}
           />
@@ -242,6 +259,65 @@ const SubscribeBox = () => {
         <DialogActions sx={{ justifyContent: 'center', pb: 3, px: 3 }}>
           <Button
             onClick={handleCloseModal}
+            variant="contained"
+            sx={{ 
+              bgcolor: '#057c39', 
+              color: 'white', 
+              fontWeight: 700, 
+              px: 4, 
+              py: 1, 
+              borderRadius: 2,
+              fontFamily: 'Roboto, sans-serif',
+              fontSize: 16,
+              textTransform: 'none',
+              '&:hover': {
+                bgcolor: '#046a30',
+              }
+            }}
+          >
+            Entendido
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Modal de suscripción duplicada */}
+      <Dialog 
+        open={showDuplicateModal} 
+        onClose={handleCloseDuplicateModal}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+          }
+        }}
+      >
+        <DialogTitle sx={{ 
+          fontFamily: 'Roboto, sans-serif', 
+          color: '#057c39', 
+          fontWeight: 700, 
+          fontSize: 24, 
+          textAlign: 'center',
+          pb: 1
+        }}>
+          ¡Ya estás suscrito!
+        </DialogTitle>
+        <DialogContent sx={{ pt: 2 }}>
+          <Typography sx={{ 
+            fontFamily: 'Roboto, sans-serif', 
+            color: '#222', 
+            fontSize: 16, 
+            textAlign: 'center',
+            lineHeight: 1.6
+          }}>
+            Ya tienes una suscripción activa con este correo electrónico. No te preocupes, 
+            seguirás recibiendo todas nuestras actualizaciones y noticias importantes sobre el tipo de cambio.
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: 'center', pb: 3, px: 3 }}>
+          <Button
+            onClick={handleCloseDuplicateModal}
             variant="contained"
             sx={{ 
               bgcolor: '#057c39', 
