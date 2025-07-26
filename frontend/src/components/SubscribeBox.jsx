@@ -81,7 +81,7 @@ const SubscribeBox = () => {
         left: 0,
         zIndex: 1
       }}>
-        <img src={monedaesquina} alt="Moneda esquina" style={{ width: 200, height: 'auto' }} />
+        <img src={monedaesquina} alt="Moneda esquina" style={{ width: 280, height: 'auto' }} />
       </Box>
 
       {/* Imagen de moneda en esquina superior derecha */}
@@ -91,19 +91,19 @@ const SubscribeBox = () => {
         right: 0,
         zIndex: 1
       }}>
-        <img src={monedaparada} alt="Moneda parada" style={{ width: 180, height: 'auto' }} />
+        <img src={monedaparada} alt="Moneda parada" style={{ width: 250, height: 'auto' }} />
       </Box>
 
       {/* Contenido principal */}
       <Box sx={{
         bgcolor: 'rgba(198, 255, 209, 0.7)',
         borderRadius: 4,
-        px: 8,
-        py: 6,
+        px: 6,
+        py: 5,
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'flex-start',
-        maxWidth: 600,
+        alignItems: 'center',
+        maxWidth: 450,
         width: '90%',
         position: 'relative',
         zIndex: 2,
@@ -115,7 +115,7 @@ const SubscribeBox = () => {
           fontWeight: 700, 
           fontSize: 36, 
           mb: 3, 
-          textAlign: 'left', 
+          textAlign: 'center', 
           letterSpacing: 1,
           textTransform: 'uppercase'
         }}>
@@ -126,9 +126,9 @@ const SubscribeBox = () => {
           fontFamily: 'Roboto, sans-serif', 
           color: '#000', 
           fontSize: 20, 
-          textAlign: 'left', 
+          textAlign: 'center', 
           mb: 5,
-          maxWidth: 500
+          maxWidth: 400
         }}>
           Recibe notificaciones cada semana en tu correo.
         </Typography>
@@ -138,7 +138,7 @@ const SubscribeBox = () => {
           flexDirection: 'column', 
           gap: 3, 
           width: '100%', 
-          maxWidth: 500 
+          alignItems: 'center'
         }}>
           <TextField
             fullWidth
@@ -174,11 +174,13 @@ const SubscribeBox = () => {
               color: 'white', 
               fontWeight: 700, 
               py: 2, 
+              px: 6,
               borderRadius: 2, 
               fontFamily: 'Play, sans-serif', 
               fontSize: 22, 
               textTransform: 'none',
               boxShadow: '0 2px 8px 0 rgba(0,0,0,0.15)',
+              width: '100%',
               '&:hover': {
                 bgcolor: '#046a30',
                 boxShadow: '0 4px 12px 0 rgba(0,0,0,0.2)',
