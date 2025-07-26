@@ -85,13 +85,11 @@ const LoginPage = () => {
           alignItems: 'center',
           justifyContent: 'center',
           px: 12,
-          py: 6,
           height: '100vh',
           boxShadow: '8px 0 32px 0 rgba(0,0,0,0.04)',
           animation: show ? 'slideInLeft 1s cubic-bezier(.77,0,.18,1) forwards' : 'none',
           position: 'relative',
           zIndex: 2,
-          overflow: 'hidden',
         }}>
           <img src={LOGOMANGOCASHPARADO} alt="MangosCash" style={{ width: 200, marginBottom: 48, display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
           {leftTexts.map((item, idx) => (
@@ -117,24 +115,25 @@ const LoginPage = () => {
           alignItems: 'center',
           justifyContent: 'center',
           px: 6,
-          py: 6,
           height: '100vh',
-          boxShadow: '-8px 0 32px 0 rgba(0,0,0,0.04)',
+          boxShadow: 'none',
           animation: show ? 'slideInRight 1s cubic-bezier(.77,0,.18,1) forwards' : 'none',
-          zIndex: 1,
-          overflow: 'hidden',
+          zIndex: 1
         }}>
-          <Box sx={{ width: '100%', maxWidth: 370, mx: 'auto', bgcolor: 'white', borderRadius: 4, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.04)', p: 5 }}>
-            <Typography variant="h5" fontWeight="bold" gutterBottom>Iniciar sesión</Typography>
+          <Box sx={{ width: '100%', maxWidth: 370, mx: 'auto', p: 0, bgcolor: 'transparent', boxShadow: 'none', borderRadius: 0 }}>
+            <Typography variant="h5" fontWeight={700} sx={{ mb: 3, color: '#222', fontFamily: 'Roboto, sans-serif', textAlign: 'left' }}>Inicia sesión</Typography>
             <form onSubmit={handleSubmit}>
               <TextField
-                label="Email"
+                label="Correo"
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 fullWidth
                 margin="normal"
                 required
+                InputProps={{ style: { fontFamily: 'Roboto, sans-serif', color: '#222', background: '#fff', borderRadius: 8, boxShadow: 'none' } }}
+                InputLabelProps={{ style: { fontFamily: 'Roboto, sans-serif', color: '#222' } }}
+                sx={{ mb: 2, boxShadow: 'none', borderRadius: 2 }}
               />
               <TextField
                 label="Contraseña"
@@ -144,21 +143,41 @@ const LoginPage = () => {
                 fullWidth
                 margin="normal"
                 required
+                InputProps={{ style: { fontFamily: 'Roboto, sans-serif', color: '#222', background: '#fff', borderRadius: 8, boxShadow: 'none' } }}
+                InputLabelProps={{ style: { fontFamily: 'Roboto, sans-serif', color: '#222' } }}
+                sx={{ mb: 1, boxShadow: 'none', borderRadius: 2 }}
               />
-              {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
-              <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-                Ingresar
+              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end', mt: 0.5 }}>
+                <span
+                  style={{
+                    color: '#005a7c',
+                    fontWeight: 500,
+                    fontFamily: 'Roboto, sans-serif',
+                    fontSize: 15,
+                    cursor: 'pointer',
+                    textDecoration: 'underline',
+                    textUnderlineOffset: 2,
+                    transition: 'color 0.2s',
+                  }}
+                  onClick={() => navigate('/forgot-password')}
+                  onMouseOver={e => e.target.style.color = '#00395a'}
+                  onMouseOut={e => e.target.style.color = '#005a7c'}
+                >
+                  ¿Olvidaste tu contraseña?
+                </span>
+              </Box>
+              {error && <Typography color="error" sx={{ mt: 1, fontFamily: 'Roboto, sans-serif' }}>{error}</Typography>}
+              <Button type="submit" variant="contained" fullWidth sx={{ mt: 3, mb: 1, py: 1.5, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 18, bgcolor: '#BAFFD7', color: '#222', boxShadow: 'none', borderRadius: 2, '&:hover': { bgcolor: '#a0e6c2' } }}>
+                INICIAR SESIÓN
               </Button>
-              <Typography sx={{ mt: 2, textAlign: 'right', color: '#005a7c', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => navigate('/forgot-password')}>
-                ¿Olvidaste tu contraseña?
-              </Typography>
-              <Typography sx={{ mt: 2, textAlign: 'center', color: '#005a7c', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => navigate('/register')}>
+              <Typography sx={{ mt: 2, color: '#005a7c', fontFamily: 'Roboto, sans-serif', fontSize: 15, textAlign: 'center', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => navigate('/register')}>
                 ¿No tienes cuenta? Regístrate aquí
               </Typography>
             </form>
           </Box>
         </Box>
       </Fade>
+      {/* Animaciones keyframes ... igual ... */}
     </Box>
   );
 };
