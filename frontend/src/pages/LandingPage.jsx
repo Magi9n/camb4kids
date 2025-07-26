@@ -26,8 +26,8 @@ const LandingPage = () => {
       <BanksSection />
       <BenefitsSection />
       <AlertBlock />
-      <SubscribeBox />
       <HowItWorks />
+      <SubscribeBox />
       <SimulatorSection />
       <CouponsSection />
       <Container maxWidth="md">
