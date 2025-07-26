@@ -1,14 +1,268 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Box, Typography, Grid, Container } from '@mui/material';
+import logomangocashfooter from '../assets/logomangocashfooter.svg';
 
-const Footer = () => (
-  <Box sx={{ mt: 6, py: 3, textAlign: 'center', background: '#f5f5f5' }}>
-    <Typography variant="body2" color="text.secondary">
-      © {new Date().getFullYear()} Camb4Kids. Todos los derechos reservados.
-    </Typography>
-  </Box>
-);
+const Footer = () => {
+  return (
+    <Box sx={{ 
+      bgcolor: '#000', 
+      color: 'white', 
+      py: 6,
+      fontFamily: 'Roboto, sans-serif'
+    }}>
+      <Container maxWidth="lg">
+        <Grid container spacing={4}>
+          {/* Columna 1: Empresa */}
+          <Grid item xs={12} sm={6} md={2.4}>
+            <Typography sx={{ 
+              fontFamily: 'Roboto, sans-serif', 
+              color: 'white', 
+              fontWeight: 700, 
+              fontSize: 18, 
+              mb: 3 
+            }}>
+              Empresa
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                color: '#8b8e96', 
+                fontSize: 14,
+                cursor: 'pointer',
+                '&:hover': { color: 'white' }
+              }}>
+                Nosotros
+              </Typography>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                color: '#8b8e96', 
+                fontSize: 14,
+                cursor: 'pointer',
+                '&:hover': { color: 'white' }
+              }}>
+                Empresas
+              </Typography>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                color: '#8b8e96', 
+                fontSize: 14,
+                cursor: 'pointer',
+                '&:hover': { color: 'white' }
+              }}>
+                Trabaja con Nosotros
+              </Typography>
+            </Box>
+          </Grid>
+
+          {/* Columna 2: Ayuda */}
+          <Grid item xs={12} sm={6} md={2.4}>
+            <Typography sx={{ 
+              fontFamily: 'Roboto, sans-serif', 
+              color: 'white', 
+              fontWeight: 700, 
+              fontSize: 18, 
+              mb: 3 
+            }}>
+              Ayuda
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                color: '#8b8e96', 
+                fontSize: 14,
+                cursor: 'pointer',
+                '&:hover': { color: 'white' }
+              }}>
+                Atención al Cliente
+              </Typography>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                color: '#8b8e96', 
+                fontSize: 14,
+                cursor: 'pointer',
+                '&:hover': { color: 'white' }
+              }}>
+                Preguntas Frecuentes
+              </Typography>
+            </Box>
+          </Grid>
+
+          {/* Columna 3: Más Información */}
+          <Grid item xs={12} sm={6} md={2.4}>
+            <Typography sx={{ 
+              fontFamily: 'Roboto, sans-serif', 
+              color: 'white', 
+              fontWeight: 700, 
+              fontSize: 18, 
+              mb: 3 
+            }}>
+              Más Información
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                color: '#8b8e96', 
+                fontSize: 14,
+                cursor: 'pointer',
+                '&:hover': { color: 'white' }
+              }}>
+                Promociones
+              </Typography>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                color: '#8b8e96', 
+                fontSize: 14,
+                cursor: 'pointer',
+                '&:hover': { color: 'white' }
+              }}>
+                Configurar Alertas
+              </Typography>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                color: '#8b8e96', 
+                fontSize: 14,
+                cursor: 'pointer',
+                '&:hover': { color: 'white' }
+              }}>
+                Tipo de Cambio Hoy
+              </Typography>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                color: '#8b8e96', 
+                fontSize: 14,
+                cursor: 'pointer',
+                '&:hover': { color: 'white' }
+              }}>
+                ¿Qué es MangosCash?
+              </Typography>
+            </Box>
+          </Grid>
+
+          {/* Columna 4: Legal */}
+          <Grid item xs={12} sm={6} md={2.4}>
+            <Typography sx={{ 
+              fontFamily: 'Roboto, sans-serif', 
+              color: 'white', 
+              fontWeight: 700, 
+              fontSize: 18, 
+              mb: 3 
+            }}>
+              Legal
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                color: '#8b8e96', 
+                fontSize: 14,
+                cursor: 'pointer',
+                '&:hover': { color: 'white' }
+              }}>
+                Términos y Condiciones
+              </Typography>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                color: '#8b8e96', 
+                fontSize: 14,
+                cursor: 'pointer',
+                '&:hover': { color: 'white' }
+              }}>
+                Políticas de Privacidad
+              </Typography>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                color: '#8b8e96', 
+                fontSize: 14,
+                cursor: 'pointer',
+                '&:hover': { color: 'white' }
+              }}>
+                Libro de Reclamaciones
+              </Typography>
+            </Box>
+          </Grid>
+
+          {/* Columna 5: Horarios */}
+          <Grid item xs={12} sm={6} md={2.4}>
+            <Typography sx={{ 
+              fontFamily: 'Roboto, sans-serif', 
+              color: 'white', 
+              fontWeight: 700, 
+              fontSize: 18, 
+              mb: 3 
+            }}>
+              Horarios
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                color: '#8b8e96', 
+                fontSize: 14
+              }}>
+                Lunes A Viernes{' '}
+                <Typography component="span" sx={{ 
+                  fontFamily: 'Roboto, sans-serif', 
+                  color: 'white', 
+                  fontWeight: 700, 
+                  fontSize: 14 
+                }}>
+                  9:00 AM – 7:00 PM
+                </Typography>
+              </Typography>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                color: '#8b8e96', 
+                fontSize: 14
+              }}>
+                Sábado{' '}
+                <Typography component="span" sx={{ 
+                  fontFamily: 'Roboto, sans-serif', 
+                  color: 'white', 
+                  fontWeight: 700, 
+                  fontSize: 14 
+                }}>
+                  9:00 AM – 2:00 PM
+                </Typography>
+              </Typography>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                color: '#8b8e96', 
+                fontSize: 14
+              }}>
+                Atención Por WhatsApp{' '}
+                <Typography component="span" sx={{ 
+                  fontFamily: 'Roboto, sans-serif', 
+                  color: 'white', 
+                  fontWeight: 700, 
+                  fontSize: 14 
+                }}>
+                  +51 929 382 969
+                </Typography>
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
+
+        {/* Logo en la parte inferior */}
+        <Box sx={{ 
+          mt: 6, 
+          pt: 4, 
+          borderTop: '1px solid #333',
+          display: 'flex',
+          alignItems: 'center'
+        }}>
+          <img 
+            src={logomangocashfooter} 
+            alt="MangosCash" 
+            style={{ 
+              height: 40, 
+              width: 'auto',
+              filter: 'brightness(0) invert(1)' // Hace el logo blanco
+            }} 
+          />
+        </Box>
+      </Container>
+    </Box>
+  );
+};
 
 export default Footer; 
  
