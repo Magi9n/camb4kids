@@ -84,20 +84,20 @@ const LoginPage = () => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          px: 8,
+          px: 12,
           py: 10,
           boxShadow: '8px 0 32px 0 rgba(0,0,0,0.04)',
           animation: show ? 'slideInLeft 1s cubic-bezier(.77,0,.18,1) forwards' : 'none',
           position: 'relative',
           zIndex: 2,
         }}>
-          <img src={LOGOMANGOCASHPARADO} alt="MangosCash" style={{ width: 200, marginBottom: 48 }} />
+          <img src={LOGOMANGOCASHPARADO} alt="MangosCash" style={{ width: 200, marginBottom: 48, display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
           {leftTexts.map((item, idx) => (
-            <Box key={idx} sx={{ display: 'flex', alignItems: 'center', mb: 6, width: '100%', justifyContent: 'center' }}>
-              <img src={item.icon} alt="icono" style={{ width: 54, height: 54, marginRight: 24 }} />
-              <Box>
-                <Typography sx={{ color: '#222', fontWeight: 700, fontSize: 24, mb: 1, letterSpacing: 0.2, textAlign: 'center' }}>{item.title}</Typography>
-                <Typography sx={{ color: '#222', fontWeight: 400, fontSize: 18, lineHeight: 1.4, textAlign: 'center' }}>{item.desc}</Typography>
+            <Box key={idx} sx={{ display: 'flex', alignItems: 'center', mb: 7, width: '100%' }}>
+              <img src={item.icon} alt="icono" style={{ width: 80, height: 80, marginRight: 32, flexShrink: 0 }} />
+              <Box sx={{ textAlign: 'left', width: '100%' }}>
+                <Typography sx={{ color: '#222', fontWeight: 700, fontSize: 26, mb: 1, letterSpacing: 0.2, textAlign: 'left' }}>{item.title}</Typography>
+                <Typography sx={{ color: '#222', fontWeight: 400, fontSize: 20, lineHeight: 1.4, textAlign: 'left' }}>{item.desc}</Typography>
               </Box>
             </Box>
           ))}
