@@ -12,21 +12,21 @@ import { FaCalculator, FaExchangeAlt, FaMoneyCheckAlt } from 'react-icons/fa';
 
 const leftTexts = [
   {
-    icon: <FaCalculator size={32} color="#fff" style={{ marginRight: 16 }} />, 
+    icon: FaCalculator,
     title: 'Calcula tu cambio',
     desc: <>
       Utiliza nuestra calculadora para conocer el <span style={{ color: '#057c39', fontWeight: 700 }}>tipo de cambio</span> en tiempo real y tomar la mejor decisión.
     </>,
   },
   {
-    icon: <FaExchangeAlt size={32} color="#fff" style={{ marginRight: 16 }} />, 
+    icon: FaExchangeAlt,
     title: 'Transfiere con seguridad',
     desc: <>
       Envía tu <span style={{ color: '#057c39', fontWeight: 700 }}>dinero</span> desde tu banco favorito y nosotros nos encargamos del resto.
     </>,
   },
   {
-    icon: <FaMoneyCheckAlt size={32} color="#fff" style={{ marginRight: 16 }} />, 
+    icon: FaMoneyCheckAlt,
     title: 'Recibe tu cambio',
     desc: <>
       El monto cambiado será <span style={{ color: '#057c39', fontWeight: 700 }}>depositado</span> en tu cuenta de destino de forma rápida y segura.
@@ -41,10 +41,6 @@ const LoginPage = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-
-  React.useEffect(() => {
-    setTimeout(() => setShow(true), 100);
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,84 +79,64 @@ const LoginPage = () => {
           zIndex: 2
         }}>
           <img src={LOGOMANGOCASHPARADO} alt="MangosCash" style={{ width: 120, marginBottom: 32 }} />
-          {leftTexts.map((item, idx) => (
-            <Box key={idx} sx={{ display: 'flex', alignItems: 'flex-start', mb: 5, width: '100%' }}>
-              <Box sx={{ bgcolor: '#057c39', borderRadius: 2, p: 1, display: 'flex', alignItems: 'center', minWidth: 48, minHeight: 48, mr: 2 }}>
-                {item.icon}
+          {leftTexts.map((item, idx) => {
+            const Icon = item.icon;
+            return (
+              <Box key={idx} sx={{ display: 'flex', alignItems: 'flex-start', mb: 5, width: '100%' }}>
+                <Box sx={{ bgcolor: '#057c39', borderRadius: 2, p: 1, display: 'flex', alignItems: 'center', minWidth: 48, minHeight: 48, mr: 2 }}>
+                  <Icon size={32} color="#fff" style={{ marginRight: 16 }} />
+                </Box>
+                <Box>
+                  <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: 20, mb: 0.5, letterSpacing: 0.2 }}>{item.title}</Typography>
+                  <Typography sx={{ color: '#fff', fontWeight: 400, fontSize: 16, lineHeight: 1.4 }}>{item.desc}</Typography>
+                </Box>
               </Box>
-              <Box>
-                <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: 20, mb: 0.5, letterSpacing: 0.2 }}>{item.title}</Typography>
-                <Typography sx={{ color: '#fff', fontWeight: 400, fontSize: 16, lineHeight: 1.4 }}>{item.desc}</Typography>
-              </Box>
-            </Box>
-          ))}
+            );
+          })}
         </Box>
       </Fade>
       {/* Bloque derecho */}
       <Fade in={show} timeout={900} style={{ transitionDelay: show ? '300ms' : '0ms' }}>
         <Box sx={{
           flex: 1,
-          minWidth: 340,
-          maxWidth: 480,
-          bgcolor: '#F6F6F9',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
           px: 6,
           py: 8,
-          boxShadow: '-8px 0 32px 0 rgba(0,0,0,0.04)',
+          boxShadow: '8px 0 32px 0 rgba(0,0,0,0.04)',
           animation: show ? 'slideInRight 1s cubic-bezier(.77,0,.18,1) forwards' : 'none',
-          zIndex: 1
+          position: 'relative',
+          zIndex: 2
         }}>
-          <Box sx={{ width: '100%', maxWidth: 370, mx: 'auto', bgcolor: 'white', borderRadius: 4, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.04)', p: 5 }}>
-            <Typography variant="h5" fontWeight={700} sx={{ mb: 3, color: '#222', fontFamily: 'Roboto, sans-serif', textAlign: 'left' }}>Inicia sesión</Typography>
-            <form onSubmit={handleSubmit}>
-              <TextField
-                label="Correo"
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                fullWidth
-                margin="normal"
-                required
-                InputProps={{ style: { fontFamily: 'Roboto, sans-serif' } }}
-                InputLabelProps={{ style: { fontFamily: 'Roboto, sans-serif' } }}
-              />
-              <TextField
-                label="Contraseña"
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                fullWidth
-                margin="normal"
-                required
-                InputProps={{ style: { fontFamily: 'Roboto, sans-serif' } }}
-                InputLabelProps={{ style: { fontFamily: 'Roboto, sans-serif' } }}
-              />
-              {error && <Typography color="error" sx={{ mt: 1, fontFamily: 'Roboto, sans-serif' }}>{error}</Typography>}
-              <Button type="submit" variant="contained" fullWidth sx={{ mt: 3, mb: 1, py: 1.5, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 18, bgcolor: '#57C9A6', color: '#fff', boxShadow: '0 2px 8px 0 rgba(87,201,166,0.12)', '&:hover': { bgcolor: '#3bbd8c' } }}>
-                INICIAR SESIÓN
-              </Button>
-            </form>
-            <Typography sx={{ mt: 2, color: '#888', fontFamily: 'Roboto, sans-serif', fontSize: 15, textAlign: 'center' }}>
-              ¿No tienes cuenta?{' '}
-              <span style={{ color: '#057c39', fontWeight: 700, cursor: 'pointer' }} onClick={() => navigate('/register')}>Regístrate aquí</span>
-            </Typography>
-          </Box>
+          <Typography variant="h5" fontWeight="bold" gutterBottom>Iniciar sesión</Typography>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              label="Email"
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <TextField
+              label="Contraseña"
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              fullWidth
+              margin="normal"
+              required
+            />
+            {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
+            <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+              Ingresar
+            </Button>
+          </form>
         </Box>
       </Fade>
-      {/* Animaciones keyframes */}
-      <style>{`
-        @keyframes slideInLeft {
-          0% { transform: translateX(-80vw); opacity: 0; }
-          100% { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes slideInRight {
-          0% { transform: translateX(80vw); opacity: 0; }
-          100% { transform: translateX(0); opacity: 1; }
-        }
-      `}</style>
     </Box>
   );
 };
