@@ -77,7 +77,13 @@ const Header = () => {
             <img src={logo} alt="MangosCash" style={{ width: '100%', height: 'auto', display: 'block' }} />
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mr: 2 }}>
+        <Box sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: 3, 
+          mr: 2,
+          ...(user && token ? { ml: -2 } : {})
+        }}>
           <Box component="span" sx={menuHoverStyle}>Nosotros</Box>
           <Box component="span" sx={menuHoverStyle}>Empresas</Box>
           <Box component="span" sx={menuHoverStyle}>Soporte</Box>
@@ -118,7 +124,7 @@ const Header = () => {
                 PaperProps={{
                   sx: {
                     mt: 1,
-                    minWidth: 200,
+                    minWidth: 180,
                     boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
                     borderRadius: 2,
                     zIndex: 9999,
