@@ -7,8 +7,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import { Fade } from 'react-awesome-reveal';
-import LOGOMANGOCASHPARADO from '../assets/images/LOGOMANGOCASHPARADO.svg';
+import LOGOMANGOCASHPARADO from '../assets/LOGOMANGOCASHPARADO.svg';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -33,102 +32,35 @@ const LoginPage = () => {
     }
   };
 
-  const leftTexts = [
-    {
-      icon: 'https://cdn-icons-png.flaticon.com/512/300/300221.png', // Placeholder for icon
-      title: 'Gestión de Pagos',
-      desc: 'Administra tus pagos de manera eficiente y segura. Seguimiento de transacciones, reportes detallados y control de cobros.',
-    },
-    {
-      icon: 'https://cdn-icons-png.flaticon.com/512/300/300223.png', // Placeholder for icon
-      title: 'Seguridad',
-      desc: 'Nuestra plataforma cuenta con las últimas tecnologías de seguridad para proteger tus datos y transacciones.',
-    },
-    {
-      icon: 'https://cdn-icons-png.flaticon.com/512/300/300224.png', // Placeholder for icon
-      title: 'Transparencia',
-      desc: 'Transparencia en todas tus operaciones. Descubre el estado de tus pagos y cobros en tiempo real.',
-    },
-  ];
-
-  const [show, setShow] = useState(false);
-
   return (
-    <Box sx={{ minHeight: '100vh', height: '100vh', width: '100vw', display: 'flex', fontFamily: 'Roboto, sans-serif', background: '#F6F6F9', overflow: 'hidden' }}>
-      {/* Bloque izquierdo */}
-      <Fade in={show} timeout={900} style={{ transitionDelay: show ? '100ms' : '0ms' }}>
-        <Box sx={{
-          flex: 1.1,
-          minWidth: 380,
-          maxWidth: 600,
-          bgcolor: '#BAFFD7',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          px: 12,
-          height: '100vh',
-          boxShadow: '8px 0 32px 0 rgba(0,0,0,0.04)',
-          animation: show ? 'slideInLeft 1s cubic-bezier(.77,0,.18,1) forwards' : 'none',
-          position: 'relative',
-          zIndex: 2,
-        }}>
-          <img src={LOGOMANGOCASHPARADO} alt="MangosCash" style={{ width: 200, marginBottom: 48, display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
-          {leftTexts.map((item, idx) => (
-            <Box key={idx} sx={{ display: 'flex', alignItems: 'center', mb: 7, width: '100%' }}>
-              <img src={item.icon} alt="icono" style={{ width: 80, height: 80, marginRight: 32, flexShrink: 0 }} />
-              <Box sx={{ textAlign: 'left', width: '100%' }}>
-                <Typography sx={{ color: '#222', fontWeight: 700, fontSize: 24, mb: 1, letterSpacing: 0.2, textAlign: 'left', fontFamily: 'Play, sans-serif' }}>{item.title}</Typography>
-                <Typography sx={{ color: '#222', fontWeight: 400, fontSize: 18, lineHeight: 1.4, textAlign: 'left', fontFamily: 'Play, sans-serif' }}>{item.desc}</Typography>
-              </Box>
-            </Box>
-          ))}
-        </Box>
-      </Fade>
-      {/* Bloque derecho */}
-      <Fade in={show} timeout={900} style={{ transitionDelay: show ? '300ms' : '0ms' }}>
-        <Box sx={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          px: 12,
-          height: '100vh',
-          boxShadow: '-8px 0 32px 0 rgba(0,0,0,0.04)',
-          animation: show ? 'slideInRight 1s cubic-bezier(.77,0,.18,1) forwards' : 'none',
-          position: 'relative',
-          zIndex: 1,
-        }}>
-          <Paper sx={{ p: 4, minWidth: 320 }} elevation={3}>
-            <Typography variant="h5" fontWeight="bold" gutterBottom>Iniciar sesión</Typography>
-            <form onSubmit={handleSubmit}>
-              <TextField
-                label="Email"
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                fullWidth
-                margin="normal"
-                required
-              />
-              <TextField
-                label="Contraseña"
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                fullWidth
-                margin="normal"
-                required
-              />
-              {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
-              <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-                Ingresar
-              </Button>
-            </form>
-          </Paper>
-        </Box>
-      </Fade>
+    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f5f5f5' }}>
+      <Paper sx={{ p: 4, minWidth: 320 }} elevation={3}>
+        <Typography variant="h5" fontWeight="bold" gutterBottom>Iniciar sesión</Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Email"
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <TextField
+            label="Contraseña"
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            fullWidth
+            margin="normal"
+            required
+          />
+          {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
+          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+            Ingresar
+          </Button>
+        </form>
+      </Paper>
     </Box>
   );
 };
