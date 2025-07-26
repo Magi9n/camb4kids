@@ -13,6 +13,8 @@ import { Order } from './modules/orders/entities/order.entity';
 import { ExchangeRate } from './modules/rates/entities/exchange-rate.entity';
 import { AdminSetting } from './modules/admin/entities/admin-setting.entity';
 import { AlertsModule } from './modules/alerts/alerts.module';
+import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
+import { Subscription } from './modules/subscriptions/subscription.entity';
 
 @Module({
   imports: [
@@ -29,7 +31,7 @@ import { AlertsModule } from './modules/alerts/alerts.module';
         username: config.get('DB_USERNAME'),
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_DATABASE'),
-        entities: [User, Order, ExchangeRate, AdminSetting],
+        entities: [User, Order, ExchangeRate, AdminSetting, Subscription],
         migrations: [
           config.get('NODE_ENV') === 'development'
             ? 'src/migrations/*.ts'
@@ -48,6 +50,7 @@ import { AlertsModule } from './modules/alerts/alerts.module';
     OrdersModule,
     AdminModule,
     AlertsModule,
+    SubscriptionsModule,
   ],
 })
 export class AppModule {} 
