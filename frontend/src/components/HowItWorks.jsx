@@ -21,7 +21,7 @@ const HowItWorks = () => (
     </Typography>
     <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'center', alignItems: 'flex-start', gap: { xs: 6, md: 10 }, width: '100%', maxWidth: 1100, mx: 'auto' }}>
       {/* Paso 1 */}
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220, position: 'relative', height: 320 }}>
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220, position: 'relative', pb: 4 }}>
         <Box sx={{ position: 'absolute', top: 8, left: 18, zIndex: 2 }}>
           <span className="kollektif" style={{ fontSize: 70, color: '#000', fontWeight: 700, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.08))' }}>1</span>
         </Box>
@@ -36,7 +36,7 @@ const HowItWorks = () => (
         </Typography>
       </Box>
       {/* Paso 2 */}
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220, position: 'relative', height: 320 }}>
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220, position: 'relative', pb: 4 }}>
         <Box sx={{ position: 'absolute', top: 8, left: -18, zIndex: 2 }}>
           <span className="kollektif" style={{ fontSize: 70, color: '#000', fontWeight: 700, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.08))' }}>2</span>
         </Box>
@@ -51,7 +51,7 @@ const HowItWorks = () => (
         </Typography>
       </Box>
       {/* Paso 3 */}
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220, position: 'relative', height: 320 }}>
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 220, position: 'relative', pb: 4 }}>
         <Box sx={{ position: 'absolute', top: 8, left: 18, zIndex: 2 }}>
           <span className="kollektif" style={{ fontSize: 70, color: '#000', fontWeight: 700, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.08))' }}>3</span>
         </Box>
