@@ -63,7 +63,7 @@ const BannerCupon = () => {
               Usa el cupon
             </Typography>
             <Typography sx={{ color: 'white', fontFamily: 'Open Sans, sans-serif', fontWeight: 700, lineHeight: 1, fontSize: '3rem', mb: 0, mt: 0 }}>
-              &gt; Dolero23
+              &gt; Mangos25
             </Typography>
           </Box>
           <Button

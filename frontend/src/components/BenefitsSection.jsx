@@ -19,7 +19,7 @@ const BenefitsSection = () => (
         <Grid item xs={12} md={4}>
           <Paper elevation={0} sx={{ p: 4, textAlign: 'left', borderRadius: 20, minHeight: 320, minWidth: 320, maxWidth: 340, height: 320, width: '100%', bgcolor: '#f7f8fa', boxShadow: '0 8px 32px 0 rgba(0,0,0,0.12)', mx: 'auto', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: 28, color: '#111', mb: 0.1 }}>
-              Cupón <span style={{ color: '#179c46', fontWeight: 700, fontFamily: 'Roboto, sans-serif' }}>DOLERO23</span>
+              Cupón <span style={{ color: '#179c46', fontWeight: 700, fontFamily: 'Roboto, sans-serif' }}>MANGOS25</span>
             </Typography>
             <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 400, fontSize: 20, color: '#222', mb: 0.5 }}>
               Úsalo en tu primer cambio
