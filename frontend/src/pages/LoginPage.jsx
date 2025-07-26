@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import LOGOMANGOCASHPARADO from '../assets/LOGOMANGOCASHPARADO.svg';
 import Fade from '@mui/material/Fade';
-import CalculadoraSVG from '../assets/calculadora.svg';
+import CalculadoraSVG from '../assets/CALCULADORA.svg';
 import TransferenciaSVG from '../assets/transferencia.svg';
 import RecibidoSVG from '../assets/recibido.svg';
 
