@@ -10,30 +10,6 @@ import LOGOMANGOCASHPARADO from '../assets/LOGOMANGOCASHPARADO.svg';
 import Fade from '@mui/material/Fade';
 import { FaCalculator, FaExchangeAlt, FaMoneyCheckAlt } from 'react-icons/fa';
 
-const leftTexts = [
-  {
-    icon: FaCalculator,
-    title: 'Calcula tu cambio',
-    desc: <>
-      Utiliza nuestra calculadora para conocer el <span style={{ color: '#057c39', fontWeight: 700 }}>tipo de cambio</span> en tiempo real y tomar la mejor decisión.
-    </>,
-  },
-  {
-    icon: FaExchangeAlt,
-    title: 'Transfiere con seguridad',
-    desc: <>
-      Envía tu <span style={{ color: '#057c39', fontWeight: 700 }}>dinero</span> desde tu banco favorito y nosotros nos encargamos del resto.
-    </>,
-  },
-  {
-    icon: FaMoneyCheckAlt,
-    title: 'Recibe tu cambio',
-    desc: <>
-      El monto cambiado será <span style={{ color: '#057c39', fontWeight: 700 }}>depositado</span> en tu cuenta de destino de forma rápida y segura.
-    </>,
-  },
-];
-
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -41,6 +17,41 @@ const LoginPage = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
+
+  React.useEffect(() => {
+    setTimeout(() => setShow(true), 100);
+  }, []);
+
+  // Mover leftTexts aquí dentro
+  const leftTexts = [
+    {
+      icon: FaCalculator,
+      title: 'Calcula tu cambio',
+      desc: React.createElement(React.Fragment, null, [
+        'Utiliza nuestra calculadora para conocer el ',
+        <span key="1" style={{ color: '#057c39', fontWeight: 700 }}>tipo de cambio</span>,
+        ' en tiempo real y tomar la mejor decisión.'
+      ]),
+    },
+    {
+      icon: FaExchangeAlt,
+      title: 'Transfiere con seguridad',
+      desc: React.createElement(React.Fragment, null, [
+        'Envía tu ',
+        <span key="2" style={{ color: '#057c39', fontWeight: 700 }}>dinero</span>,
+        ' desde tu banco favorito y nosotros nos encargamos del resto.'
+      ]),
+    },
+    {
+      icon: FaMoneyCheckAlt,
+      title: 'Recibe tu cambio',
+      desc: React.createElement(React.Fragment, null, [
+        'El monto cambiado será ',
+        <span key="3" style={{ color: '#057c39', fontWeight: 700 }}>depositado</span>,
+        ' en tu cuenta de destino de forma rápida y segura.'
+      ]),
+    },
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
