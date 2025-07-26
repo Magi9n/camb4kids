@@ -8,7 +8,9 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import LOGOMANGOCASHPARADO from '../assets/LOGOMANGOCASHPARADO.svg';
 import Fade from '@mui/material/Fade';
-import { FaCalculator, FaExchangeAlt, FaMoneyCheckAlt } from 'react-icons/fa';
+import CalculadoraSVG from '../assets/calculadora.svg';
+import TransferenciaSVG from '../assets/transferencia.svg';
+import RecibidoSVG from '../assets/recibido.svg';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -22,10 +24,10 @@ const LoginPage = () => {
     setTimeout(() => setShow(true), 100);
   }, []);
 
-  // Mover leftTexts aquí dentro
+  // Definir los textos y SVGs aquí
   const leftTexts = [
     {
-      icon: FaCalculator,
+      icon: CalculadoraSVG,
       title: 'Calcula tu cambio',
       desc: React.createElement(React.Fragment, null, [
         'Utiliza nuestra calculadora para conocer el ',
@@ -34,7 +36,7 @@ const LoginPage = () => {
       ]),
     },
     {
-      icon: FaExchangeAlt,
+      icon: TransferenciaSVG,
       title: 'Transfiere con seguridad',
       desc: React.createElement(React.Fragment, null, [
         'Envía tu ',
@@ -43,7 +45,7 @@ const LoginPage = () => {
       ]),
     },
     {
-      icon: FaMoneyCheckAlt,
+      icon: RecibidoSVG,
       title: 'Recibe tu cambio',
       desc: React.createElement(React.Fragment, null, [
         'El monto cambiado será ',
@@ -90,20 +92,17 @@ const LoginPage = () => {
           zIndex: 2
         }}>
           <img src={LOGOMANGOCASHPARADO} alt="MangosCash" style={{ width: 120, marginBottom: 32 }} />
-          {leftTexts.map((item, idx) => {
-            const Icon = item.icon;
-            return (
-              <Box key={idx} sx={{ display: 'flex', alignItems: 'flex-start', mb: 5, width: '100%' }}>
-                <Box sx={{ bgcolor: '#057c39', borderRadius: 2, p: 1, display: 'flex', alignItems: 'center', minWidth: 48, minHeight: 48, mr: 2 }}>
-                  <Icon size={32} color="#fff" style={{ marginRight: 16 }} />
-                </Box>
-                <Box>
-                  <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: 20, mb: 0.5, letterSpacing: 0.2 }}>{item.title}</Typography>
-                  <Typography sx={{ color: '#fff', fontWeight: 400, fontSize: 16, lineHeight: 1.4 }}>{item.desc}</Typography>
-                </Box>
+          {leftTexts.map((item, idx) => (
+            <Box key={idx} sx={{ display: 'flex', alignItems: 'flex-start', mb: 5, width: '100%' }}>
+              <Box sx={{ bgcolor: '#057c39', borderRadius: 2, p: 1, display: 'flex', alignItems: 'center', minWidth: 48, minHeight: 48, mr: 2 }}>
+                <img src={item.icon} alt="icono" style={{ width: 32, height: 32, marginRight: 16 }} />
               </Box>
-            );
-          })}
+              <Box>
+                <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: 20, mb: 0.5, letterSpacing: 0.2 }}>{item.title}</Typography>
+                <Typography sx={{ color: '#fff', fontWeight: 400, fontSize: 16, lineHeight: 1.4 }}>{item.desc}</Typography>
+              </Box>
+            </Box>
+          ))}
         </Box>
       </Fade>
       {/* Bloque derecho */}
