@@ -81,7 +81,7 @@ const SubscribeBox = () => {
         left: 0,
         zIndex: 1
       }}>
-        <img src={monedaesquina} alt="Moneda esquina" style={{ width: 120, height: 'auto' }} />
+        <img src={monedaesquina} alt="Moneda esquina" style={{ width: 200, height: 'auto' }} />
       </Box>
 
       {/* Imagen de moneda en esquina superior derecha */}
@@ -91,19 +91,19 @@ const SubscribeBox = () => {
         right: 0,
         zIndex: 1
       }}>
-        <img src={monedaparada} alt="Moneda parada" style={{ width: 100, height: 'auto' }} />
+        <img src={monedaparada} alt="Moneda parada" style={{ width: 180, height: 'auto' }} />
       </Box>
 
       {/* Contenido principal */}
       <Box sx={{
         bgcolor: 'rgba(198, 255, 209, 0.7)',
         borderRadius: 4,
-        px: 6,
-        py: 5,
+        px: 8,
+        py: 6,
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        maxWidth: 500,
+        alignItems: 'flex-start',
+        maxWidth: 600,
         width: '90%',
         position: 'relative',
         zIndex: 2,
@@ -113,9 +113,9 @@ const SubscribeBox = () => {
           fontFamily: 'Roboto, sans-serif', 
           color: '#000', 
           fontWeight: 700, 
-          fontSize: 28, 
-          mb: 2, 
-          textAlign: 'center', 
+          fontSize: 36, 
+          mb: 3, 
+          textAlign: 'left', 
           letterSpacing: 1,
           textTransform: 'uppercase'
         }}>
@@ -125,10 +125,10 @@ const SubscribeBox = () => {
         <Typography sx={{ 
           fontFamily: 'Roboto, sans-serif', 
           color: '#000', 
-          fontSize: 16, 
-          textAlign: 'center', 
-          mb: 4,
-          maxWidth: 400
+          fontSize: 20, 
+          textAlign: 'left', 
+          mb: 5,
+          maxWidth: 500
         }}>
           Recibe notificaciones cada semana en tu correo.
         </Typography>
@@ -136,9 +136,9 @@ const SubscribeBox = () => {
         <Box sx={{ 
           display: 'flex', 
           flexDirection: 'column', 
-          gap: 2, 
+          gap: 3, 
           width: '100%', 
-          maxWidth: 400 
+          maxWidth: 500 
         }}>
           <TextField
             fullWidth
@@ -173,10 +173,10 @@ const SubscribeBox = () => {
               bgcolor: '#057c39', 
               color: 'white', 
               fontWeight: 700, 
-              py: 1.5, 
+              py: 2, 
               borderRadius: 2, 
               fontFamily: 'Play, sans-serif', 
-              fontSize: 18, 
+              fontSize: 22, 
               textTransform: 'none',
               boxShadow: '0 2px 8px 0 rgba(0,0,0,0.15)',
               '&:hover': {
