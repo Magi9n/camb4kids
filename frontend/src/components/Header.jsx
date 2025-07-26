@@ -84,7 +84,7 @@ const Header = () => {
           
           {user && token ? (
             // Usuario logueado - Mostrar nombre con menú desplegable
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, position: 'relative' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, position: 'relative', zIndex: 9999 }}>
               <Button
                 onClick={handleMenuClick}
                 sx={{
@@ -115,20 +115,13 @@ const Header = () => {
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
                 PaperProps={{
                   sx: {
                     mt: 1,
                     minWidth: 200,
                     boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
                     borderRadius: 2,
+                    zIndex: 9999,
                     '& .MuiMenuItem-root': {
                       fontFamily: 'Roboto, sans-serif',
                       fontSize: 14,
@@ -137,15 +130,6 @@ const Header = () => {
                     }
                   }
                 }}
-                slotProps={{
-                  paper: {
-                    style: {
-                      transform: 'none !important'
-                    }
-                  }
-                }}
-                keepMounted
-                disablePortal={false}
               >
                 <MenuItem onClick={() => handleMenuOption('/')}>
                   <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500 }}>
@@ -165,6 +149,11 @@ const Header = () => {
                 <MenuItem onClick={() => handleMenuOption('/mis-cuentas')}>
                   <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500 }}>
                     🏦 Mis Cuentas
+                  </Typography>
+                </MenuItem>
+                <MenuItem onClick={() => handleMenuOption('/mis-alertas')}>
+                  <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500 }}>
+                    🔔 Mis Alertas
                   </Typography>
                 </MenuItem>
                 <MenuItem onClick={() => handleMenuOption('/configuracion')}>
