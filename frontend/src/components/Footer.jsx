@@ -247,7 +247,9 @@ const Footer = () => {
           pt: 4, 
           borderTop: '1px solid #333',
           display: 'flex',
-          alignItems: 'center'
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 2
         }}>
           <img 
             src={logomangocashfooter} 
@@ -258,6 +260,16 @@ const Footer = () => {
               filter: 'brightness(0) invert(1)' // Hace el logo blanco
             }} 
           />
+          <Typography sx={{ 
+            fontFamily: 'Roboto, sans-serif', 
+            color: '#8b8e96', 
+            fontSize: 12, 
+            textAlign: 'center',
+            lineHeight: 1.4
+          }}>
+            © {new Date().getFullYear()} MangosCash. Todos los derechos reservados. | 
+            Plataforma de cambio digital segura y confiable en Perú.
+          </Typography>
         </Box>
       </Container>
     </Box>
