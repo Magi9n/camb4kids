@@ -46,10 +46,12 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMenuClick = (event) => {
+    console.log('Menú abierto - anchorEl:', event.currentTarget);
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
+    console.log('Menú cerrado');
     setAnchorEl(null);
   };
 
@@ -82,7 +84,11 @@ const Header = () => {
           alignItems: 'center', 
           gap: 3, 
           mr: 2,
-          ...(user && token ? { ml: -2 } : {})
+          ...(user && token ? { ml: -2 } : {}),
+          // Debug temporal
+          border: user && token ? '2px solid red' : 'none',
+          minWidth: user && token ? 'auto' : 'auto',
+          width: user && token ? 'fit-content' : 'auto'
         }}>
           <Box component="span" sx={menuHoverStyle}>Nosotros</Box>
           <Box component="span" sx={menuHoverStyle}>Empresas</Box>
@@ -90,7 +96,16 @@ const Header = () => {
           
           {user && token ? (
             // Usuario logueado - Mostrar nombre con menú desplegable
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, position: 'relative', zIndex: 9999 }}>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1, 
+              position: 'relative', 
+              zIndex: 9999,
+              // Debug temporal
+              border: '2px solid blue',
+              minWidth: 'fit-content'
+            }}>
               <Button
                 onClick={handleMenuClick}
                 sx={{
@@ -121,6 +136,8 @@ const Header = () => {
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
+                disablePortal={false}
+                keepMounted={false}
                 PaperProps={{
                   sx: {
                     mt: 1,
@@ -128,6 +145,8 @@ const Header = () => {
                     boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
                     borderRadius: 2,
                     zIndex: 9999,
+                    // Debug temporal
+                    border: '2px solid green',
                     '& .MuiMenuItem-root': {
                       fontFamily: 'Roboto, sans-serif',
                       fontSize: 14,
@@ -136,6 +155,8 @@ const Header = () => {
                     }
                   }
                 }}
+                // Forzar posicionamiento absoluto
+                style={{ position: 'absolute' }}
               >
                 <MenuItem onClick={() => handleMenuOption('/')}>
                   <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500 }}>
