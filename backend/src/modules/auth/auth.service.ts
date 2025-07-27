@@ -1,10 +1,12 @@
 import { Injectable, UnauthorizedException, ConflictException, BadRequestException, NotFoundException } from '@nestjs/common';
-import { RegisterDto, LoginDto, VerifyEmailDto, CompleteProfileDto } from './dto';
+import { RegisterDto, LoginDto, VerifyEmailDto, CompleteProfileDto, ForgotPasswordDto, ResetPasswordDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, LessThan } from 'typeorm';
 import { User } from './entities/user.entity';
+import { PasswordReset } from './entities/password-reset.entity';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import * as crypto from 'crypto';
 const nodemailer = require('nodemailer');
 
 function generateCode() {
@@ -39,6 +41,8 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
+    @InjectRepository(PasswordReset)
+    private readonly passwordResetRepo: Repository<PasswordReset>,
   ) {}
 
   async register(dto: RegisterDto) {
@@ -116,6 +120,158 @@ export class AuthService {
   async logout(token: string) {
     // En JWT stateless, el logout se maneja en frontend o con blacklist en Redis
     return { message: 'Logout exitoso' };
+  }
+
+  async forgotPassword(dto: ForgotPasswordDto) {
+    const user = await this.userRepo.findOne({ where: { email: dto.email } });
+    
+    // Siempre devolver el mismo mensaje para evitar enumeración de usuarios
+    const message = 'Si el correo ingresado existe en nuestra base de datos, recibirás un enlace de recuperación en los próximos minutos.';
+    
+    if (!user) {
+      return { message };
+    }
+
+    // Generar token único
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiresAt = new Date(Date.now() + 30 * 60 * 1000); // 30 minutos
+
+    // Eliminar tokens anteriores para este usuario
+    await this.passwordResetRepo.delete({ email: dto.email });
+
+    // Crear nuevo token
+    const passwordReset = this.passwordResetRepo.create({
+      email: dto.email,
+      token,
+      expiresAt,
+      used: false,
+    });
+
+    await this.passwordResetRepo.save(passwordReset);
+
+    // Enviar email
+    await this.sendPasswordResetEmail(dto.email, token);
+
+    return { message };
+  }
+
+  async resetPassword(dto: ResetPasswordDto) {
+    const passwordReset = await this.passwordResetRepo.findOne({
+      where: { token: dto.token, used: false }
+    });
+
+    if (!passwordReset) {
+      throw new BadRequestException('Token inválido o ya utilizado');
+    }
+
+    if (passwordReset.expiresAt < new Date()) {
+      await this.passwordResetRepo.delete(passwordReset.id);
+      throw new BadRequestException('El enlace de recuperación ha expirado');
+    }
+
+    // Actualizar contraseña del usuario
+    const user = await this.userRepo.findOne({ where: { email: passwordReset.email } });
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+    user.password = hashedPassword;
+    await this.userRepo.save(user);
+
+    // Marcar token como usado
+    passwordReset.used = true;
+    await this.passwordResetRepo.save(passwordReset);
+
+    return { message: 'Contraseña actualizada correctamente' };
+  }
+
+  async verifyResetToken(token: string) {
+    const passwordReset = await this.passwordResetRepo.findOne({
+      where: { token, used: false }
+    });
+
+    if (!passwordReset) {
+      return { valid: false, message: 'Token inválido o ya utilizado' };
+    }
+
+    if (passwordReset.expiresAt < new Date()) {
+      await this.passwordResetRepo.delete(passwordReset.id);
+      return { valid: false, message: 'El enlace de recuperación ha expirado' };
+    }
+
+    return { valid: true, email: passwordReset.email };
+  }
+
+  private async sendPasswordResetEmail(email: string, token: string) {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || '587'),
+        secure: false,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      });
+
+      const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+
+      const htmlContent = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="background: linear-gradient(135deg, #057c39 0%, #23FFBD 100%); padding: 30px; border-radius: 10px; text-align: center;">
+            <h1 style="color: white; margin: 0; font-size: 28px;">MangosCash</h1>
+            <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">Recuperación de Contraseña</p>
+          </div>
+          
+          <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <h2 style="color: #333; margin-bottom: 20px;">Hola,</h2>
+            
+            <p style="color: #666; line-height: 1.6; margin-bottom: 25px;">
+              Has solicitado restablecer tu contraseña en MangosCash. 
+              Haz clic en el botón de abajo para crear una nueva contraseña.
+            </p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${resetUrl}" 
+                 style="background: #057c39; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+                Restablecer Contraseña
+              </a>
+            </div>
+            
+            <p style="color: #666; line-height: 1.6; margin-bottom: 15px;">
+              <strong>Importante:</strong> Este enlace es válido por 30 minutos y solo puede ser usado una vez.
+            </p>
+            
+            <p style="color: #666; line-height: 1.6; margin-bottom: 15px;">
+              Si no solicitaste este cambio, puedes ignorar este correo. Tu contraseña permanecerá sin cambios.
+            </p>
+            
+            <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+            
+            <p style="color: #999; font-size: 14px; text-align: center;">
+              Si el botón no funciona, copia y pega este enlace en tu navegador:<br>
+              <a href="${resetUrl}" style="color: #057c39;">${resetUrl}</a>
+            </p>
+          </div>
+          
+          <div style="text-align: center; margin-top: 20px; color: #999; font-size: 12px;">
+            <p>© ${new Date().getFullYear()} MangosCash. Todos los derechos reservados.</p>
+          </div>
+        </div>
+      `;
+
+      await transporter.sendMail({
+        from: process.env.SMTP_FROM,
+        to: email,
+        subject: 'Recuperación de Contraseña - MangosCash',
+        html: htmlContent,
+      });
+
+      console.log(`[EMAIL] Correo de recuperación enviado a: ${email}`);
+    } catch (err) {
+      console.error('[EMAIL] Error al enviar correo de recuperación:', err);
+    }
   }
 
   // Limpieza automática de usuarios no verificados (llamar desde un cron job)
