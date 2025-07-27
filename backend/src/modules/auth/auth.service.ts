@@ -97,11 +97,30 @@ export class AuthService {
   }
 
   async login(dto: LoginDto) {
+    console.log('[DEBUG] login attempt for email:', dto.email);
+    
     const user = await this.userRepo.findOne({ where: { email: dto.email } });
-    if (!user) throw new UnauthorizedException('Credenciales inválidas');
-    if (!user.isVerified) throw new UnauthorizedException('Debes verificar tu correo antes de iniciar sesión');
+    if (!user) {
+      console.log('[DEBUG] User not found');
+      throw new UnauthorizedException('Credenciales inválidas');
+    }
+    
+    console.log('[DEBUG] User found, checking verification');
+    if (!user.isVerified) {
+      console.log('[DEBUG] User not verified');
+      throw new UnauthorizedException('Debes verificar tu correo antes de iniciar sesión');
+    }
+    
+    console.log('[DEBUG] User verified, comparing passwords');
     const valid = await bcrypt.compare(dto.password, user.password);
-    if (!valid) throw new UnauthorizedException('Credenciales inválidas');
+    console.log('[DEBUG] Password comparison result:', valid);
+    
+    if (!valid) {
+      console.log('[DEBUG] Password invalid');
+      throw new UnauthorizedException('Credenciales inválidas');
+    }
+    
+    console.log('[DEBUG] Login successful, generating token');
     const payload = { sub: user.id, email: user.email, role: user.role };
     const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' });
     return { token, user: { id: user.id, email: user.email, name: user.name, lastname: user.lastname, role: user.role } };
@@ -156,32 +175,46 @@ export class AuthService {
   }
 
   async resetPassword(dto: ResetPasswordDto) {
+    console.log('[DEBUG] resetPassword called with token:', dto.token);
+    
     const passwordReset = await this.passwordResetRepo.findOne({
       where: { token: dto.token, used: false }
     });
 
+    console.log('[DEBUG] passwordReset found:', passwordReset ? 'YES' : 'NO');
+
     if (!passwordReset) {
+      console.log('[DEBUG] Token not found or already used');
       throw new BadRequestException('Token inválido o ya utilizado');
     }
 
     if (passwordReset.expiresAt < new Date()) {
+      console.log('[DEBUG] Token expired');
       await this.passwordResetRepo.delete(passwordReset.id);
       throw new BadRequestException('El enlace de recuperación ha expirado');
     }
 
+    console.log('[DEBUG] Token valid, looking for user with email:', passwordReset.email);
+
     // Actualizar contraseña del usuario
     const user = await this.userRepo.findOne({ where: { email: passwordReset.email } });
     if (!user) {
+      console.log('[DEBUG] User not found');
       throw new NotFoundException('Usuario no encontrado');
     }
 
+    console.log('[DEBUG] User found, hashing new password');
     const hashedPassword = await bcrypt.hash(dto.password, 10);
     user.password = hashedPassword;
+    
+    console.log('[DEBUG] Saving user with new password');
     await this.userRepo.save(user);
+    console.log('[DEBUG] User saved successfully');
 
     // Marcar token como usado
     passwordReset.used = true;
     await this.passwordResetRepo.save(passwordReset);
+    console.log('[DEBUG] Token marked as used');
 
     return { message: 'Contraseña actualizada correctamente' };
   }
