@@ -207,7 +207,15 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(dto.password, 10);
     user.password = hashedPassword;
     
-    console.log('[DEBUG] Saving user with new password');
+    // Marcar al usuario como verificado si no lo estaba
+    if (!user.isVerified) {
+      console.log('[DEBUG] Marking user as verified');
+      user.isVerified = true;
+      user.verificationCode = null;
+      user.verificationExpires = null;
+    }
+    
+    console.log('[DEBUG] Saving user with new password and verification status');
     await this.userRepo.save(user);
     console.log('[DEBUG] User saved successfully');
 
