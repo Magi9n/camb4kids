@@ -66,7 +66,7 @@ const LoginPage = () => {
       if (res.data.user.role === 'admin') {
         navigate('/admin');
       } else {
-        navigate('/panel');
+        navigate('/dashboard');
       }
     } catch (err) {
       setError('Credenciales incorrectas');

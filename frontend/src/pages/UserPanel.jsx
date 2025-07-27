@@ -53,9 +53,12 @@ const UserPanel = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedMenu, setSelectedMenu] = useState('inicio');
+  const [selectedMenu, setSelectedMenu] = useState('dashboard');
   const [couponCode, setCouponCode] = useState('');
   const [manguitos, setManguitos] = useState(2000);
+  const [swap, setSwap] = useState(false);
+  const [swapActive, setSwapActive] = useState(false);
+  const [penAmount, setPenAmount] = useState('');
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -70,22 +73,23 @@ const UserPanel = () => {
     navigate('/');
   };
 
+  const handleSwap = () => {
+    setSwap(!swap);
+    setSwapActive(true);
+    setTimeout(() => setSwapActive(false), 400);
+  };
+
+  const handlePenChange = (amount) => {
+    setPenAmount(amount);
+  };
+
   const menuItems = [
-    { id: 'inicio', text: 'Inicio', icon: <HomeIcon /> },
+    { id: 'dashboard', text: 'Dashboard', icon: <HomeIcon /> },
     { id: 'historial', text: 'Historial de operaciones', icon: <HistoryIcon /> },
     { id: 'cuentas', text: 'Cuentas Bancarias', icon: <BankIcon /> },
     { id: 'alertas', text: 'Alertas', icon: <AlertIcon /> },
     { id: 'manguitos', text: 'Mis Manguitos', icon: <WalletIcon /> },
     { id: 'ayuda', text: 'Ayuda', icon: <HelpIcon /> },
-  ];
-
-  const banks = [
-    { name: 'BCP', logo: bcpLogo, type: 'Inmediata' },
-    { name: 'Interbank', logo: interbankLogo, type: 'Inmediata' },
-    { name: 'BBVA', logo: bbvaLogo, type: 'Interbancaria' },
-    { name: 'Scotiabank', logo: scotiabankLogo, type: 'Interbancaria' },
-    { name: 'BanBif', logo: pichinchaLogo, type: 'Inmediata' },
-    { name: 'Banco Pichincha', logo: pichinchaLogo, type: 'Inmediata' },
   ];
 
   return (
@@ -164,6 +168,14 @@ const UserPanel = () => {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               <Typography sx={{ 
                 fontFamily: 'Roboto, sans-serif', 
+                fontSize: 20, 
+                color: '#333',
+                fontWeight: 700
+              }}>
+                Dashboard
+              </Typography>
+              <Typography sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
                 fontSize: 14, 
                 color: '#666',
                 fontWeight: 500
@@ -238,16 +250,21 @@ const UserPanel = () => {
             <Paper sx={{ p: 4, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
               <Typography sx={{ 
                 fontFamily: 'Roboto, sans-serif', 
-                fontSize: 24, 
+                fontSize: 28, 
                 fontWeight: 700, 
-                mb: 3,
+                mb: 4,
                 color: '#333'
               }}>
                 Cambio de Divisas
               </Typography>
               
               {/* Calculator Component */}
-              <Calculator />
+              <Calculator 
+                swap={swap}
+                onSwap={handleSwap}
+                swapActive={swapActive}
+                onPenChange={handlePenChange}
+              />
               
               {/* Coupon Section */}
               <Box sx={{ mt: 4, p: 3, bgcolor: '#f8f9fa', borderRadius: 2 }}>
@@ -291,6 +308,31 @@ const UserPanel = () => {
                     APLICAR
                   </Button>
                 </Box>
+              </Box>
+
+              {/* Start Operation Button */}
+              <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  sx={{
+                    bgcolor: '#57C9A6',
+                    color: 'white',
+                    fontWeight: 700,
+                    fontSize: 18,
+                    px: 6,
+                    py: 2,
+                    borderRadius: 3,
+                    textTransform: 'none',
+                    boxShadow: '0 4px 12px rgba(87, 201, 166, 0.3)',
+                    '&:hover': {
+                      bgcolor: '#3bbd8c',
+                      boxShadow: '0 6px 16px rgba(87, 201, 166, 0.4)',
+                    }
+                  }}
+                >
+                  INICIAR OPERACIÓN
+                </Button>
               </Box>
             </Paper>
           </Box>
@@ -358,7 +400,6 @@ const UserPanel = () => {
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
                   <img src={pichinchaLogo} alt="BanBif" style={{ height: 24, width: 'auto' }} />
-                  <img src={pichinchaLogo} alt="Banco Pichincha" style={{ height: 24, width: 'auto' }} />
                 </Box>
                 <Typography sx={{ 
                   fontFamily: 'Roboto, sans-serif', 
@@ -410,6 +451,7 @@ const UserPanel = () => {
                 <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
                   <img src={bbvaLogo} alt="BBVA" style={{ height: 24, width: 'auto' }} />
                   <img src={scotiabankLogo} alt="Scotiabank" style={{ height: 24, width: 'auto' }} />
+                  <img src={pichinchaLogo} alt="Banco Pichincha" style={{ height: 24, width: 'auto' }} />
                 </Box>
                 
                 <Typography sx={{ 

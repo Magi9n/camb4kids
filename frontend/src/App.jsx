@@ -32,7 +32,7 @@ function App() {
           <Route path="/complete-profile" element={<CompleteProfilePage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route
-            path="/panel"
+            path="/dashboard"
             element={
               <ProtectedRoute>
                 <UserPanel />
