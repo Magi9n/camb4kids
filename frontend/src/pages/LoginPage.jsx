@@ -92,6 +92,7 @@ const LoginPage = () => {
           alignItems: 'center',
           justifyContent: 'center',
           px: 12,
+          py: 0,
           boxShadow: '8px 0 32px 0 rgba(0,0,0,0.04)',
           animation: show ? 'slideInLeft 1s cubic-bezier(.77,0,.18,1) forwards' : 'none',
           position: 'relative',
@@ -102,8 +103,8 @@ const LoginPage = () => {
             <Box key={idx} sx={{ display: 'flex', alignItems: 'center', mb: 7, width: '100%' }}>
               <img src={item.icon} alt="icono" style={{ width: 80, height: 80, marginRight: 32, flexShrink: 0 }} />
               <Box sx={{ textAlign: 'left', width: '100%' }}>
-                <Typography sx={{ color: '#222', fontWeight: 700, fontSize: 26, mb: 1, letterSpacing: 0.2, textAlign: 'left' }}>{item.title}</Typography>
-                <Typography sx={{ color: '#222', fontWeight: 400, fontSize: 20, lineHeight: 1.4, textAlign: 'left' }}>{item.desc}</Typography>
+                <Typography sx={{ color: '#222', fontWeight: 700, fontSize: 26, mb: 1, letterSpacing: 0.2, textAlign: 'left', fontFamily: 'Play, sans-serif' }}>{item.title}</Typography>
+                <Typography sx={{ color: '#222', fontWeight: 400, fontSize: 20, lineHeight: 1.4, textAlign: 'left', fontFamily: 'Play, sans-serif' }}>{item.desc}</Typography>
               </Box>
             </Box>
           ))}
@@ -120,15 +121,14 @@ const LoginPage = () => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          px: 8,
+          px: 6,
+          py: 0,
           boxShadow: '-8px 0 32px 0 rgba(0,0,0,0.04)',
           animation: show ? 'slideInRight 1s cubic-bezier(.77,0,.18,1) forwards' : 'none',
           zIndex: 1
         }}>
-          <Box sx={{ width: '100%', maxWidth: 400, mx: 'auto' }}>
-            <Typography variant="h5" fontWeight={700} sx={{ mb: 4, color: '#222', fontFamily: 'Roboto, sans-serif', textAlign: 'left' }}>
-              Inicia sesión
-            </Typography>
+          <Box sx={{ width: '100%', maxWidth: 370, mx: 'auto' }}>
+            <Typography variant="h5" fontWeight={700} sx={{ mb: 3, color: '#222', fontFamily: 'Roboto, sans-serif', textAlign: 'left' }}>Inicia sesión</Typography>
             <form onSubmit={handleSubmit}>
               <TextField
                 label="Correo"
@@ -139,20 +139,8 @@ const LoginPage = () => {
                 margin="normal"
                 required
                 placeholder="Escribe tu correo"
-                InputProps={{ 
-                  style: { 
-                    fontFamily: 'Roboto, sans-serif', 
-                    color: '#222',
-                    backgroundColor: 'white',
-                    borderRadius: 2
-                  } 
-                }}
-                InputLabelProps={{ 
-                  style: { 
-                    fontFamily: 'Roboto, sans-serif', 
-                    color: '#222' 
-                  } 
-                }}
+                InputProps={{ style: { fontFamily: 'Roboto, sans-serif', color: '#222' } }}
+                InputLabelProps={{ style: { fontFamily: 'Roboto, sans-serif', color: '#222' } }}
               />
               <TextField
                 label="Contraseña"
@@ -163,24 +151,12 @@ const LoginPage = () => {
                 margin="normal"
                 required
                 placeholder="Escribe tu contraseña"
-                InputProps={{ 
-                  style: { 
-                    fontFamily: 'Roboto, sans-serif', 
-                    color: '#222',
-                    backgroundColor: 'white',
-                    borderRadius: 2
-                  } 
-                }}
-                InputLabelProps={{ 
-                  style: { 
-                    fontFamily: 'Roboto, sans-serif', 
-                    color: '#222' 
-                  } 
-                }}
+                InputProps={{ style: { fontFamily: 'Roboto, sans-serif', color: '#222' } }}
+                InputLabelProps={{ style: { fontFamily: 'Roboto, sans-serif', color: '#222' } }}
               />
-              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                <Typography
-                  sx={{
+              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end', mt: 0.5 }}>
+                <span
+                  style={{
                     color: '#005a7c',
                     fontWeight: 500,
                     fontFamily: 'Roboto, sans-serif',
@@ -195,29 +171,11 @@ const LoginPage = () => {
                   onMouseOut={e => e.target.style.color = '#005a7c'}
                 >
                   Olvidé mi contraseña
-                </Typography>
+                </span>
               </Box>
               {error && <Typography color="error" sx={{ mt: 1, fontFamily: 'Roboto, sans-serif' }}>{error}</Typography>}
-              <Button 
-                type="submit" 
-                variant="contained" 
-                fullWidth 
-                sx={{ 
-                  mt: 4, 
-                  mb: 3, 
-                  py: 1.5, 
-                  fontWeight: 700, 
-                  fontFamily: 'Roboto, sans-serif', 
-                  fontSize: 18, 
-                  bgcolor: '#57C9A6', 
-                  color: '#fff', 
-                  boxShadow: '0 2px 8px 0 rgba(87,201,166,0.12)', 
-                  borderRadius: 2,
-                  textTransform: 'uppercase',
-                  '&:hover': { bgcolor: '#3bbd8c' } 
-                }}
-              >
-                Iniciar sesión
+              <Button type="submit" variant="contained" fullWidth sx={{ mt: 3, mb: 1, py: 1.5, fontWeight: 700, fontFamily: 'Roboto, sans-serif', fontSize: 18, bgcolor: '#57C9A6', color: '#fff', boxShadow: '0 2px 8px 0 rgba(87,201,166,0.12)', '&:hover': { bgcolor: '#3bbd8c' } }}>
+                INICIAR SESIÓN
               </Button>
             </form>
             <Typography sx={{ mt: 2, color: '#222', fontFamily: 'Roboto, sans-serif', fontSize: 15, textAlign: 'center' }}>
