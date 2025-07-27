@@ -24,11 +24,57 @@ async function sendVerificationEmail(email: string, code: string) {
         pass: process.env.SMTP_PASS,
       },
     });
+
+    const htmlContent = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: linear-gradient(135deg, #057c39 0%, #23FFBD 100%); padding: 30px; border-radius: 10px; text-align: center;">
+          <h1 style="color: white; margin: 0; font-size: 28px;">MangosCash</h1>
+          <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">Verificación de Correo</p>
+        </div>
+        
+        <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+          <h2 style="color: #333; margin-bottom: 20px;">¡Bienvenido a MangosCash!</h2>
+          
+          <p style="color: #666; line-height: 1.6; margin-bottom: 25px;">
+            Gracias por registrarte en nuestra plataforma. Para completar tu registro, 
+            necesitamos verificar tu dirección de correo electrónico.
+          </p>
+          
+          <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 2px dashed #057c39;">
+            <h3 style="color: #057c39; margin: 0 0 10px 0; font-size: 24px;">Tu código de verificación</h3>
+            <div style="font-size: 32px; font-weight: 700; color: #057c39; letter-spacing: 4px; font-family: 'Courier New', monospace;">
+              ${code}
+            </div>
+          </div>
+          
+          <p style="color: #666; line-height: 1.6; margin-bottom: 15px;">
+            <strong>Importante:</strong> Este código es válido por 30 minutos. 
+            Si no solicitaste este registro, puedes ignorar este correo.
+          </p>
+          
+          <p style="color: #666; line-height: 1.6; margin-bottom: 15px;">
+            Una vez verificado tu correo, podrás acceder a todas las funcionalidades 
+            de nuestra plataforma de cambio de divisas.
+          </p>
+          
+          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+          
+          <p style="color: #999; font-size: 14px; text-align: center;">
+            Si tienes problemas con la verificación, contacta nuestro soporte técnico.
+          </p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px; color: #999; font-size: 12px;">
+          <p>© ${new Date().getFullYear()} MangosCash. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    `;
+
     await transporter.sendMail({
       from: process.env.SMTP_FROM,
       to: email,
-      subject: 'Código de verificación',
-      text: `Tu código de verificación es: ${code}\nEste código es válido por 30 minutos.`,
+      subject: 'Verificación de Correo - MangosCash',
+      html: htmlContent,
     });
     console.log(`[EMAIL] Correo de verificación enviado a: ${email}`);
   } catch (err) {
