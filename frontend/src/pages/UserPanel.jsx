@@ -46,6 +46,7 @@ import bbvaLogo from '../assets/bbva.svg';
 import scotiabankLogo from '../assets/scotiabank.svg';
 import pichinchaLogo from '../assets/pichincha.svg';
 import Calculator from '../components/Calculator';
+import OperationsHistory from '../components/OperationsHistory';
 
 const drawerWidth = 280;
 
@@ -91,6 +92,261 @@ const UserPanel = () => {
     { id: 'manguitos', text: 'Mis Manguitos', icon: <WalletIcon /> },
     { id: 'ayuda', text: 'Ayuda', icon: <HelpIcon /> },
   ];
+
+  // Renderizar contenido según el menú seleccionado
+  const renderContent = () => {
+    switch (selectedMenu) {
+      case 'historial':
+        return <OperationsHistory />;
+      case 'dashboard':
+      default:
+        return (
+          <Box sx={{ flexGrow: 1, display: 'flex', bgcolor: '#f8f9fa' }}>
+            {/* Left Content - Calculator */}
+            <Box sx={{ flex: 1, p: 4 }}>
+              <Paper sx={{ p: 4, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
+                <Typography sx={{ 
+                  fontFamily: 'Roboto, sans-serif', 
+                  fontSize: 28, 
+                  fontWeight: 700, 
+                  mb: 4,
+                  color: '#333'
+                }}>
+                  Cambio de Divisas
+                </Typography>
+                
+                {/* Calculator Component */}
+                <Calculator 
+                  swap={swap}
+                  onSwap={handleSwap}
+                  swapActive={swapActive}
+                  onPenChange={handlePenChange}
+                />
+                
+                {/* Coupon Section */}
+                <Box sx={{ mt: 4, p: 3, bgcolor: '#f8f9fa', borderRadius: 2 }}>
+                  <Typography sx={{ 
+                    fontFamily: 'Roboto, sans-serif', 
+                    fontSize: 16, 
+                    fontWeight: 600, 
+                    mb: 2,
+                    color: '#333'
+                  }}>
+                    Cupón de Descuento
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                    <TextField
+                      fullWidth
+                      placeholder="Ingresa el cupón"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value)}
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: 2,
+                          bgcolor: 'white',
+                        }
+                      }}
+                    />
+                    <Button
+                      variant="contained"
+                      sx={{
+                        bgcolor: '#057c39',
+                        color: 'white',
+                        fontWeight: 700,
+                        px: 3,
+                        py: 1.5,
+                        borderRadius: 2,
+                        textTransform: 'none',
+                        '&:hover': {
+                          bgcolor: '#046a30',
+                        }
+                      }}
+                    >
+                      APLICAR
+                    </Button>
+                  </Box>
+                </Box>
+
+                {/* Start Operation Button */}
+                <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    sx={{
+                      bgcolor: '#57C9A6',
+                      color: 'white',
+                      fontWeight: 700,
+                      fontSize: 18,
+                      px: 6,
+                      py: 2,
+                      borderRadius: 3,
+                      textTransform: 'none',
+                      boxShadow: '0 4px 12px rgba(87, 201, 166, 0.3)',
+                      '&:hover': {
+                        bgcolor: '#3bbd8c',
+                        boxShadow: '0 6px 16px rgba(87, 201, 166, 0.4)',
+                      }
+                    }}
+                  >
+                    INICIAR OPERACIÓN
+                  </Button>
+                </Box>
+              </Paper>
+            </Box>
+
+            {/* Right Panel - Bank Information */}
+            <Box sx={{ width: 320, p: 4 }}>
+              <Paper sx={{ p: 3, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
+                <Typography sx={{ 
+                  fontFamily: 'Roboto, sans-serif', 
+                  fontSize: 18, 
+                  fontWeight: 700, 
+                  mb: 3,
+                  color: '#333'
+                }}>
+                  Transferencias Disponibles
+                </Typography>
+
+                {/* Immediate Transfers */}
+                <Box sx={{ mb: 4 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      width: 40, 
+                      height: 40, 
+                      borderRadius: '50%', 
+                      bgcolor: '#057c39', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      mr: 2
+                    }}>
+                      <Typography sx={{ color: 'white', fontSize: 12, fontWeight: 700 }}>
+                        15 MIN
+                      </Typography>
+                    </Box>
+                    <Typography sx={{ 
+                      fontFamily: 'Roboto, sans-serif', 
+                      fontSize: 14, 
+                      fontWeight: 600,
+                      color: '#333'
+                    }}>
+                      Transferencias inmediatas en 15 minutos
+                    </Typography>
+                  </Box>
+                  
+                  <Typography sx={{ 
+                    fontFamily: 'Roboto, sans-serif', 
+                    fontSize: 12, 
+                    color: '#666',
+                    mb: 1
+                  }}>
+                    Todo el Perú
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+                    <img src={bcpLogo} alt="BCP" style={{ height: 24, width: 'auto' }} />
+                    <img src={interbankLogo} alt="Interbank" style={{ height: 24, width: 'auto' }} />
+                  </Box>
+                  
+                  <Typography sx={{ 
+                    fontFamily: 'Roboto, sans-serif', 
+                    fontSize: 12, 
+                    color: '#666',
+                    mb: 1
+                  }}>
+                    Lima
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+                    <img src={pichinchaLogo} alt="BanBif" style={{ height: 24, width: 'auto' }} />
+                  </Box>
+                  <Typography sx={{ 
+                    fontFamily: 'Roboto, sans-serif', 
+                    fontSize: 10, 
+                    color: '#999',
+                    fontStyle: 'italic'
+                  }}>
+                    Lunes a Viernes
+                  </Typography>
+                </Box>
+
+                <Divider sx={{ my: 3 }} />
+
+                {/* Interbank Transfers */}
+                <Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      width: 40, 
+                      height: 40, 
+                      borderRadius: '50%', 
+                      bgcolor: '#666', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      mr: 2
+                    }}>
+                      <Typography sx={{ color: 'white', fontSize: 12, fontWeight: 700 }}>
+                        24 HRS
+                      </Typography>
+                    </Box>
+                    <Typography sx={{ 
+                      fontFamily: 'Roboto, sans-serif', 
+                      fontSize: 14, 
+                      fontWeight: 600,
+                      color: '#333'
+                    }}>
+                      Transferencias interbancarias en 1 día hábil
+                    </Typography>
+                  </Box>
+                  
+                  <Typography sx={{ 
+                    fontFamily: 'Roboto, sans-serif', 
+                    fontSize: 12, 
+                    color: '#666',
+                    mb: 1
+                  }}>
+                    Lima
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+                    <img src={bbvaLogo} alt="BBVA" style={{ height: 24, width: 'auto' }} />
+                    <img src={scotiabankLogo} alt="Scotiabank" style={{ height: 24, width: 'auto' }} />
+                    <img src={pichinchaLogo} alt="Banco Pichincha" style={{ height: 24, width: 'auto' }} />
+                  </Box>
+                  
+                  <Typography sx={{ 
+                    fontFamily: 'Roboto, sans-serif', 
+                    fontSize: 12, 
+                    color: '#666',
+                    mb: 1
+                  }}>
+                    y otros bancos
+                  </Typography>
+                  
+                  <Typography sx={{ 
+                    fontFamily: 'Roboto, sans-serif', 
+                    fontSize: 12, 
+                    color: '#666',
+                    fontWeight: 600
+                  }}>
+                    Montos desde S/300 o $100
+                  </Typography>
+                </Box>
+
+                <Divider sx={{ my: 3 }} />
+
+                <Typography sx={{ 
+                  fontFamily: 'Roboto, sans-serif', 
+                  fontSize: 10, 
+                  color: '#999',
+                  fontStyle: 'italic',
+                  textAlign: 'center'
+                }}>
+                  (*) Válido durante días hábiles dentro del horario de atención
+                </Typography>
+              </Paper>
+            </Box>
+          </Box>
+        );
+    }
+  };
 
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
@@ -154,65 +410,67 @@ const UserPanel = () => {
 
       {/* Main Content */}
       <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        {/* Header */}
-        <AppBar 
-          position="static" 
-          elevation={0} 
-          sx={{ 
-            bgcolor: 'white', 
-            borderBottom: '1px solid #e0e0e0',
-            color: '#333'
-          }}
-        >
-          <Toolbar sx={{ justifyContent: 'space-between', minHeight: 64 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <Typography sx={{ 
-                fontFamily: 'Roboto, sans-serif', 
-                fontSize: 20, 
-                color: '#333',
-                fontWeight: 700
-              }}>
-                Dashboard
-              </Typography>
-              <Typography sx={{ 
-                fontFamily: 'Roboto, sans-serif', 
-                fontSize: 14, 
-                color: '#666',
-                fontWeight: 500
-              }}>
-                Horario: Lunes a viernes 9:00 am a 7:00 p.m Sábados de 09:00 am a 2:00 pm
-              </Typography>
-            </Box>
+        {/* Header - Solo mostrar si no estamos en historial */}
+        {selectedMenu !== 'historial' && (
+          <AppBar 
+            position="static" 
+            elevation={0} 
+            sx={{ 
+              bgcolor: 'white', 
+              borderBottom: '1px solid #e0e0e0',
+              color: '#333'
+            }}
+          >
+            <Toolbar sx={{ justifyContent: 'space-between', minHeight: 64 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <Typography sx={{ 
+                  fontFamily: 'Roboto, sans-serif', 
+                  fontSize: 20, 
+                  color: '#333',
+                  fontWeight: 700
+                }}>
+                  Dashboard
+                </Typography>
+                <Typography sx={{ 
+                  fontFamily: 'Roboto, sans-serif', 
+                  fontSize: 14, 
+                  color: '#666',
+                  fontWeight: 500
+                }}>
+                  Horario: Lunes a viernes 9:00 am a 7:00 p.m Sábados de 09:00 am a 2:00 pm
+                </Typography>
+              </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <Chip
-                icon={<StarIcon sx={{ color: '#FFD700' }} />}
-                label={`Tienes ${manguitos} Manguitos`}
-                sx={{ 
-                  bgcolor: '#fff3cd', 
-                  color: '#856404',
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Chip
+                  icon={<StarIcon sx={{ color: '#FFD700' }} />}
+                  label={`Tienes ${manguitos} Manguitos`}
+                  sx={{ 
+                    bgcolor: '#fff3cd', 
+                    color: '#856404',
+                    fontWeight: 600,
+                    '& .MuiChip-icon': { color: '#FFD700' }
+                  }}
+                />
+                
+                <IconButton onClick={handleMenuClick}>
+                  <Avatar sx={{ bgcolor: '#057c39', width: 32, height: 32 }}>
+                    {user?.name?.charAt(0) || 'U'}
+                  </Avatar>
+                </IconButton>
+                
+                <Typography sx={{ 
+                  fontFamily: 'Roboto, sans-serif', 
+                  fontSize: 14, 
                   fontWeight: 600,
-                  '& .MuiChip-icon': { color: '#FFD700' }
-                }}
-              />
-              
-              <IconButton onClick={handleMenuClick}>
-                <Avatar sx={{ bgcolor: '#057c39', width: 32, height: 32 }}>
-                  {user?.name?.charAt(0) || 'U'}
-                </Avatar>
-              </IconButton>
-              
-              <Typography sx={{ 
-                fontFamily: 'Roboto, sans-serif', 
-                fontSize: 14, 
-                fontWeight: 600,
-                color: '#333'
-              }}>
-                {user?.name || 'Usuario'}
-              </Typography>
-            </Box>
-          </Toolbar>
-        </AppBar>
+                  color: '#333'
+                }}>
+                  {user?.name || 'Usuario'}
+                </Typography>
+              </Box>
+            </Toolbar>
+          </AppBar>
+        )}
 
         {/* User Menu */}
         <Menu
@@ -244,249 +502,7 @@ const UserPanel = () => {
         </Menu>
 
         {/* Content Area */}
-        <Box sx={{ flexGrow: 1, display: 'flex', bgcolor: '#f8f9fa' }}>
-          {/* Left Content - Calculator */}
-          <Box sx={{ flex: 1, p: 4 }}>
-            <Paper sx={{ p: 4, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
-              <Typography sx={{ 
-                fontFamily: 'Roboto, sans-serif', 
-                fontSize: 28, 
-                fontWeight: 700, 
-                mb: 4,
-                color: '#333'
-              }}>
-                Cambio de Divisas
-              </Typography>
-              
-              {/* Calculator Component */}
-              <Calculator 
-                swap={swap}
-                onSwap={handleSwap}
-                swapActive={swapActive}
-                onPenChange={handlePenChange}
-              />
-              
-              {/* Coupon Section */}
-              <Box sx={{ mt: 4, p: 3, bgcolor: '#f8f9fa', borderRadius: 2 }}>
-                <Typography sx={{ 
-                  fontFamily: 'Roboto, sans-serif', 
-                  fontSize: 16, 
-                  fontWeight: 600, 
-                  mb: 2,
-                  color: '#333'
-                }}>
-                  Cupón de Descuento
-                </Typography>
-                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                  <TextField
-                    fullWidth
-                    placeholder="Ingresa el cupón"
-                    value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value)}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: 2,
-                        bgcolor: 'white',
-                      }
-                    }}
-                  />
-                  <Button
-                    variant="contained"
-                    sx={{
-                      bgcolor: '#057c39',
-                      color: 'white',
-                      fontWeight: 700,
-                      px: 3,
-                      py: 1.5,
-                      borderRadius: 2,
-                      textTransform: 'none',
-                      '&:hover': {
-                        bgcolor: '#046a30',
-                      }
-                    }}
-                  >
-                    APLICAR
-                  </Button>
-                </Box>
-              </Box>
-
-              {/* Start Operation Button */}
-              <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-                <Button
-                  variant="contained"
-                  size="large"
-                  sx={{
-                    bgcolor: '#57C9A6',
-                    color: 'white',
-                    fontWeight: 700,
-                    fontSize: 18,
-                    px: 6,
-                    py: 2,
-                    borderRadius: 3,
-                    textTransform: 'none',
-                    boxShadow: '0 4px 12px rgba(87, 201, 166, 0.3)',
-                    '&:hover': {
-                      bgcolor: '#3bbd8c',
-                      boxShadow: '0 6px 16px rgba(87, 201, 166, 0.4)',
-                    }
-                  }}
-                >
-                  INICIAR OPERACIÓN
-                </Button>
-              </Box>
-            </Paper>
-          </Box>
-
-          {/* Right Panel - Bank Information */}
-          <Box sx={{ width: 320, p: 4 }}>
-            <Paper sx={{ p: 3, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
-              <Typography sx={{ 
-                fontFamily: 'Roboto, sans-serif', 
-                fontSize: 18, 
-                fontWeight: 700, 
-                mb: 3,
-                color: '#333'
-              }}>
-                Transferencias Disponibles
-              </Typography>
-
-              {/* Immediate Transfers */}
-              <Box sx={{ mb: 4 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <Box sx={{ 
-                    width: 40, 
-                    height: 40, 
-                    borderRadius: '50%', 
-                    bgcolor: '#057c39', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center',
-                    mr: 2
-                  }}>
-                    <Typography sx={{ color: 'white', fontSize: 12, fontWeight: 700 }}>
-                      15 MIN
-                    </Typography>
-                  </Box>
-                  <Typography sx={{ 
-                    fontFamily: 'Roboto, sans-serif', 
-                    fontSize: 14, 
-                    fontWeight: 600,
-                    color: '#333'
-                  }}>
-                    Transferencias inmediatas en 15 minutos
-                  </Typography>
-                </Box>
-                
-                <Typography sx={{ 
-                  fontFamily: 'Roboto, sans-serif', 
-                  fontSize: 12, 
-                  color: '#666',
-                  mb: 1
-                }}>
-                  Todo el Perú
-                </Typography>
-                <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
-                  <img src={bcpLogo} alt="BCP" style={{ height: 24, width: 'auto' }} />
-                  <img src={interbankLogo} alt="Interbank" style={{ height: 24, width: 'auto' }} />
-                </Box>
-                
-                <Typography sx={{ 
-                  fontFamily: 'Roboto, sans-serif', 
-                  fontSize: 12, 
-                  color: '#666',
-                  mb: 1
-                }}>
-                  Lima
-                </Typography>
-                <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
-                  <img src={pichinchaLogo} alt="BanBif" style={{ height: 24, width: 'auto' }} />
-                </Box>
-                <Typography sx={{ 
-                  fontFamily: 'Roboto, sans-serif', 
-                  fontSize: 10, 
-                  color: '#999',
-                  fontStyle: 'italic'
-                }}>
-                  Lunes a Viernes
-                </Typography>
-              </Box>
-
-              <Divider sx={{ my: 3 }} />
-
-              {/* Interbank Transfers */}
-              <Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <Box sx={{ 
-                    width: 40, 
-                    height: 40, 
-                    borderRadius: '50%', 
-                    bgcolor: '#666', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center',
-                    mr: 2
-                  }}>
-                    <Typography sx={{ color: 'white', fontSize: 12, fontWeight: 700 }}>
-                      24 HRS
-                    </Typography>
-                  </Box>
-                  <Typography sx={{ 
-                    fontFamily: 'Roboto, sans-serif', 
-                    fontSize: 14, 
-                    fontWeight: 600,
-                    color: '#333'
-                  }}>
-                    Transferencias interbancarias en 1 día hábil
-                  </Typography>
-                </Box>
-                
-                <Typography sx={{ 
-                  fontFamily: 'Roboto, sans-serif', 
-                  fontSize: 12, 
-                  color: '#666',
-                  mb: 1
-                }}>
-                  Lima
-                </Typography>
-                <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
-                  <img src={bbvaLogo} alt="BBVA" style={{ height: 24, width: 'auto' }} />
-                  <img src={scotiabankLogo} alt="Scotiabank" style={{ height: 24, width: 'auto' }} />
-                  <img src={pichinchaLogo} alt="Banco Pichincha" style={{ height: 24, width: 'auto' }} />
-                </Box>
-                
-                <Typography sx={{ 
-                  fontFamily: 'Roboto, sans-serif', 
-                  fontSize: 12, 
-                  color: '#666',
-                  mb: 1
-                }}>
-                  y otros bancos
-                </Typography>
-                
-                <Typography sx={{ 
-                  fontFamily: 'Roboto, sans-serif', 
-                  fontSize: 12, 
-                  color: '#666',
-                  fontWeight: 600
-                }}>
-                  Montos desde S/300 o $100
-                </Typography>
-              </Box>
-
-              <Divider sx={{ my: 3 }} />
-
-              <Typography sx={{ 
-                fontFamily: 'Roboto, sans-serif', 
-                fontSize: 10, 
-                color: '#999',
-                fontStyle: 'italic',
-                textAlign: 'center'
-              }}>
-                (*) Válido durante días hábiles dentro del horario de atención
-              </Typography>
-            </Paper>
-          </Box>
-        </Box>
+        {renderContent()}
       </Box>
 
       {/* Floating WhatsApp Button */}
