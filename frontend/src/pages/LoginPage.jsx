@@ -11,11 +11,13 @@ import Fade from '@mui/material/Fade';
 import CalculadoraSVG from '../assets/CALCULADORA.svg';
 import TransferenciaSVG from '../assets/transferencia.svg';
 import RecibidoSVG from '../assets/recibido.svg';
+import ForgotPasswordModal from '../components/ForgotPasswordModal';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
@@ -72,11 +74,11 @@ const LoginPage = () => {
   };
 
   return (
-    <Box sx={{ 
-      height: '100vh', 
-      width: '100vw', 
-      display: 'flex', 
-      fontFamily: 'Roboto, sans-serif', 
+    <Box sx={{
+      height: '100vh',
+      width: '100vw',
+      display: 'flex',
+      fontFamily: 'Roboto, sans-serif',
       background: '#F6F6F9',
       overflow: 'hidden'
     }}>
@@ -110,6 +112,7 @@ const LoginPage = () => {
           ))}
         </Box>
       </Fade>
+
       {/* Bloque derecho */}
       <Fade in={show} timeout={900} style={{ transitionDelay: show ? '300ms' : '0ms' }}>
         <Box sx={{
@@ -166,7 +169,7 @@ const LoginPage = () => {
                     textUnderlineOffset: 2,
                     transition: 'color 0.2s',
                   }}
-                  onClick={() => navigate('/forgot-password')}
+                  onClick={() => setShowForgotPasswordModal(true)}
                   onMouseOver={e => e.target.style.color = '#00395a'}
                   onMouseOut={e => e.target.style.color = '#005a7c'}
                 >
@@ -199,6 +202,13 @@ const LoginPage = () => {
           </Box>
         </Box>
       </Fade>
+
+      {/* Modal de recuperación de contraseña */}
+      <ForgotPasswordModal
+        open={showForgotPasswordModal}
+        onClose={() => setShowForgotPasswordModal(false)}
+      />
+
       {/* Animaciones keyframes */}
       <style>{`
         @keyframes slideInLeft {

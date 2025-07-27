@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import VerifyEmailPage from './pages/VerifyEmailPage';
 import CompleteProfilePage from './pages/CompleteProfilePage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import UserPanel from './pages/UserPanel';
 import AdminPanel from './pages/AdminPanel';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -29,6 +30,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
           <Route path="/complete-profile" element={<CompleteProfilePage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route
             path="/panel"
             element={
