@@ -14,13 +14,25 @@ import {
   Chip,
   IconButton,
   Fade,
-  Grow
+  Grow,
+  AppBar,
+  Toolbar,
+  Avatar,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  Divider,
+  ListItemText
 } from '@mui/material';
 import {
   ArrowBack as ArrowBackIcon,
-  Visibility as VisibilityIcon
+  Visibility as VisibilityIcon,
+  Person as PersonIcon,
+  Logout as LogoutIcon,
+  Star as StarIcon
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 // Componente para el Lottie
 const LottieAnimation = () => {
@@ -41,7 +53,7 @@ const LottieAnimation = () => {
   return (
     <dotlottie-wc 
       src="https://lottie.host/9297a740-4b88-4100-8c92-4cf54ef77646/0tB5xTffDu.lottie" 
-      style={{ width: '300px', height: '300px' }} 
+      style={{ width: '120px', height: '120px' }} 
       speed="1" 
       autoplay 
       loop
@@ -94,9 +106,12 @@ const AnimatedNumber = ({ value, duration = 2000 }) => {
 
 const OperationsHistory = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [tabValue, setTabValue] = useState(1);
   const [savings, setSavings] = useState(23.22);
   const [showContent, setShowContent] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [manguitos, setManguitos] = useState(2000);
 
   // Datos de ejemplo para las transacciones
   const transactions = [
@@ -156,6 +171,19 @@ const OperationsHistory = () => {
     setTabValue(newValue);
   };
 
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'completed':
@@ -191,29 +219,93 @@ const OperationsHistory = () => {
       minHeight: '100vh'
     }}>
       {/* Header */}
-      <Box sx={{ 
-        bgcolor: 'white', 
-        borderBottom: '1px solid #e0e0e0',
-        px: 4,
-        py: 2
-      }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <IconButton 
-            onClick={() => navigate('/dashboard')}
-            sx={{ color: '#666' }}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-          <Typography sx={{ 
-            fontFamily: 'Roboto, sans-serif',
-            fontSize: 24,
-            fontWeight: 700,
-            color: '#333'
-          }}>
-            Historial de operaciones
-          </Typography>
-        </Box>
-      </Box>
+      <AppBar 
+        position="static" 
+        elevation={0} 
+        sx={{ 
+          bgcolor: 'white', 
+          borderBottom: '1px solid #e0e0e0',
+          color: '#333'
+        }}
+      >
+        <Toolbar sx={{ justifyContent: 'space-between', minHeight: 64 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <Typography sx={{ 
+              fontFamily: 'Roboto, sans-serif', 
+              fontSize: 20, 
+              color: '#333',
+              fontWeight: 700
+            }}>
+              Historial de operaciones
+            </Typography>
+            <Typography sx={{ 
+              fontFamily: 'Roboto, sans-serif', 
+              fontSize: 14, 
+              color: '#666',
+              fontWeight: 500
+            }}>
+              Horario: Lunes a viernes 9:00 am a 7:00 p.m Sábados de 09:00 am a 2:00 pm
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Chip
+              icon={<StarIcon sx={{ color: '#FFD700' }} />}
+              label={`Tienes ${manguitos} Manguitos`}
+              sx={{ 
+                bgcolor: '#fff3cd', 
+                color: '#856404',
+                fontWeight: 600,
+                '& .MuiChip-icon': { color: '#FFD700' }
+              }}
+            />
+            
+            <IconButton onClick={handleMenuClick}>
+              <Avatar sx={{ bgcolor: '#057c39', width: 32, height: 32 }}>
+                {user?.name?.charAt(0) || 'U'}
+              </Avatar>
+            </IconButton>
+            
+            <Typography sx={{ 
+              fontFamily: 'Roboto, sans-serif', 
+              fontSize: 14, 
+              fontWeight: 600,
+              color: '#333'
+            }}>
+              {user?.name || 'Usuario'}
+            </Typography>
+          </Box>
+        </Toolbar>
+      </AppBar>
+
+      {/* User Menu */}
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+        PaperProps={{
+          sx: {
+            mt: 1,
+            minWidth: 180,
+            boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+            borderRadius: 2,
+          }
+        }}
+      >
+        <MenuItem onClick={handleMenuClose} sx={{ py: 1.5 }}>
+          <ListItemIcon>
+            <PersonIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Mi Perfil" />
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={handleLogout} sx={{ py: 1.5 }}>
+          <ListItemIcon>
+            <LogoutIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Cerrar Sesión" />
+        </MenuItem>
+      </Menu>
 
       {/* Contenido principal */}
       <Box sx={{ flexGrow: 1, p: 4 }}>
