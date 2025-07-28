@@ -432,7 +432,7 @@ const UserPanel = () => {
                   color: '#333',
                   fontWeight: 700
                 }}>
-                  Dashboard
+                  {selectedMenu === 'cuentas' ? 'Mis cuentas' : 'Dashboard'}
                 </Typography>
                 <Typography sx={{ 
                   fontFamily: 'Roboto, sans-serif', 
