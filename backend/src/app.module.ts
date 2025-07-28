@@ -10,6 +10,7 @@ import { AdminModule } from './modules/admin/admin.module';
 import { CacheModule } from './common/cache.module';
 import { User } from './modules/auth/entities/user.entity';
 import { PasswordReset } from './modules/auth/entities/password-reset.entity';
+import { BankAccount } from './modules/auth/entities/bank-account.entity';
 import { Order } from './modules/orders/entities/order.entity';
 import { ExchangeRate } from './modules/rates/entities/exchange-rate.entity';
 import { AdminSetting } from './modules/admin/entities/admin-setting.entity';
@@ -33,7 +34,7 @@ import { Subscription } from './modules/subscriptions/subscription.entity';
         username: config.get('DB_USERNAME'),
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_DATABASE'),
-        entities: [User, PasswordReset, Order, ExchangeRate, AdminSetting, Alert, Subscription],
+        entities: [User, PasswordReset, BankAccount, Order, ExchangeRate, AdminSetting, Alert, Subscription],
         migrations: [
           config.get('NODE_ENV') === 'development'
             ? 'src/migrations/*.ts'
