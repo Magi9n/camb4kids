@@ -40,9 +40,11 @@ const DashboardAlerts = () => {
     setLoading(true);
     try {
       if (buyActive && buyValue) {
+        console.log('Enviando alerta de compra:', { type: 'buy', value: parseFloat(buyValue) });
         await api.post('/alerts', { type: 'buy', value: parseFloat(buyValue) });
       }
       if (sellActive && sellValue) {
+        console.log('Enviando alerta de venta:', { type: 'sell', value: parseFloat(sellValue) });
         await api.post('/alerts', { type: 'sell', value: parseFloat(sellValue) });
       }
       setBuyValue('');
@@ -51,7 +53,9 @@ const DashboardAlerts = () => {
       setSellActive(false);
       loadAlerts();
     } catch (e) {
-      setError('Error al guardar la alerta.');
+      console.error('Error completo:', e);
+      console.error('Respuesta del servidor:', e.response?.data);
+      setError(e.response?.data?.message || 'Error al guardar la alerta.');
     } finally {
       setLoading(false);
     }
