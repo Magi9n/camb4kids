@@ -21,7 +21,8 @@ import {
   Select,
   FormControl,
   InputLabel,
-  Chip
+  Chip,
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Dialog, DialogTitle, DialogContent, DialogActions
 } from '@mui/material';
 import { 
   Home as HomeIcon,
@@ -50,9 +51,6 @@ import OperationsHistory from '../components/OperationsHistory';
 import BankAccounts from '../components/BankAccounts';
 import { AlertForm } from '../components/AlertBlock';
 import DolarHoyChart from '../components/DolarHoyChart';
-import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button
-} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
