@@ -42,6 +42,7 @@ import interbankLogo from '../assets/interbank.svg';
 import scotiabankLogo from '../assets/scotiabank.svg';
 import pichinchaLogo from '../assets/pichincha.svg';
 import api from '../services/api';
+import { Global } from '@emotion/react';
 
 // Componente para el Lottie
 const LottieAnimation = () => {
@@ -60,15 +61,28 @@ const LottieAnimation = () => {
   }, []);
 
   return (
-    <Box sx={{ width: 240, height: 240, minWidth: 240, minHeight: 240, display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto' }}>
-      <dotlottie-wc 
-        src="https://lottie.host/1e9d037e-db07-49bb-8c2f-5a63471ba3e4/60uVUsTO18.lottie" 
-        style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
-        speed="1" 
-        autoplay 
-        loop
-      />
-    </Box>
+    <>
+      <Global styles={`
+        dotlottie-wc canvas {
+          width: 100% !important;
+          height: 100% !important;
+          aspect-ratio: 1 / 1 !important;
+          object-fit: contain !important;
+          image-rendering: auto !important;
+          max-width: 100% !important;
+          max-height: 100% !important;
+        }
+      `} />
+      <Box sx={{ width: 240, height: 240, minWidth: 240, minHeight: 240, display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto' }}>
+        <dotlottie-wc 
+          src="https://lottie.host/1e9d037e-db07-49bb-8c2f-5a63471ba3e4/60uVUsTO18.lottie" 
+          style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+          speed="1" 
+          autoplay 
+          loop
+        />
+      </Box>
+    </>
   );
 };
 
