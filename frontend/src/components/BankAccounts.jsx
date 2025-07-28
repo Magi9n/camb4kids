@@ -32,7 +32,7 @@ import {
   Flag as FlagIcon
 } from '@mui/icons-material';
 import peruFlag from '../assets/peru.svg';
-import usaFlag from '../assets/usa.svg';
+import usaFlag from '../assets/USA.svg';
 
 // Componente para el Lottie
 const LottieAnimation = () => {
