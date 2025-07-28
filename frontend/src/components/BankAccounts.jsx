@@ -60,13 +60,15 @@ const LottieAnimation = () => {
   }, []);
 
   return (
-    <dotlottie-wc 
-      src="https://lottie.host/1e9d037e-db07-49bb-8c2f-5a63471ba3e4/60uVUsTO18.lottie" 
-      style={{ width: '240px', height: '240px' }} 
-      speed="1" 
-      autoplay 
-      loop
-    />
+    <Box sx={{ width: 240, height: 240, minWidth: 240, minHeight: 240, display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto' }}>
+      <dotlottie-wc 
+        src="https://lottie.host/1e9d037e-db07-49bb-8c2f-5a63471ba3e4/60uVUsTO18.lottie" 
+        style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+        speed="1" 
+        autoplay 
+        loop
+      />
+    </Box>
   );
 };
 

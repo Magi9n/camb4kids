@@ -51,13 +51,15 @@ const LottieAnimation = () => {
   }, []);
 
   return (
-    <dotlottie-wc 
-      src="https://lottie.host/9297a740-4b88-4100-8c92-4cf54ef77646/0tB5xTffDu.lottie" 
-      style={{ width: '120px', height: '120px' }} 
-      speed="1" 
-      autoplay 
-      loop
-    />
+    <Box sx={{ width: 120, height: 120, minWidth: 120, minHeight: 120, display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto' }}>
+      <dotlottie-wc 
+        src="https://lottie.host/9297a740-4b88-4100-8c92-4cf54ef77646/0tB5xTffDu.lottie" 
+        style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+        speed="1" 
+        autoplay 
+        loop
+      />
+    </Box>
   );
 };
 
