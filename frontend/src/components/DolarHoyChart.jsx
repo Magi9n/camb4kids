@@ -18,51 +18,42 @@ const DolarHoyChart = ({ compact = false }) => {
       .then(res => {
         console.log('Datos del gráfico (promedios):', res.data);
         if (res.data && res.data.length > 0) {
-          // Filtrar solo las últimas 6 horas
+          // Obtener las últimas 6 horas del día actual
           const now = new Date();
-          const sixHoursAgo = new Date(now.getTime() - 6 * 60 * 60 * 1000);
+          const currentHour = now.getHours();
           
-          const filteredData = res.data.filter(item => {
-            const itemTime = new Date();
-            const [hours, minutes] = item.time.split(':');
-            itemTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-            return itemTime >= sixHoursAgo;
-          });
-
-          // Agrupar por horas (cada 60 minutos)
+          // Crear las últimas 6 horas (desde 6 horas atrás hasta ahora)
           const hourlyData = [];
           const hourlyLabels = [];
           
-          for (let i = 0; i < 6; i++) {
+          for (let i = 5; i >= 0; i--) {
+            const targetHour = currentHour - i;
             const hourStart = new Date(now);
-            hourStart.setHours(now.getHours() - 5 + i, 0, 0, 0);
+            hourStart.setHours(targetHour, 0, 0, 0);
             
             const hourEnd = new Date(hourStart);
-            hourEnd.setHours(hourStart.getHours() + 1);
+            hourEnd.setHours(targetHour + 1, 0, 0, 0);
             
-            const hourData = filteredData.filter(item => {
-              const itemTime = new Date();
+            // Buscar datos que correspondan a esta hora
+            const hourData = res.data.filter(item => {
               const [hours, minutes] = item.time.split(':');
-              itemTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-              return itemTime >= hourStart && itemTime < hourEnd;
+              const itemHour = parseInt(hours);
+              return itemHour === targetHour;
             });
             
             if (hourData.length > 0) {
               const avgValue = hourData.reduce((sum, item) => sum + item.value, 0) / hourData.length;
               hourlyData.push(parseFloat(avgValue.toFixed(3)));
-              hourlyLabels.push(hourStart.toLocaleTimeString('es-PE', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-              }));
             } else {
-              // Si no hay datos para esta hora, usar el último valor conocido o 0
-              const lastValue = hourlyData.length > 0 ? hourlyData[hourlyData.length - 1] : 0;
+              // Si no hay datos para esta hora, usar el último valor conocido o un valor por defecto
+              const lastValue = hourlyData.length > 0 ? hourlyData[hourlyData.length - 1] : 3.50;
               hourlyData.push(lastValue);
-              hourlyLabels.push(hourStart.toLocaleTimeString('es-PE', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-              }));
             }
+            
+            hourlyLabels.push(hourStart.toLocaleTimeString('es-PE', { 
+              hour: '2-digit', 
+              minute: '2-digit' 
+            }));
           }
           
           setData(hourlyData);

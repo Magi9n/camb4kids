@@ -70,8 +70,7 @@ export class RatesService {
     throw lastError || new Error('Todos los API keys fallaron');
   }
 
-  // Cron job: cada 1 minuto y 48 segundos
-  @Cron('48 */1 * * * *', { name: 'fetchRate' })
+  // Intervalo personalizado: cada 1 minuto y 48 segundos (108 segundos)
   async fetchRate() {
     try {
       const rate = await this.tryFetchRate();
@@ -95,6 +94,17 @@ export class RatesService {
     } catch (e) {
       this.logger.error('Error al actualizar tasa', e);
     }
+  }
+
+  // Método para iniciar el intervalo personalizado
+  onModuleInit() {
+    // Ejecutar inmediatamente
+    this.fetchRate();
+    
+    // Configurar intervalo de 1 minuto y 48 segundos (108000 ms)
+    setInterval(() => {
+      this.fetchRate();
+    }, 108000);
   }
 
   async getCurrent() {
