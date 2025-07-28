@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Box, 
   Typography, 
@@ -53,7 +53,6 @@ import { AlertForm } from '../components/AlertBlock';
 import DolarHoyChart from '../components/DolarHoyChart';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import DashboardAlerts from '../components/DashboardAlerts';
 
 const drawerWidth = 280;
 
@@ -124,6 +123,8 @@ const UserPanel = () => {
         return <BankAccounts />;
       case 'alertas':
         return <DashboardAlerts />;
+      case 'perfil':
+        return <UserProfilePage />;
       case 'dashboard':
       default:
         return (
@@ -455,7 +456,7 @@ const UserPanel = () => {
                   color: '#333',
                   fontWeight: 700
                 }}>
-                  {selectedMenu === 'cuentas' ? 'Mis cuentas' : selectedMenu === 'alertas' ? 'Alertas' : 'Dashboard'}
+                  {selectedMenu === 'cuentas' ? 'Mis cuentas' : 'Dashboard'}
                 </Typography>
                 <Typography sx={{ 
                   fontFamily: 'Roboto, sans-serif', 

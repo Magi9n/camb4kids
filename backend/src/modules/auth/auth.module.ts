@@ -6,10 +6,11 @@ import { BankAccountsController } from './bank-accounts.controller';
 import { BankAccountsService } from './bank-accounts.service';
 import { User } from './entities/user.entity';
 import { PasswordReset } from './entities/password-reset.entity';
+import { EmailChange } from './entities/email-change.entity';
 import { BankAccount } from './entities/bank-account.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, PasswordReset, BankAccount])],
+  imports: [TypeOrmModule.forFeature([User, PasswordReset, EmailChange, BankAccount])],
   controllers: [AuthController, BankAccountsController],
   providers: [AuthService, BankAccountsService],
   exports: [AuthService, BankAccountsService],

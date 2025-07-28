@@ -1,7 +1,7 @@
-import { Controller, Post, Body, HttpException, HttpStatus, UseGuards, Get, Request } from '@nestjs/common';
+import { Controller, Post, Body, HttpException, HttpStatus, UseGuards, Get, Request, Put } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
-import { RegisterDto, LoginDto, VerifyEmailDto, CompleteProfileDto, ForgotPasswordDto, ResetPasswordDto } from './dto';
+import { RegisterDto, LoginDto, VerifyEmailDto, CompleteProfileDto, ForgotPasswordDto, ResetPasswordDto, UpdateProfileDto, ChangeEmailDto, VerifyNewEmailDto } from './dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
@@ -75,5 +75,41 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   async getProfileStatus(@Request() req) {
     return this.authService.getProfileStatus(req.user);
+  }
+
+  @Get('profile')
+  @UseGuards(JwtAuthGuard)
+  async getProfile(@Request() req) {
+    return this.authService.getProfile(req.user);
+  }
+
+  @Put('profile')
+  @UseGuards(JwtAuthGuard)
+  async updateProfile(@Body() updateProfileDto: UpdateProfileDto, @Request() req) {
+    try {
+      return await this.authService.updateProfile(updateProfileDto, req.user);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Post('change-email')
+  @UseGuards(JwtAuthGuard)
+  async changeEmail(@Body() changeEmailDto: ChangeEmailDto, @Request() req) {
+    try {
+      return await this.authService.changeEmail(changeEmailDto, req.user);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Post('verify-new-email')
+  @UseGuards(JwtAuthGuard)
+  async verifyNewEmail(@Body() verifyNewEmailDto: VerifyNewEmailDto, @Request() req) {
+    try {
+      return await this.authService.verifyNewEmail(verifyNewEmailDto, req.user);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 } 

@@ -1,9 +1,10 @@
 import { Injectable, UnauthorizedException, ConflictException, BadRequestException, NotFoundException } from '@nestjs/common';
-import { RegisterDto, LoginDto, VerifyEmailDto, CompleteProfileDto, ForgotPasswordDto, ResetPasswordDto } from './dto';
+import { RegisterDto, LoginDto, VerifyEmailDto, CompleteProfileDto, ForgotPasswordDto, ResetPasswordDto, UpdateProfileDto, ChangeEmailDto, VerifyNewEmailDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, LessThan } from 'typeorm';
 import { User } from './entities/user.entity';
 import { PasswordReset } from './entities/password-reset.entity';
+import { EmailChange } from './entities/email-change.entity';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import * as crypto from 'crypto';
@@ -89,6 +90,8 @@ export class AuthService {
     private readonly userRepo: Repository<User>,
     @InjectRepository(PasswordReset)
     private readonly passwordResetRepo: Repository<PasswordReset>,
+    @InjectRepository(EmailChange)
+    private readonly emailChangeRepo: Repository<EmailChange>,
   ) {}
 
   async register(dto: RegisterDto) {
@@ -406,5 +409,179 @@ export class AuthService {
     if (!user.lastname) missingFields.push('lastname');
     
     return missingFields;
+  }
+
+  async getProfile(user: User) {
+    const freshUser = await this.userRepo.findOne({ where: { id: user.id } });
+    
+    if (!freshUser) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    return {
+      id: freshUser.id,
+      email: freshUser.email,
+      name: freshUser.name,
+      lastname: freshUser.lastname,
+      documentType: freshUser.documentType,
+      document: freshUser.document,
+      sex: freshUser.sex,
+      phone: freshUser.phone,
+      role: freshUser.role,
+      isVerified: freshUser.isVerified,
+    };
+  }
+
+  async updateProfile(dto: UpdateProfileDto, user: User) {
+    const freshUser = await this.userRepo.findOne({ where: { id: user.id } });
+    
+    if (!freshUser) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    // Solo permitir actualizar sex y phone
+    freshUser.sex = dto.sex;
+    freshUser.phone = dto.phone;
+
+    await this.userRepo.save(freshUser);
+    
+    return { message: 'Perfil actualizado correctamente' };
+  }
+
+  async changeEmail(dto: ChangeEmailDto, user: User) {
+    const freshUser = await this.userRepo.findOne({ where: { id: user.id } });
+    
+    if (!freshUser) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    // Verificar que el nuevo email no esté en uso
+    const existingUser = await this.userRepo.findOne({ where: { email: dto.newEmail } });
+    if (existingUser && existingUser.id !== user.id) {
+      throw new ConflictException('El nuevo correo electrónico ya está en uso');
+    }
+
+    // Verificar que no haya un cambio de email pendiente
+    const pendingChange = await this.emailChangeRepo.findOne({ 
+      where: { userId: user.id, verified: false } 
+    });
+    if (pendingChange) {
+      throw new BadRequestException('Ya tienes un cambio de email pendiente. Verifica tu correo o espera a que expire.');
+    }
+
+    // Generar código de verificación
+    const code = generateCode();
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutos
+
+    // Crear registro de cambio de email
+    const emailChange = this.emailChangeRepo.create({
+      userId: user.id,
+      currentEmail: freshUser.email,
+      newEmail: dto.newEmail,
+      verificationCode: code,
+      expiresAt,
+      verified: false,
+    });
+
+    await this.emailChangeRepo.save(emailChange);
+
+    // Enviar email de verificación
+    await this.sendEmailChangeVerification(dto.newEmail, code);
+
+    return { message: 'Se ha enviado un código de verificación a tu nuevo correo electrónico' };
+  }
+
+  async verifyNewEmail(dto: VerifyNewEmailDto, user: User) {
+    const emailChange = await this.emailChangeRepo.findOne({
+      where: { 
+        userId: user.id, 
+        newEmail: dto.newEmail, 
+        verificationCode: dto.code,
+        verified: false 
+      }
+    });
+
+    if (!emailChange) {
+      throw new BadRequestException('Código de verificación inválido');
+    }
+
+    if (emailChange.expiresAt < new Date()) {
+      await this.emailChangeRepo.delete(emailChange.id);
+      throw new BadRequestException('El código de verificación ha expirado');
+    }
+
+    // Actualizar el email del usuario
+    const freshUser = await this.userRepo.findOne({ where: { id: user.id } });
+    if (!freshUser) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    freshUser.email = dto.newEmail;
+    await this.userRepo.save(freshUser);
+
+    // Marcar el cambio como verificado
+    emailChange.verified = true;
+    await this.emailChangeRepo.save(emailChange);
+
+    return { message: 'Correo electrónico actualizado correctamente' };
+  }
+
+  private async sendEmailChangeVerification(email: string, code: string) {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || '587'),
+        secure: false,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      });
+
+      // HTML idéntico al de registro, solo cambia el texto principal
+      const htmlContent = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="background: linear-gradient(135deg, #057c39 0%, #23FFBD 100%); padding: 30px; border-radius: 10px; text-align: center;">
+            <h1 style="color: white; margin: 0; font-size: 28px;">MangosCash</h1>
+            <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">Verificación de Correo</p>
+          </div>
+          <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <h2 style="color: #333; margin-bottom: 20px;">Verificación de Cambio de Correo</h2>
+            <p style="color: #666; line-height: 1.6; margin-bottom: 25px;">
+              Has solicitado cambiar tu correo electrónico en nuestra plataforma. Para completar el cambio, necesitamos verificar tu nueva dirección de correo electrónico.
+            </p>
+            <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 2px dashed #057c39;">
+              <h3 style="color: #057c39; margin: 0 0 10px 0; font-size: 24px;">Tu código de verificación</h3>
+              <div style="font-size: 32px; font-weight: 700; color: #057c39; letter-spacing: 4px; font-family: 'Courier New', monospace;">
+                ${code}
+              </div>
+            </div>
+            <p style="color: #666; line-height: 1.6; margin-bottom: 15px;">
+              <strong>Importante:</strong> Este código es válido por 15 minutos. Si no solicitaste este cambio, puedes ignorar este correo.
+            </p>
+            <p style="color: #666; line-height: 1.6; margin-bottom: 15px;">
+              Una vez verificado tu correo, tu cuenta será actualizada con el nuevo correo electrónico.
+            </p>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+            <p style="color: #999; font-size: 14px; text-align: center;">
+              Si tienes problemas con la verificación, contacta nuestro soporte técnico.
+            </p>
+          </div>
+          <div style="text-align: center; margin-top: 20px; color: #999; font-size: 12px;">
+            <p>© ${new Date().getFullYear()} MangosCash. Todos los derechos reservados.</p>
+          </div>
+        </div>
+      `;
+
+      await transporter.sendMail({
+        from: process.env.SMTP_USER,
+        to: email,
+        subject: 'Verificación de Cambio de Correo - MangosCash',
+        html: htmlContent,
+      });
+      console.log(`[EMAIL] Correo de verificación de cambio enviado a: ${email}`);
+    } catch (err) {
+      console.error('[EMAIL] Error al enviar correo de verificación de cambio:', err);
+    }
   }
 } 
