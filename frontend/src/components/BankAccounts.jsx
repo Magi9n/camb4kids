@@ -22,17 +22,26 @@ import {
   IconButton,
   Alert,
   Fade,
-  Grow
+  Grow,
+  Snackbar
 } from '@mui/material';
 import {
   Add as AddIcon,
   ExpandMore as ExpandMoreIcon,
   Close as CloseIcon,
   Info as InfoIcon,
-  Flag as FlagIcon
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  ContentCopy as CopyIcon
 } from '@mui/icons-material';
 import peruFlag from '../assets/peru.svg';
 import usaFlag from '../assets/USA.svg';
+import bcpLogo from '../assets/bcp.svg';
+import bbvaLogo from '../assets/bbva.svg';
+import interbankLogo from '../assets/interbank.svg';
+import scotiabankLogo from '../assets/scotiabank.svg';
+import pichinchaLogo from '../assets/pichincha.svg';
+import api from '../services/api';
 
 // Componente para el Lottie
 const LottieAnimation = () => {
@@ -64,7 +73,9 @@ const LottieAnimation = () => {
 const BankAccounts = () => {
   const [accounts, setAccounts] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [editingAccount, setEditingAccount] = useState(null);
   const [showContent, setShowContent] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [formData, setFormData] = useState({
     accountType: '',
     bank: '',
@@ -75,16 +86,16 @@ const BankAccounts = () => {
   });
 
   const banks = [
-    'BCP',
-    'BBVA',
-    'Interbank',
-    'Scotiabank',
-    'Banco Pichincha',
-    'BanBif',
-    'Mi Banco',
-    'Banco Azteca',
-    'Banco Ripley',
-    'Banco Falabella'
+    { name: 'BCP', logo: bcpLogo },
+    { name: 'BBVA', logo: bbvaLogo },
+    { name: 'Interbank', logo: interbankLogo },
+    { name: 'Scotiabank', logo: scotiabankLogo },
+    { name: 'Banco Pichincha', logo: pichinchaLogo },
+    { name: 'BanBif', logo: null },
+    { name: 'Mi Banco', logo: null },
+    { name: 'Banco Azteca', logo: null },
+    { name: 'Banco Ripley', logo: null },
+    { name: 'Banco Falabella', logo: null }
   ];
 
   const accountTypes = [
@@ -96,14 +107,46 @@ const BankAccounts = () => {
 
   useEffect(() => {
     setTimeout(() => setShowContent(true), 300);
+    loadAccounts();
   }, []);
 
-  const handleOpenModal = () => {
+  const loadAccounts = async () => {
+    try {
+      const response = await api.get('/bank-accounts');
+      setAccounts(response.data);
+    } catch (error) {
+      console.error('Error cargando cuentas:', error);
+    }
+  };
+
+  const handleOpenModal = (account = null) => {
+    if (account) {
+      setEditingAccount(account);
+      setFormData({
+        accountType: account.accountType,
+        bank: account.bank,
+        accountNumber: account.accountNumber,
+        accountName: account.accountName,
+        currency: account.currency,
+        isMine: true
+      });
+    } else {
+      setEditingAccount(null);
+      setFormData({
+        accountType: '',
+        bank: '',
+        accountNumber: '',
+        accountName: '',
+        currency: 'soles',
+        isMine: false
+      });
+    }
     setOpenModal(true);
   };
 
   const handleCloseModal = () => {
     setOpenModal(false);
+    setEditingAccount(null);
     setFormData({
       accountType: '',
       bank: '',
@@ -121,19 +164,48 @@ const BankAccounts = () => {
     }));
   };
 
-  const handleSaveAccount = () => {
+  const handleSaveAccount = async () => {
     if (!formData.accountType || !formData.bank || !formData.accountNumber || !formData.accountName || !formData.isMine) {
       return;
     }
 
-    const newAccount = {
-      id: Date.now(),
-      ...formData,
-      createdAt: new Date().toISOString()
-    };
+    try {
+      if (editingAccount) {
+        await api.put(`/bank-accounts/${editingAccount.id}`, formData);
+        setSnackbar({ open: true, message: 'Cuenta actualizada exitosamente', severity: 'success' });
+      } else {
+        await api.post('/bank-accounts', formData);
+        setSnackbar({ open: true, message: 'Cuenta creada exitosamente', severity: 'success' });
+      }
+      handleCloseModal();
+      loadAccounts();
+    } catch (error) {
+      setSnackbar({ open: true, message: 'Error al guardar la cuenta', severity: 'error' });
+    }
+  };
 
-    setAccounts(prev => [...prev, newAccount]);
-    handleCloseModal();
+  const handleDeleteAccount = async (accountId) => {
+    try {
+      await api.delete(`/bank-accounts/${accountId}`);
+      setSnackbar({ open: true, message: 'Cuenta eliminada exitosamente', severity: 'success' });
+      loadAccounts();
+    } catch (error) {
+      setSnackbar({ open: true, message: 'Error al eliminar la cuenta', severity: 'error' });
+    }
+  };
+
+  const handleCopyAccountNumber = async (accountNumber) => {
+    try {
+      await navigator.clipboard.writeText(accountNumber);
+      setSnackbar({ open: true, message: 'Número de cuenta copiado', severity: 'success' });
+    } catch (error) {
+      setSnackbar({ open: true, message: 'Error al copiar el número', severity: 'error' });
+    }
+  };
+
+  const getBankLogo = (bankName) => {
+    const bank = banks.find(b => b.name === bankName);
+    return bank?.logo || null;
   };
 
   const solesAccounts = accounts.filter(account => account.currency === 'soles');
@@ -196,35 +268,108 @@ const BankAccounts = () => {
                           <Box>
                             {solesAccounts.map((account) => (
                               <Box key={account.id} sx={{ 
-                                p: 2, 
+                                p: 3, 
                                 mb: 2, 
-                                bgcolor: '#f8f9fa', 
+                                bgcolor: 'white', 
                                 borderRadius: 2,
-                                border: '1px solid #e0e0e0'
+                                border: '1px solid #e0e0e0',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 3
                               }}>
-                                <Typography sx={{ 
-                                  fontFamily: 'Roboto, sans-serif', 
-                                  fontSize: 14, 
-                                  fontWeight: 600,
-                                  color: '#333',
-                                  mb: 1
-                                }}>
-                                  {account.accountName}
-                                </Typography>
-                                <Typography sx={{ 
-                                  fontFamily: 'Roboto, sans-serif', 
-                                  fontSize: 12, 
-                                  color: '#666'
-                                }}>
-                                  {account.bank} - {account.accountType}
-                                </Typography>
-                                <Typography sx={{ 
-                                  fontFamily: 'Roboto, sans-serif', 
-                                  fontSize: 12, 
-                                  color: '#666'
-                                }}>
-                                  ****{account.accountNumber.slice(-4)}
-                                </Typography>
+                                {/* Logo del banco */}
+                                {getBankLogo(account.bank) && (
+                                  <img 
+                                    src={getBankLogo(account.bank)} 
+                                    alt={account.bank} 
+                                    style={{ width: 60, height: 'auto' }} 
+                                  />
+                                )}
+                                
+                                {/* Información de la cuenta */}
+                                <Box sx={{ flexGrow: 1 }}>
+                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+                                    <Typography sx={{ 
+                                      fontFamily: 'Roboto, sans-serif', 
+                                      fontSize: 12, 
+                                      color: '#666',
+                                      fontWeight: 500
+                                    }}>
+                                      Número de cta.
+                                    </Typography>
+                                    <Typography sx={{ 
+                                      fontFamily: 'Roboto, sans-serif', 
+                                      fontSize: 14, 
+                                      fontWeight: 600,
+                                      color: '#333'
+                                    }}>
+                                      {account.accountNumber}
+                                    </Typography>
+                                    <IconButton 
+                                      size="small"
+                                      onClick={() => handleCopyAccountNumber(account.accountNumber)}
+                                      sx={{ color: '#1976d2' }}
+                                    >
+                                      <CopyIcon fontSize="small" />
+                                    </IconButton>
+                                  </Box>
+                                  
+                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+                                    <Typography sx={{ 
+                                      fontFamily: 'Roboto, sans-serif', 
+                                      fontSize: 12, 
+                                      color: '#666',
+                                      fontWeight: 500
+                                    }}>
+                                      Alias
+                                    </Typography>
+                                    <Typography sx={{ 
+                                      fontFamily: 'Roboto, sans-serif', 
+                                      fontSize: 14, 
+                                      fontWeight: 600,
+                                      color: '#333'
+                                    }}>
+                                      {account.accountName}
+                                    </Typography>
+                                  </Box>
+                                  
+                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                    <Typography sx={{ 
+                                      fontFamily: 'Roboto, sans-serif', 
+                                      fontSize: 12, 
+                                      color: '#666',
+                                      fontWeight: 500
+                                    }}>
+                                      Tipo de cta.
+                                    </Typography>
+                                    <Typography sx={{ 
+                                      fontFamily: 'Roboto, sans-serif', 
+                                      fontSize: 14, 
+                                      fontWeight: 600,
+                                      color: '#333'
+                                    }}>
+                                      {account.accountType}
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                                
+                                {/* Botones de acción */}
+                                <Box sx={{ display: 'flex', gap: 1 }}>
+                                  <IconButton 
+                                    size="small"
+                                    onClick={() => handleOpenModal(account)}
+                                    sx={{ color: '#666' }}
+                                  >
+                                    <EditIcon fontSize="small" />
+                                  </IconButton>
+                                  <IconButton 
+                                    size="small"
+                                    onClick={() => handleDeleteAccount(account.id)}
+                                    sx={{ color: '#d32f2f' }}
+                                  >
+                                    <DeleteIcon fontSize="small" />
+                                  </IconButton>
+                                </Box>
                               </Box>
                             ))}
                           </Box>
@@ -269,35 +414,108 @@ const BankAccounts = () => {
                           <Box>
                             {dollarAccounts.map((account) => (
                               <Box key={account.id} sx={{ 
-                                p: 2, 
+                                p: 3, 
                                 mb: 2, 
-                                bgcolor: '#f8f9fa', 
+                                bgcolor: 'white', 
                                 borderRadius: 2,
-                                border: '1px solid #e0e0e0'
+                                border: '1px solid #e0e0e0',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 3
                               }}>
-                                <Typography sx={{ 
-                                  fontFamily: 'Roboto, sans-serif', 
-                                  fontSize: 14, 
-                                  fontWeight: 600,
-                                  color: '#333',
-                                  mb: 1
-                                }}>
-                                  {account.accountName}
-                                </Typography>
-                                <Typography sx={{ 
-                                  fontFamily: 'Roboto, sans-serif', 
-                                  fontSize: 12, 
-                                  color: '#666'
-                                }}>
-                                  {account.bank} - {account.accountType}
-                                </Typography>
-                                <Typography sx={{ 
-                                  fontFamily: 'Roboto, sans-serif', 
-                                  fontSize: 12, 
-                                  color: '#666'
-                                }}>
-                                  ****{account.accountNumber.slice(-4)}
-                                </Typography>
+                                {/* Logo del banco */}
+                                {getBankLogo(account.bank) && (
+                                  <img 
+                                    src={getBankLogo(account.bank)} 
+                                    alt={account.bank} 
+                                    style={{ width: 60, height: 'auto' }} 
+                                  />
+                                )}
+                                
+                                {/* Información de la cuenta */}
+                                <Box sx={{ flexGrow: 1 }}>
+                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+                                    <Typography sx={{ 
+                                      fontFamily: 'Roboto, sans-serif', 
+                                      fontSize: 12, 
+                                      color: '#666',
+                                      fontWeight: 500
+                                    }}>
+                                      Número de cta.
+                                    </Typography>
+                                    <Typography sx={{ 
+                                      fontFamily: 'Roboto, sans-serif', 
+                                      fontSize: 14, 
+                                      fontWeight: 600,
+                                      color: '#333'
+                                    }}>
+                                      {account.accountNumber}
+                                    </Typography>
+                                    <IconButton 
+                                      size="small"
+                                      onClick={() => handleCopyAccountNumber(account.accountNumber)}
+                                      sx={{ color: '#1976d2' }}
+                                    >
+                                      <CopyIcon fontSize="small" />
+                                    </IconButton>
+                                  </Box>
+                                  
+                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+                                    <Typography sx={{ 
+                                      fontFamily: 'Roboto, sans-serif', 
+                                      fontSize: 12, 
+                                      color: '#666',
+                                      fontWeight: 500
+                                    }}>
+                                      Alias
+                                    </Typography>
+                                    <Typography sx={{ 
+                                      fontFamily: 'Roboto, sans-serif', 
+                                      fontSize: 14, 
+                                      fontWeight: 600,
+                                      color: '#333'
+                                    }}>
+                                      {account.accountName}
+                                    </Typography>
+                                  </Box>
+                                  
+                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                    <Typography sx={{ 
+                                      fontFamily: 'Roboto, sans-serif', 
+                                      fontSize: 12, 
+                                      color: '#666',
+                                      fontWeight: 500
+                                    }}>
+                                      Tipo de cta.
+                                    </Typography>
+                                    <Typography sx={{ 
+                                      fontFamily: 'Roboto, sans-serif', 
+                                      fontSize: 14, 
+                                      fontWeight: 600,
+                                      color: '#333'
+                                    }}>
+                                      {account.accountType}
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                                
+                                {/* Botones de acción */}
+                                <Box sx={{ display: 'flex', gap: 1 }}>
+                                  <IconButton 
+                                    size="small"
+                                    onClick={() => handleOpenModal(account)}
+                                    sx={{ color: '#666' }}
+                                  >
+                                    <EditIcon fontSize="small" />
+                                  </IconButton>
+                                  <IconButton 
+                                    size="small"
+                                    onClick={() => handleDeleteAccount(account.id)}
+                                    sx={{ color: '#d32f2f' }}
+                                  >
+                                    <DeleteIcon fontSize="small" />
+                                  </IconButton>
+                                </Box>
                               </Box>
                             ))}
                           </Box>
@@ -320,7 +538,7 @@ const BankAccounts = () => {
                     <Button
                       variant="contained"
                       startIcon={<AddIcon />}
-                      onClick={handleOpenModal}
+                      onClick={() => handleOpenModal()}
                       sx={{
                         bgcolor: '#057c39',
                         color: 'white',
@@ -386,7 +604,7 @@ const BankAccounts = () => {
                   <Button
                     variant="contained"
                     startIcon={<AddIcon />}
-                    onClick={handleOpenModal}
+                    onClick={() => handleOpenModal()}
                     sx={{
                       bgcolor: '#057c39',
                       color: 'white',
@@ -410,7 +628,7 @@ const BankAccounts = () => {
         </Fade>
       </Box>
 
-      {/* Modal para agregar cuenta */}
+      {/* Modal para agregar/editar cuenta */}
       <Dialog
         open={openModal}
         onClose={handleCloseModal}
@@ -436,7 +654,7 @@ const BankAccounts = () => {
             fontWeight: 700,
             color: '#333'
           }}>
-            Agregar cuenta
+            {editingAccount ? 'Editar cuenta' : 'Agregar cuenta'}
           </Typography>
           <IconButton onClick={handleCloseModal}>
             <CloseIcon />
@@ -491,7 +709,7 @@ const BankAccounts = () => {
                 label="Banco"
               >
                 {banks.map((bank) => (
-                  <MenuItem key={bank} value={bank}>{bank}</MenuItem>
+                  <MenuItem key={bank.name} value={bank.name}>{bank.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -626,10 +844,26 @@ const BankAccounts = () => {
               }
             }}
           >
-            GUARDAR CUENTA
+            {editingAccount ? 'ACTUALIZAR CUENTA' : 'GUARDAR CUENTA'}
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Snackbar para notificaciones */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert 
+          onClose={() => setSnackbar({ ...snackbar, open: false })} 
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Order } from '../../orders/entities/order.entity';
+import { BankAccount } from './bank-account.entity';
 
 @Entity('users')
 export class User {
@@ -50,4 +51,7 @@ export class User {
 
   @OneToMany(() => Order, order => order.user)
   orders: Order[];
+
+  @OneToMany(() => BankAccount, bankAccount => bankAccount.user)
+  bankAccounts: BankAccount[];
 } 
