@@ -213,18 +213,6 @@ const BankAccounts = () => {
       bgcolor: '#f8f9fa',
       minHeight: '100vh'
     }}>
-      {/* Header */}
-      <Box sx={{ bgcolor: 'white', borderBottom: '1px solid #e0e0e0', px: 4, py: 2 }}>
-        <Typography sx={{ 
-          fontFamily: 'Roboto, sans-serif', 
-          fontSize: 24, 
-          fontWeight: 700, 
-          color: '#333' 
-        }}>
-          Mis Cuentas
-        </Typography>
-      </Box>
-
       {/* Contenido principal */}
       <Box sx={{ flexGrow: 1, p: 4 }}>
         <Fade in={showContent} timeout={800}>
