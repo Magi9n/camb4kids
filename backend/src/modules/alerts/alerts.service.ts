@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Alert } from './alert.entity';
@@ -38,6 +38,46 @@ export class AlertsService {
     return { message: 'Alerta creada correctamente.' };
   }
 
+  async updateAlert(id: number, dto: CreateAlertDto, user: User) {
+    const alert = await this.alertRepo.findOne({ 
+      where: { id, user: { id: user.id } } 
+    });
+    
+    if (!alert) {
+      throw new NotFoundException('Alerta no encontrada');
+    }
+
+    const current = await this.ratesService.getCurrent();
+    if (!current.rate) throw new BadRequestException('No se pudo obtener la tasa actual');
+    
+    // Validación lógica
+    if (dto.type === 'buy' && parseFloat(dto.value as any) <= current.rate) {
+      throw new BadRequestException('El valor de compra debe ser mayor al precio actual.');
+    }
+    if (dto.type === 'sell' && parseFloat(dto.value as any) >= current.rate) {
+      throw new BadRequestException('El valor de venta debe ser menor al precio actual.');
+    }
+
+    alert.type = dto.type;
+    alert.value = dto.value;
+    await this.alertRepo.save(alert);
+    
+    return { message: 'Alerta actualizada correctamente.' };
+  }
+
+  async deleteAlert(id: number, user: User) {
+    const alert = await this.alertRepo.findOne({ 
+      where: { id, user: { id: user.id } } 
+    });
+    
+    if (!alert) {
+      throw new NotFoundException('Alerta no encontrada');
+    }
+
+    await this.alertRepo.remove(alert);
+    return { message: 'Alerta eliminada correctamente.' };
+  }
+
   async checkAlertsAndNotify() {
     const alerts = await this.alertRepo.find({ where: { triggered: false } });
     if (!alerts.length) return;
@@ -56,7 +96,7 @@ export class AlertsService {
     }
   }
 
-  async sendAlertEmail(email: string, type: 'buy' | 'sell', value: number, current: number) {
+  async sendAlertEmail(email: string, type: string, alertValue: number, currentRate: number) {
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT || '587'),
@@ -66,22 +106,18 @@ export class AlertsService {
         pass: process.env.SMTP_PASS,
       },
     });
-    const subject = '¡Alerta de tipo de cambio activada!';
-    const text = `Hola,
 
-Tu alerta de tipo de cambio se ha activado:
+    const subject = type === 'buy' ? '¡Oportunidad de compra!' : '¡Oportunidad de venta!';
+    const message = type === 'buy' 
+      ? `El dólar ha bajado a S/ ${currentRate.toFixed(3)}. Es momento de comprar.`
+      : `El dólar ha subido a S/ ${currentRate.toFixed(3)}. Es momento de vender.`;
 
-${type === 'buy' ? 'Compra' : 'Venta'} llegó a ${current} (tu alerta era ${value})
-
-Te avisaremos si vuelve a ocurrir.
-
-Saludos,
-MangosCash`;
     await transporter.sendMail({
-      from: process.env.SMTP_FROM,
+      from: process.env.SMTP_USER,
       to: email,
       subject,
-      text,
+      text: message,
+      html: `<h2>${subject}</h2><p>${message}</p>`,
     });
   }
 

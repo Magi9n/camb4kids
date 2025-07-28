@@ -20,4 +20,9 @@ export class RatesController {
   async getHourly() {
     return this.ratesService.getHourly();
   }
+
+  @Get('daily-averages')
+  async getDailyAverages() {
+    return this.ratesService.getDailyAverages();
+  }
 } 

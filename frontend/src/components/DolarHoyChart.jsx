@@ -13,10 +13,10 @@ const DolarHoyChart = ({ compact = false }) => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Llama al endpoint que devuelve la variación del dólar en la última hora
-    api.get('/rates/hourly')
+    // Llama al endpoint que devuelve los promedios del día actual
+    api.get('/rates/daily-averages')
       .then(res => {
-        console.log('Datos del gráfico:', res.data);
+        console.log('Datos del gráfico (promedios):', res.data);
         if (res.data && res.data.length > 0) {
           setData(res.data.map(d => parseFloat(Number(d.value).toFixed(3))));
           setLabels(res.data.map(d => d.time));

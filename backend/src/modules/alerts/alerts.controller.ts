@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Request, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Request, Get, Delete, Put, Param, ParseIntPipe } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { AlertsService } from './alerts.service';
 import { CreateAlertDto } from './alert.dto';
@@ -16,5 +16,15 @@ export class AlertsController {
   @Get()
   async findAll(@Request() req) {
     return this.alertsService.getAlertsForUser(req.user);
+  }
+
+  @Put(':id')
+  async update(@Param('id', ParseIntPipe) id: number, @Body() dto: CreateAlertDto, @Request() req) {
+    return this.alertsService.updateAlert(id, dto, req.user);
+  }
+
+  @Delete(':id')
+  async remove(@Param('id', ParseIntPipe) id: number, @Request() req) {
+    return this.alertsService.deleteAlert(id, req.user);
   }
 } 

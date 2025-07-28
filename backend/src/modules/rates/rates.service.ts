@@ -82,4 +82,58 @@ export class RatesService {
       value: parseFloat(Number(r.rate).toFixed(3)),
     }));
   }
+
+  async getDailyAverages() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    // Obtener todos los datos del día actual
+    const todayRates = await this.rateRepo.find({
+      where: { 
+        createdAt: Between(today, tomorrow) 
+      },
+      order: { createdAt: 'ASC' },
+    });
+
+    if (todayRates.length === 0) {
+      return [];
+    }
+
+    // Agrupar por intervalos de 10 minutos
+    const intervals = [];
+    const intervalMinutes = 10;
+    
+    for (let hour = 0; hour < 24; hour++) {
+      for (let minute = 0; minute < 60; minute += intervalMinutes) {
+        const startTime = new Date(today);
+        startTime.setHours(hour, minute, 0, 0);
+        
+        const endTime = new Date(startTime);
+        endTime.setMinutes(endTime.getMinutes() + intervalMinutes);
+        
+        // Filtrar datos que caen en este intervalo
+        const intervalData = todayRates.filter(rate => 
+          rate.createdAt >= startTime && rate.createdAt < endTime
+        );
+        
+        if (intervalData.length > 0) {
+          // Calcular promedio del intervalo
+          const totalRate = intervalData.reduce((sum, rate) => sum + parseFloat(rate.rate.toString()), 0);
+          const averageRate = totalRate / intervalData.length;
+          
+          intervals.push({
+            time: startTime.toLocaleTimeString('es-PE', { 
+              hour: '2-digit', 
+              minute: '2-digit' 
+            }),
+            value: parseFloat(averageRate.toFixed(3)),
+          });
+        }
+      }
+    }
+
+    return intervals;
+  }
 } 
