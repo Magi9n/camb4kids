@@ -40,12 +40,12 @@ const DashboardAlerts = () => {
     setLoading(true);
     try {
       if (buyActive && buyValue) {
-        console.log('Enviando alerta de compra:', { type: 'buy', value: parseFloat(buyValue) });
-        await api.post('/alerts', { type: 'buy', value: parseFloat(buyValue) });
+        console.log('Enviando alerta de venta (quiero dólares):', { type: 'sell', value: parseFloat(buyValue) });
+        await api.post('/alerts', { type: 'sell', value: parseFloat(buyValue) });
       }
       if (sellActive && sellValue) {
-        console.log('Enviando alerta de venta:', { type: 'sell', value: parseFloat(sellValue) });
-        await api.post('/alerts', { type: 'sell', value: parseFloat(sellValue) });
+        console.log('Enviando alerta de compra (tengo dólares):', { type: 'buy', value: parseFloat(sellValue) });
+        await api.post('/alerts', { type: 'buy', value: parseFloat(sellValue) });
       }
       setBuyValue('');
       setSellValue('');

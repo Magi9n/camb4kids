@@ -20,12 +20,12 @@ export class AlertsService {
     console.log('AlertRepo target:', this.alertRepo.target);
     const current = await this.ratesService.getCurrent();
     if (!current.rate) throw new BadRequestException('No se pudo obtener la tasa actual');
-    // Validación lógica
-    if (dto.type === 'buy' && parseFloat(dto.value as any) <= current.rate) {
-      throw new BadRequestException('El valor de compra debe ser mayor al precio actual.');
+    // Validación lógica corregida
+    if (dto.type === 'buy' && parseFloat(dto.value as any) >= current.rate) {
+      throw new BadRequestException('El valor de compra debe ser menor al precio actual.');
     }
-    if (dto.type === 'sell' && parseFloat(dto.value as any) >= current.rate) {
-      throw new BadRequestException('El valor de venta debe ser menor al precio actual.');
+    if (dto.type === 'sell' && parseFloat(dto.value as any) <= current.rate) {
+      throw new BadRequestException('El valor de venta debe ser mayor al precio actual.');
     }
     const alert = this.alertRepo.create({
       user,
@@ -50,12 +50,12 @@ export class AlertsService {
     const current = await this.ratesService.getCurrent();
     if (!current.rate) throw new BadRequestException('No se pudo obtener la tasa actual');
     
-    // Validación lógica
-    if (dto.type === 'buy' && parseFloat(dto.value as any) <= current.rate) {
-      throw new BadRequestException('El valor de compra debe ser mayor al precio actual.');
+    // Validación lógica corregida
+    if (dto.type === 'buy' && parseFloat(dto.value as any) >= current.rate) {
+      throw new BadRequestException('El valor de compra debe ser menor al precio actual.');
     }
-    if (dto.type === 'sell' && parseFloat(dto.value as any) >= current.rate) {
-      throw new BadRequestException('El valor de venta debe ser menor al precio actual.');
+    if (dto.type === 'sell' && parseFloat(dto.value as any) <= current.rate) {
+      throw new BadRequestException('El valor de venta debe ser mayor al precio actual.');
     }
 
     alert.type = dto.type;
@@ -84,8 +84,8 @@ export class AlertsService {
     const current = await this.ratesService.getCurrent();
     for (const alert of alerts) {
       if (
-        (alert.type === 'buy' && current.rate >= parseFloat(alert.value as any)) ||
-        (alert.type === 'sell' && current.rate <= parseFloat(alert.value as any))
+        (alert.type === 'buy' && current.rate <= parseFloat(alert.value as any)) ||
+        (alert.type === 'sell' && current.rate >= parseFloat(alert.value as any))
       ) {
         // Enviar email
         await this.sendAlertEmail(alert.email, alert.type, alert.value, current.rate);
