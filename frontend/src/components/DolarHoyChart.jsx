@@ -18,8 +18,55 @@ const DolarHoyChart = ({ compact = false }) => {
       .then(res => {
         console.log('Datos del gráfico (promedios):', res.data);
         if (res.data && res.data.length > 0) {
-          setData(res.data.map(d => parseFloat(Number(d.value).toFixed(3))));
-          setLabels(res.data.map(d => d.time));
+          // Filtrar solo las últimas 6 horas
+          const now = new Date();
+          const sixHoursAgo = new Date(now.getTime() - 6 * 60 * 60 * 1000);
+          
+          const filteredData = res.data.filter(item => {
+            const itemTime = new Date();
+            const [hours, minutes] = item.time.split(':');
+            itemTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+            return itemTime >= sixHoursAgo;
+          });
+
+          // Agrupar por horas (cada 60 minutos)
+          const hourlyData = [];
+          const hourlyLabels = [];
+          
+          for (let i = 0; i < 6; i++) {
+            const hourStart = new Date(now);
+            hourStart.setHours(now.getHours() - 5 + i, 0, 0, 0);
+            
+            const hourEnd = new Date(hourStart);
+            hourEnd.setHours(hourStart.getHours() + 1);
+            
+            const hourData = filteredData.filter(item => {
+              const itemTime = new Date();
+              const [hours, minutes] = item.time.split(':');
+              itemTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+              return itemTime >= hourStart && itemTime < hourEnd;
+            });
+            
+            if (hourData.length > 0) {
+              const avgValue = hourData.reduce((sum, item) => sum + item.value, 0) / hourData.length;
+              hourlyData.push(parseFloat(avgValue.toFixed(3)));
+              hourlyLabels.push(hourStart.toLocaleTimeString('es-PE', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+              }));
+            } else {
+              // Si no hay datos para esta hora, usar el último valor conocido o 0
+              const lastValue = hourlyData.length > 0 ? hourlyData[hourlyData.length - 1] : 0;
+              hourlyData.push(lastValue);
+              hourlyLabels.push(hourStart.toLocaleTimeString('es-PE', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+              }));
+            }
+          }
+          
+          setData(hourlyData);
+          setLabels(hourlyLabels);
           setError('');
         } else {
           setError('No hay datos disponibles para mostrar la variación del dólar');
@@ -42,7 +89,7 @@ const DolarHoyChart = ({ compact = false }) => {
         fill: true,
         backgroundColor: 'rgba(120, 60, 180, 0.10)',
         borderColor: '#7c3aed',
-        pointRadius: 2,
+        pointRadius: 3,
         tension: 0.3,
       },
     ],
@@ -61,11 +108,11 @@ const DolarHoyChart = ({ compact = false }) => {
     scales: {
       x: {
         grid: { color: '#eee' },
-        ticks: { color: '#333', font: { family: 'Roboto', size: compact ? 10 : 12 } }
+        ticks: { color: '#333', font: { family: 'Roboto', size: compact ? 11 : 13 } }
       },
       y: {
         grid: { color: '#eee' },
-        ticks: { color: '#333', font: { family: 'Roboto', size: compact ? 10 : 12 }, callback: v => v.toFixed(3) }
+        ticks: { color: '#333', font: { family: 'Roboto', size: compact ? 11 : 13 }, callback: v => v.toFixed(3) }
       }
     }
   };
@@ -75,7 +122,7 @@ const DolarHoyChart = ({ compact = false }) => {
       <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: compact ? 16 : 18, mb: 2 }}>
         EL DÓLAR HOY
       </Typography>
-      <Box sx={{ width: '100%', height: compact ? 160 : 260, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Box sx={{ width: '100%', height: compact ? 200 : 320, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {loading ? (
           <Typography sx={{ color: '#666', fontFamily: 'Roboto, sans-serif' }}>
             Cargando datos...
@@ -85,7 +132,7 @@ const DolarHoyChart = ({ compact = false }) => {
             {error}
           </Typography>
         ) : data.length > 0 ? (
-          <Line data={chartData} options={options} height={compact ? 120 : 220} />
+          <Line data={chartData} options={options} height={compact ? 160 : 280} />
         ) : (
           <Typography sx={{ color: '#666', fontFamily: 'Roboto, sans-serif', textAlign: 'center', fontSize: compact ? 12 : 14 }}>
             No hay datos disponibles para mostrar la variación del dólar

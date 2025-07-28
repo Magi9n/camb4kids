@@ -11,6 +11,7 @@ import Redis from 'ioredis';
 export class RatesService {
   private readonly logger = new Logger(RatesService.name);
   private readonly redis: Redis;
+  private currentApiKeyIndex = 0;
 
   constructor(
     @InjectRepository(ExchangeRate)
@@ -23,27 +24,72 @@ export class RatesService {
     });
   }
 
+  private getApiKeys(): string[] {
+    return [
+      this.configService.get('TWELVEDATA_API_KEY'),
+      this.configService.get('TWELVEDATA_API_KEY_2'),
+      this.configService.get('TWELVEDATA_API_KEY_3'),
+    ].filter(key => key); // Filtrar keys vacíos
+  }
+
+  private async fetchRateWithApiKey(apiKey: string): Promise<number> {
+    const url = `${this.configService.get('TWELVEDATA_API_URL')}&apikey=${apiKey}`;
+    const { data } = await axios.get(url);
+    const rate = parseFloat(data.price);
+    if (!rate) throw new Error('No se pudo obtener la tasa');
+    return rate;
+  }
+
+  private async tryFetchRate(): Promise<number> {
+    const apiKeys = this.getApiKeys();
+    if (apiKeys.length === 0) {
+      throw new Error('No hay API keys configuradas');
+    }
+
+    let lastError: Error | null = null;
+    
+    // Intentar con el API key actual
+    for (let attempt = 0; attempt < apiKeys.length; attempt++) {
+      const apiKeyIndex = (this.currentApiKeyIndex + attempt) % apiKeys.length;
+      const apiKey = apiKeys[apiKeyIndex];
+      
+      try {
+        const rate = await this.fetchRateWithApiKey(apiKey);
+        // Si funciona, actualizar el índice actual
+        this.currentApiKeyIndex = apiKeyIndex;
+        this.logger.log(`Tasa obtenida exitosamente con API key ${apiKeyIndex + 1}: ${rate}`);
+        return rate;
+      } catch (error) {
+        lastError = error;
+        this.logger.warn(`Error con API key ${apiKeyIndex + 1}: ${error.message}`);
+        continue;
+      }
+    }
+    
+    // Si llegamos aquí, todos los API keys fallaron
+    throw lastError || new Error('Todos los API keys fallaron');
+  }
+
   // Cron job: cada 1 minuto y 48 segundos
   @Cron('48 */1 * * * *', { name: 'fetchRate' })
   async fetchRate() {
     try {
-      // No delay necesario
-      const url = `${this.configService.get('TWELVEDATA_API_URL')}&apikey=${this.configService.get('TWELVEDATA_API_KEY')}`;
-      const { data } = await axios.get(url);
-      const rate = parseFloat(data.price);
-      if (!rate) throw new Error('No se pudo obtener la tasa');
+      const rate = await this.tryFetchRate();
+      
       const exRate = this.rateRepo.create({
         fromCurrency: 'USD',
         toCurrency: 'PEN',
         rate,
       });
       await this.rateRepo.save(exRate);
+      
       // Eliminar el tipo de cambio más antiguo si hay más de 1
       const allRates = await this.rateRepo.find({ order: { createdAt: 'ASC' } });
       if (allRates.length > 1) {
         const oldest = allRates[0];
         await this.rateRepo.delete(oldest.id);
       }
+      
       await this.redis.set('EXCHANGE_RATE_USD_PEN', rate, 'EX', 70);
       this.logger.log(`Tasa actualizada: ${rate}`);
     } catch (e) {
