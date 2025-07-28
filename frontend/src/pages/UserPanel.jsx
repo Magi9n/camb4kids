@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Box, 
   Typography, 
@@ -53,6 +53,8 @@ import { AlertForm } from '../components/AlertBlock';
 import DolarHoyChart from '../components/DolarHoyChart';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import UserProfilePage from './UserProfilePage';
+import DashboardAlerts from './DashboardAlerts';
 
 const drawerWidth = 280;
 
