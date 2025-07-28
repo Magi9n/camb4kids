@@ -8,6 +8,19 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Función para verificar el token
+  const verifyToken = async () => {
+    try {
+      const response = await api.get('/auth/verify');
+      if (response.status !== 200) {
+        logout();
+      }
+    } catch (error) {
+      console.error('Error verificando token:', error);
+      logout();
+    }
+  };
+
   useEffect(() => {
     // Cargar token y usuario del sessionStorage al iniciar
     const savedToken = sessionStorage.getItem('token');
@@ -15,7 +28,7 @@ export function AuthProvider({ children }) {
     
     if (savedToken && savedUser) {
       // Verificar si el token es válido con el backend
-      const verifyToken = async () => {
+      const initialVerify = async () => {
         try {
           // Configurar el token en el header para la verificación
           api.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`;
@@ -39,11 +52,19 @@ export function AuthProvider({ children }) {
         }
       };
 
-      verifyToken();
+      initialVerify();
     } else {
       setLoading(false);
     }
   }, []);
+
+  // Verificación periódica del token cada 5 minutos
+  useEffect(() => {
+    if (token) {
+      const interval = setInterval(verifyToken, 5 * 60 * 1000); // 5 minutos
+      return () => clearInterval(interval);
+    }
+  }, [token]);
 
   const login = (userData, jwt) => {
     setUser(userData);
@@ -61,6 +82,11 @@ export function AuthProvider({ children }) {
     sessionStorage.removeItem('user');
     // Remover el token del header de la API
     delete api.defaults.headers.common['Authorization'];
+    
+    // Redirigir al login si no estamos ya ahí
+    if (window.location.pathname !== '/login' && window.location.pathname !== '/') {
+      window.location.href = '/login';
+    }
   };
 
   return (
