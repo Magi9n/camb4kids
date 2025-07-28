@@ -6,7 +6,7 @@ import api from '../services/api';
 
 Chart.register(LineElement, CategoryScale, LinearScale, PointElement, Filler, Tooltip);
 
-const DolarHoyChart = () => {
+const DolarHoyChart = ({ compact = false }) => {
   const [data, setData] = useState([]);
   const [labels, setLabels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,23 +48,23 @@ const DolarHoyChart = () => {
     scales: {
       x: {
         grid: { color: '#eee' },
-        ticks: { color: '#333', font: { family: 'Roboto', size: 12 } }
+        ticks: { color: '#333', font: { family: 'Roboto', size: compact ? 10 : 12 } }
       },
       y: {
         grid: { color: '#eee' },
-        ticks: { color: '#333', font: { family: 'Roboto', size: 12 }, callback: v => v.toFixed(3) }
+        ticks: { color: '#333', font: { family: 'Roboto', size: compact ? 10 : 12 }, callback: v => v.toFixed(3) }
       }
     }
   };
 
   return (
-    <Paper sx={{ p: 3, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.08)', mb: 2 }}>
-      <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: 18, mb: 2 }}>
+    <Paper sx={{ p: compact ? 2 : 3, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.08)', mb: 2 }}>
+      <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: compact ? 16 : 18, mb: 2 }}>
         EL DÓLAR HOY
       </Typography>
-      <Box sx={{ width: '100%', height: 260 }}>
+      <Box sx={{ width: '100%', height: compact ? 160 : 260 }}>
         {loading ? 'Cargando...' : (
-          <Line data={chartData} options={options} height={220} />
+          <Line data={chartData} options={options} height={compact ? 120 : 220} />
         )}
       </Box>
     </Paper>

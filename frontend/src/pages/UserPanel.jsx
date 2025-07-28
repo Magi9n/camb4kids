@@ -53,6 +53,7 @@ import { AlertForm } from '../components/AlertBlock';
 import DolarHoyChart from '../components/DolarHoyChart';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import DashboardAlerts from '../components/DashboardAlerts';
 
 const drawerWidth = 280;
 
@@ -122,60 +123,7 @@ const UserPanel = () => {
       case 'cuentas':
         return <BankAccounts />;
       case 'alertas':
-        return (
-          <Box sx={{ display: 'flex', gap: 4, alignItems: 'flex-start', p: 2 }}>
-            {/* Columna izquierda: formulario y tabla */}
-            <Box sx={{ flex: 2, minWidth: 350 }}>
-              <Paper sx={{ p: 3, mb: 3, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-                <AlertForm onSuccess={loadAlerts} />
-              </Paper>
-              <Paper sx={{ p: 3, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-                <TableContainer>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Fecha</TableCell>
-                        <TableCell>Compra</TableCell>
-                        <TableCell>Venta</TableCell>
-                        <TableCell>Acciones</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {alerts.map(alert => (
-                        <TableRow key={alert.id}>
-                          <TableCell>{new Date(alert.createdAt).toLocaleString('es-PE')}</TableCell>
-                          <TableCell>{alert.type === 'buy' ? alert.value.toFixed(3) : '-'}</TableCell>
-                          <TableCell>{alert.type === 'sell' ? alert.value.toFixed(3) : '-'}</TableCell>
-                          <TableCell>
-                            <IconButton onClick={() => handleEdit(alert)}><EditIcon /></IconButton>
-                            <IconButton onClick={() => handleDelete(alert.id)}><DeleteIcon /></IconButton>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Paper>
-              {/* Modal de edición */}
-              <Dialog open={!!editingAlert} onClose={closeEditModal} maxWidth="sm" fullWidth>
-                <DialogTitle>Editar alerta</DialogTitle>
-                <DialogContent>
-                  <AlertForm
-                    editing
-                    initialBuy={editingAlert?.type === 'buy' ? editingAlert.value.toString() : ''}
-                    initialSell={editingAlert?.type === 'sell' ? editingAlert.value.toString() : ''}
-                    onSuccess={() => { closeEditModal(); loadAlerts(); }}
-                    onCancel={closeEditModal}
-                  />
-                </DialogContent>
-              </Dialog>
-            </Box>
-            {/* Columna derecha: gráfico */}
-            <Box sx={{ flex: 1, minWidth: 320 }}>
-              <DolarHoyChart />
-            </Box>
-          </Box>
-        );
+        return <DashboardAlerts />;
       case 'dashboard':
       default:
         return (
@@ -507,7 +455,7 @@ const UserPanel = () => {
                   color: '#333',
                   fontWeight: 700
                 }}>
-                  {selectedMenu === 'cuentas' ? 'Mis cuentas' : 'Dashboard'}
+                  {selectedMenu === 'cuentas' ? 'Mis cuentas' : selectedMenu === 'alertas' ? 'Alertas' : 'Dashboard'}
                 </Typography>
                 <Typography sx={{ 
                   fontFamily: 'Roboto, sans-serif', 
