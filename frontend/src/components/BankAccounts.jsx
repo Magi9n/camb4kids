@@ -43,48 +43,15 @@ import scotiabankLogo from '../assets/scotiabank.svg';
 import pichinchaLogo from '../assets/pichincha.svg';
 import api from '../services/api';
 import { Global } from '@emotion/react';
+import Lottie from 'lottie-react';
+import cuentasBankAnim from '../assets/cuentasbank.json';
 
 // Componente para el Lottie
-const LottieAnimation = () => {
-  useEffect(() => {
-    // Cargar el script de dotlottie
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js';
-    script.type = 'module';
-    document.head.appendChild(script);
-
-    return () => {
-      if (document.head.contains(script)) {
-        document.head.removeChild(script);
-      }
-    };
-  }, []);
-
-  return (
-    <>
-      <Global styles={`
-        dotlottie-wc canvas {
-          width: 100% !important;
-          height: 100% !important;
-          aspect-ratio: 1 / 1 !important;
-          object-fit: contain !important;
-          image-rendering: auto !important;
-          max-width: 100% !important;
-          max-height: 100% !important;
-        }
-      `} />
-      <Box sx={{ width: 240, height: 240, minWidth: 240, minHeight: 240, display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto' }}>
-        <dotlottie-wc 
-          src="https://lottie.host/1e9d037e-db07-49bb-8c2f-5a63471ba3e4/60uVUsTO18.lottie" 
-          style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
-          speed="1" 
-          autoplay 
-          loop
-        />
-      </Box>
-    </>
-  );
-};
+const LottieAnimation = () => (
+  <Box sx={{ width: 240, height: 240, display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto' }}>
+    <Lottie animationData={cuentasBankAnim} loop={true} style={{ width: '100%', height: '100%' }} />
+  </Box>
+);
 
 const BankAccounts = () => {
   const [accounts, setAccounts] = useState([]);

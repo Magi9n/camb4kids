@@ -34,48 +34,15 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Global } from '@emotion/react';
+import Lottie from 'lottie-react';
+import cerditoAnim from '../assets/cerdito.json';
 
 // Componente para el Lottie
-const LottieAnimation = () => {
-  useEffect(() => {
-    // Cargar el script de dotlottie
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js';
-    script.type = 'module';
-    document.head.appendChild(script);
-
-    return () => {
-      if (document.head.contains(script)) {
-        document.head.removeChild(script);
-      }
-    };
-  }, []);
-
-  return (
-    <>
-      <Global styles={`
-        dotlottie-wc canvas {
-          width: 100% !important;
-          height: 100% !important;
-          aspect-ratio: 1 / 1 !important;
-          object-fit: contain !important;
-          image-rendering: auto !important;
-          max-width: 100% !important;
-          max-height: 100% !important;
-        }
-      `} />
-      <Box sx={{ width: 120, height: 120, minWidth: 120, minHeight: 120, display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto' }}>
-        <dotlottie-wc 
-          src="https://lottie.host/9297a740-4b88-4100-8c92-4cf54ef77646/0tB5xTffDu.lottie" 
-          style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
-          speed="1" 
-          autoplay 
-          loop
-        />
-      </Box>
-    </>
-  );
-};
+const LottieAnimation = () => (
+  <Box sx={{ width: 120, height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto' }}>
+    <Lottie animationData={cerditoAnim} loop={true} style={{ width: '100%', height: '100%' }} />
+  </Box>
+);
 
 // Componente para el número animado
 const AnimatedNumber = ({ value, duration = 2000 }) => {
