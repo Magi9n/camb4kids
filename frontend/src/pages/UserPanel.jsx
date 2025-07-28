@@ -48,6 +48,15 @@ import pichinchaLogo from '../assets/pichincha.svg';
 import Calculator from '../components/Calculator';
 import OperationsHistory from '../components/OperationsHistory';
 import BankAccounts from '../components/BankAccounts';
+import { AlertForm } from '../components/AlertBlock';
+import DolarHoyChart from '../components/DolarHoyChart';
+import { useState, useEffect } from 'react';
+import api from '../services/api';
+import {
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const drawerWidth = 280;
 
@@ -61,6 +70,21 @@ const UserPanel = () => {
   const [swap, setSwap] = useState(false);
   const [swapActive, setSwapActive] = useState(false);
   const [penAmount, setPenAmount] = useState('');
+
+  // Lógica de estado y funciones:
+  const [alerts, setAlerts] = useState([]);
+  const [editingAlert, setEditingAlert] = useState(null);
+  const loadAlerts = async () => {
+    const res = await api.get('/alerts');
+    setAlerts(res.data);
+  };
+  const handleEdit = (alert) => setEditingAlert(alert);
+  const closeEditModal = () => setEditingAlert(null);
+  const handleDelete = async (id) => {
+    await api.delete(`/alerts/${id}`);
+    loadAlerts();
+  };
+  useEffect(() => { if (selectedMenu === 'alertas') loadAlerts(); }, [selectedMenu]);
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -101,6 +125,61 @@ const UserPanel = () => {
         return <OperationsHistory />;
       case 'cuentas':
         return <BankAccounts />;
+      case 'alertas':
+        return (
+          <Box sx={{ display: 'flex', gap: 4, alignItems: 'flex-start', p: 2 }}>
+            {/* Columna izquierda: formulario y tabla */}
+            <Box sx={{ flex: 2, minWidth: 350 }}>
+              <Paper sx={{ p: 3, mb: 3, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+                <AlertForm onSuccess={loadAlerts} />
+              </Paper>
+              <Paper sx={{ p: 3, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+                <TableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Fecha</TableCell>
+                        <TableCell>Compra</TableCell>
+                        <TableCell>Venta</TableCell>
+                        <TableCell>Acciones</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {alerts.map(alert => (
+                        <TableRow key={alert.id}>
+                          <TableCell>{new Date(alert.createdAt).toLocaleString('es-PE')}</TableCell>
+                          <TableCell>{alert.type === 'buy' ? alert.value.toFixed(3) : '-'}</TableCell>
+                          <TableCell>{alert.type === 'sell' ? alert.value.toFixed(3) : '-'}</TableCell>
+                          <TableCell>
+                            <IconButton onClick={() => handleEdit(alert)}><EditIcon /></IconButton>
+                            <IconButton onClick={() => handleDelete(alert.id)}><DeleteIcon /></IconButton>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Paper>
+              {/* Modal de edición */}
+              <Dialog open={!!editingAlert} onClose={closeEditModal} maxWidth="sm" fullWidth>
+                <DialogTitle>Editar alerta</DialogTitle>
+                <DialogContent>
+                  <AlertForm
+                    editing
+                    initialBuy={editingAlert?.type === 'buy' ? editingAlert.value.toString() : ''}
+                    initialSell={editingAlert?.type === 'sell' ? editingAlert.value.toString() : ''}
+                    onSuccess={() => { closeEditModal(); loadAlerts(); }}
+                    onCancel={closeEditModal}
+                  />
+                </DialogContent>
+              </Dialog>
+            </Box>
+            {/* Columna derecha: gráfico */}
+            <Box sx={{ flex: 1, minWidth: 320 }}>
+              <DolarHoyChart />
+            </Box>
+          </Box>
+        );
       case 'dashboard':
       default:
         return (

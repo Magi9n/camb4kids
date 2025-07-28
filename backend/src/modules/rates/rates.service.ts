@@ -69,4 +69,17 @@ export class RatesService {
     });
     return { history };
   }
+
+  async getHourly() {
+    const now = new Date();
+    const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+    const history = await this.rateRepo.find({
+      where: { createdAt: Between(oneHourAgo, now) },
+      order: { createdAt: 'ASC' },
+    });
+    return history.map(r => ({
+      time: r.createdAt.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' }),
+      value: parseFloat(Number(r.rate).toFixed(3)),
+    }));
+  }
 } 

@@ -15,4 +15,9 @@ export class RatesController {
     if (!from || !to) throw new BadRequestException('Debe indicar from y to');
     return this.ratesService.getHistory(from, to);
   }
+
+  @Get('hourly')
+  async getHourly() {
+    return this.ratesService.getHourly();
+  }
 } 
