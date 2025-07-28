@@ -10,6 +10,9 @@ export class BankAccountsController {
 
   @Post()
   async create(@Body() createBankAccountDto: CreateBankAccountDto, @Request() req) {
+    console.log('[DEBUG] Creating bank account for user:', req.user);
+    console.log('[DEBUG] User ID:', req.user.id);
+    console.log('[DEBUG] Bank account data:', createBankAccountDto);
     return await this.bankAccountsService.create(createBankAccountDto, req.user.id);
   }
 
