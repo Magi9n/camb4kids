@@ -7,7 +7,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [profileComplete, setProfileComplete] = useState(false);
+  const [profileComplete, setProfileComplete] = useState(true);
 
   // Función para verificar el token
   const verifyToken = async () => {
@@ -54,7 +54,13 @@ export function AuthProvider({ children }) {
             setUser(JSON.parse(savedUser));
             
             // Verificar el estado del perfil
-            await checkProfileStatus();
+            const isProfileComplete = await checkProfileStatus();
+            setProfileComplete(isProfileComplete);
+            
+            // Si el perfil no está completado y no estamos en la página de completar perfil, redirigir
+            if (!isProfileComplete && window.location.pathname !== '/complete-profile') {
+              window.location.href = `/complete-profile?email=${JSON.parse(savedUser).email}`;
+            }
           } else {
             // Token inválido, limpiar datos
             logout();
@@ -77,27 +83,28 @@ export function AuthProvider({ children }) {
   // Verificación periódica del token cada 5 minutos
   useEffect(() => {
     if (token) {
-      const interval = setInterval(verifyToken, 5 * 60 * 1000); // 5 minutos
+      const interval = setInterval(async () => {
+        await verifyToken();
+        // También verificar el estado del perfil periódicamente
+        await checkProfileStatus();
+      }, 5 * 60 * 1000); // 5 minutos
       return () => clearInterval(interval);
     }
   }, [token]);
 
-  const login = async (userData, jwt) => {
+  const login = (userData, jwt) => {
     setUser(userData);
     setToken(jwt);
     sessionStorage.setItem('token', jwt);
     sessionStorage.setItem('user', JSON.stringify(userData));
     // Configurar el token en el header de la API
     api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
-    
-    // Verificar el estado del perfil después del login
-    await checkProfileStatus();
   };
 
   const logout = () => {
     setUser(null);
     setToken(null);
-    setProfileComplete(false);
+    setProfileComplete(true);
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('user');
     // Remover el token del header de la API
@@ -110,15 +117,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      token, 
-      login, 
-      logout, 
-      loading, 
-      profileComplete,
-      checkProfileStatus 
-    }}>
+    <AuthContext.Provider value={{ user, token, login, logout, loading, profileComplete, checkProfileStatus }}>
       {children}
     </AuthContext.Provider>
   );

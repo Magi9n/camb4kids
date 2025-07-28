@@ -274,30 +274,20 @@ export class AuthService {
   }
 
   async verifyResetToken(token: string) {
-    const reset = await this.passwordResetRepo.findOne({ where: { token } });
-    if (!reset || reset.expiresAt < new Date()) {
-      throw new BadRequestException('Token inválido o expirado');
-    }
-    return { valid: true };
-  }
+    const passwordReset = await this.passwordResetRepo.findOne({
+      where: { token, used: false }
+    });
 
-  async isProfileComplete(userId: number): Promise<boolean> {
-    const user = await this.userRepo.findOne({ where: { id: userId } });
-    if (!user) {
-      return false;
+    if (!passwordReset) {
+      return { valid: false, message: 'Token inválido o ya utilizado' };
     }
 
-    // Verificar que todos los campos requeridos estén completados
-    const requiredFields = [
-      user.lastname,
-      user.documentType,
-      user.document,
-      user.sex,
-      user.phone
-    ];
+    if (passwordReset.expiresAt < new Date()) {
+      await this.passwordResetRepo.delete(passwordReset.id);
+      return { valid: false, message: 'El enlace de recuperación ha expirado' };
+    }
 
-    // Si algún campo requerido está vacío, el perfil no está completo
-    return requiredFields.every(field => field && field.trim() !== '');
+    return { valid: true, email: passwordReset.email };
   }
 
   private async sendPasswordResetEmail(email: string, token: string) {
@@ -373,12 +363,38 @@ export class AuthService {
 
   // Limpieza automática de usuarios no verificados (llamar desde un cron job)
   async cleanUnverifiedUsers() {
-    const now = new Date();
-    const users = await this.userRepo.find({ where: { isVerified: false, verificationExpires: LessThan(now) } });
-    for (const user of users) {
-      await this.userRepo.delete(user.id);
-      console.log(`Usuario no verificado eliminado: ${user.email}`);
-    }
-    return { deleted: users.length };
+    const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+    await this.userRepo.delete({
+      isVerified: false,
+      createdAt: LessThan(thirtyMinutesAgo),
+    });
+  }
+
+  async getProfileStatus(user: User) {
+    // Verificar si el perfil está completado
+    const isProfileComplete = !!(
+      user.documentType &&
+      user.document &&
+      user.sex &&
+      user.phone &&
+      user.lastname
+    );
+
+    return {
+      isComplete: isProfileComplete,
+      missingFields: isProfileComplete ? [] : this.getMissingFields(user),
+    };
+  }
+
+  private getMissingFields(user: User): string[] {
+    const missingFields = [];
+    
+    if (!user.documentType) missingFields.push('documentType');
+    if (!user.document) missingFields.push('document');
+    if (!user.sex) missingFields.push('sex');
+    if (!user.phone) missingFields.push('phone');
+    if (!user.lastname) missingFields.push('lastname');
+    
+    return missingFields;
   }
 } 

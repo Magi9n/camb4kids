@@ -9,72 +9,57 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  async register(@Body() dto: RegisterDto) {
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
+  async register(@Body() registerDto: RegisterDto) {
     try {
-      const result = await this.authService.register(dto);
-      return result;
+      return await this.authService.register(registerDto);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
   @Post('verify-email')
-  async verifyEmail(@Body() dto: VerifyEmailDto) {
+  async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
     try {
-      const result = await this.authService.verifyEmail(dto);
-      return result;
+      return await this.authService.verifyEmail(verifyEmailDto);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
   @Post('complete-profile')
-  async completeProfile(@Body() dto: CompleteProfileDto) {
+  async completeProfile(@Body() completeProfileDto: CompleteProfileDto) {
     try {
-      const result = await this.authService.completeProfile(dto);
-      return result;
+      return await this.authService.completeProfile(completeProfileDto);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
   @Post('login')
-  @Throttle({ default: { limit: 5, ttl: 60000 } }) // 5 intentos por minuto
-  async login(@Body() dto: LoginDto) {
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
+  async login(@Body() loginDto: LoginDto) {
     try {
-      const result = await this.authService.login(dto);
-      return result;
+      return await this.authService.login(loginDto);
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.UNAUTHORIZED);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
   @Post('forgot-password')
-  @Throttle({ default: { limit: 3, ttl: 300000 } }) // 3 intentos por 5 minutos
-  async forgotPassword(@Body() dto: ForgotPasswordDto) {
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
     try {
-      await this.authService.forgotPassword(dto);
-      return { message: 'Se ha enviado un correo con las instrucciones para restablecer tu contraseña.' };
+      return await this.authService.forgotPassword(forgotPasswordDto);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
   @Post('reset-password')
-  async resetPassword(@Body() dto: ResetPasswordDto) {
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
     try {
-      await this.authService.resetPassword(dto);
-      return { message: 'Contraseña actualizada exitosamente.' };
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
-  }
-
-  @Get('verify-reset-token')
-  async verifyResetToken(@Body() body: { token: string }) {
-    try {
-      const isValid = await this.authService.verifyResetToken(body.token);
-      return { valid: isValid };
+      return await this.authService.resetPassword(resetPasswordDto);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -89,10 +74,6 @@ export class AuthController {
   @Get('profile-status')
   @UseGuards(JwtAuthGuard)
   async getProfileStatus(@Request() req) {
-    const isComplete = await this.authService.isProfileComplete(req.user.id);
-    return { 
-      isComplete,
-      user: req.user 
-    };
+    return this.authService.getProfileStatus(req.user);
   }
 } 
