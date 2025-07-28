@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
@@ -18,13 +18,46 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
-  const { login } = useAuth();
+  const { login, user, token, loading } = useAuth();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
+
+  // Redirección automática si ya está logueado
+  useEffect(() => {
+    if (!loading && user && token) {
+      if (user.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
+      }
+    }
+  }, [user, token, loading, navigate]);
 
   React.useEffect(() => {
     setTimeout(() => setShow(true), 100);
   }, []);
+
+  // Si está cargando, mostrar loading
+  if (loading) {
+    return (
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        bgcolor: '#F6F6F9'
+      }}>
+        <Typography sx={{ color: '#057c39', fontSize: 18 }}>
+          Cargando...
+        </Typography>
+      </Box>
+    );
+  }
+
+  // Si ya está logueado, no mostrar nada (se redirigirá)
+  if (user && token) {
+    return null;
+  }
 
   // Definir los textos y SVGs aquí
   const leftTexts = [
