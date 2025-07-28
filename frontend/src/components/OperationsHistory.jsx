@@ -362,6 +362,7 @@ const OperationsHistory = () => {
                     },
                     '& .MuiTabs-indicator': {
                       bgcolor: '#057c39',
+                      height: 3,
                     }
                   }}
                 >

@@ -47,6 +47,7 @@ import scotiabankLogo from '../assets/scotiabank.svg';
 import pichinchaLogo from '../assets/pichincha.svg';
 import Calculator from '../components/Calculator';
 import OperationsHistory from '../components/OperationsHistory';
+import BankAccounts from '../components/BankAccounts';
 
 const drawerWidth = 280;
 
@@ -98,6 +99,8 @@ const UserPanel = () => {
     switch (selectedMenu) {
       case 'historial':
         return <OperationsHistory />;
+      case 'cuentas':
+        return <BankAccounts />;
       case 'dashboard':
       default:
         return (
