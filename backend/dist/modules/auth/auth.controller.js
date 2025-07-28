@@ -22,90 +22,92 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    async register(dto) {
+    async register(registerDto) {
         try {
-            const result = await this.authService.register(dto);
-            return result;
+            return await this.authService.register(registerDto);
         }
         catch (error) {
             throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
-    async verifyEmail(dto) {
+    async verifyEmail(verifyEmailDto) {
         try {
-            const result = await this.authService.verifyEmail(dto);
-            return result;
+            return await this.authService.verifyEmail(verifyEmailDto);
         }
         catch (error) {
             throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
-    async completeProfile(dto) {
+    async completeProfile(completeProfileDto) {
         try {
-            const result = await this.authService.completeProfile(dto);
-            return result;
+            return await this.authService.completeProfile(completeProfileDto);
         }
         catch (error) {
             throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
-    async login(dto) {
+    async login(loginDto) {
         try {
-            const result = await this.authService.login(dto);
-            return result;
-        }
-        catch (error) {
-            throw new common_1.HttpException(error.message, common_1.HttpStatus.UNAUTHORIZED);
-        }
-    }
-    async forgotPassword(dto) {
-        try {
-            await this.authService.forgotPassword(dto);
-            return { message: 'Se ha enviado un correo con las instrucciones para restablecer tu contraseña.' };
+            return await this.authService.login(loginDto);
         }
         catch (error) {
             throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
-    async resetPassword(dto) {
+    async forgotPassword(forgotPasswordDto) {
         try {
-            await this.authService.resetPassword(dto);
-            return { message: 'Contraseña actualizada exitosamente.' };
+            return await this.authService.forgotPassword(forgotPasswordDto);
         }
         catch (error) {
             throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
-    async verifyResetToken(body) {
+    async resetPassword(resetPasswordDto) {
         try {
-            const isValid = await this.authService.verifyResetToken(body.token);
-            return { valid: isValid };
+            return await this.authService.resetPassword(resetPasswordDto);
         }
         catch (error) {
             throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
-    async verifyToken(req) {
+    async verify(req) {
+        return { valid: true, user: req.user };
+    }
+    async getProfileStatus(req) {
+        return this.authService.getProfileStatus(req.user);
+    }
+    async getProfile(req) {
+        return this.authService.getProfile(req.user);
+    }
+    async updateProfile(updateProfileDto, req) {
         try {
-            return {
-                valid: true,
-                user: {
-                    id: req.user.id,
-                    email: req.user.email,
-                    name: req.user.name,
-                    lastname: req.user.lastname,
-                    role: req.user.role
-                }
-            };
+            return await this.authService.updateProfile(updateProfileDto, req.user);
         }
         catch (error) {
-            throw new common_1.HttpException('Token inválido', common_1.HttpStatus.UNAUTHORIZED);
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async changeEmail(changeEmailDto, req) {
+        try {
+            return await this.authService.changeEmail(changeEmailDto, req.user);
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async verifyNewEmail(verifyNewEmailDto, req) {
+        try {
+            return await this.authService.verifyNewEmail(verifyNewEmailDto, req.user);
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
 };
 exports.AuthController = AuthController;
 __decorate([
     (0, common_1.Post)('register'),
+    (0, throttler_1.Throttle)({ default: { limit: 3, ttl: 60000 } }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [dto_1.RegisterDto]),
@@ -135,7 +137,7 @@ __decorate([
 ], AuthController.prototype, "login", null);
 __decorate([
     (0, common_1.Post)('forgot-password'),
-    (0, throttler_1.Throttle)({ default: { limit: 3, ttl: 300000 } }),
+    (0, throttler_1.Throttle)({ default: { limit: 3, ttl: 60000 } }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [dto_1.ForgotPasswordDto]),
@@ -149,20 +151,56 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "resetPassword", null);
 __decorate([
-    (0, common_1.Get)('verify-reset-token'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "verifyResetToken", null);
-__decorate([
     (0, common_1.Get)('verify'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "verifyToken", null);
+], AuthController.prototype, "verify", null);
+__decorate([
+    (0, common_1.Get)('profile-status'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "getProfileStatus", null);
+__decorate([
+    (0, common_1.Get)('profile'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "getProfile", null);
+__decorate([
+    (0, common_1.Put)('profile'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [dto_1.UpdateProfileDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "updateProfile", null);
+__decorate([
+    (0, common_1.Post)('change-email'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [dto_1.ChangeEmailDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "changeEmail", null);
+__decorate([
+    (0, common_1.Post)('verify-new-email'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [dto_1.VerifyNewEmailDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "verifyNewEmail", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

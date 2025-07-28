@@ -10,7 +10,13 @@ export declare class AlertsService {
     createAlert(dto: CreateAlertDto, user: User): Promise<{
         message: string;
     }>;
+    updateAlert(id: number, dto: CreateAlertDto, user: User): Promise<{
+        message: string;
+    }>;
+    deleteAlert(id: number, user: User): Promise<{
+        message: string;
+    }>;
     checkAlertsAndNotify(): Promise<void>;
-    sendAlertEmail(email: string, type: 'buy' | 'sell', value: number, current: number): Promise<void>;
+    sendAlertEmail(email: string, type: string, alertValue: number, currentRate: number): Promise<void>;
     getAlertsForUser(user: User): Promise<Alert[]>;
 }

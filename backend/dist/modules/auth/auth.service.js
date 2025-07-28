@@ -18,6 +18,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./entities/user.entity");
 const password_reset_entity_1 = require("./entities/password-reset.entity");
+const email_change_entity_1 = require("./entities/email-change.entity");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
@@ -93,9 +94,10 @@ async function sendVerificationEmail(email, code) {
     }
 }
 let AuthService = class AuthService {
-    constructor(userRepo, passwordResetRepo) {
+    constructor(userRepo, passwordResetRepo, emailChangeRepo) {
         this.userRepo = userRepo;
         this.passwordResetRepo = passwordResetRepo;
+        this.emailChangeRepo = emailChangeRepo;
     }
     async register(dto) {
         const exists = await this.userRepo.findOne({ where: { email: dto.email } });
@@ -327,13 +329,182 @@ let AuthService = class AuthService {
         }
     }
     async cleanUnverifiedUsers() {
-        const now = new Date();
-        const users = await this.userRepo.find({ where: { isVerified: false, verificationExpires: (0, typeorm_2.LessThan)(now) } });
-        for (const user of users) {
-            await this.userRepo.delete(user.id);
-            console.log(`Usuario no verificado eliminado: ${user.email}`);
+        const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+        await this.userRepo.delete({
+            isVerified: false,
+            createdAt: (0, typeorm_2.LessThan)(thirtyMinutesAgo),
+        });
+    }
+    async getProfileStatus(user) {
+        const freshUser = await this.userRepo.findOne({ where: { id: user.id } });
+        if (!freshUser) {
+            return {
+                isComplete: false,
+                missingFields: ['user_not_found'],
+            };
         }
-        return { deleted: users.length };
+        const isProfileComplete = !!(freshUser.documentType &&
+            freshUser.document &&
+            freshUser.sex &&
+            freshUser.phone &&
+            freshUser.lastname);
+        return {
+            isComplete: isProfileComplete,
+            missingFields: isProfileComplete ? [] : this.getMissingFields(freshUser),
+        };
+    }
+    getMissingFields(user) {
+        const missingFields = [];
+        if (!user.documentType)
+            missingFields.push('documentType');
+        if (!user.document)
+            missingFields.push('document');
+        if (!user.sex)
+            missingFields.push('sex');
+        if (!user.phone)
+            missingFields.push('phone');
+        if (!user.lastname)
+            missingFields.push('lastname');
+        return missingFields;
+    }
+    async getProfile(user) {
+        const freshUser = await this.userRepo.findOne({ where: { id: user.id } });
+        if (!freshUser) {
+            throw new common_1.NotFoundException('Usuario no encontrado');
+        }
+        return {
+            id: freshUser.id,
+            email: freshUser.email,
+            name: freshUser.name,
+            lastname: freshUser.lastname,
+            documentType: freshUser.documentType,
+            document: freshUser.document,
+            sex: freshUser.sex,
+            phone: freshUser.phone,
+            role: freshUser.role,
+            isVerified: freshUser.isVerified,
+        };
+    }
+    async updateProfile(dto, user) {
+        const freshUser = await this.userRepo.findOne({ where: { id: user.id } });
+        if (!freshUser) {
+            throw new common_1.NotFoundException('Usuario no encontrado');
+        }
+        freshUser.sex = dto.sex;
+        freshUser.phone = dto.phone;
+        await this.userRepo.save(freshUser);
+        return { message: 'Perfil actualizado correctamente' };
+    }
+    async changeEmail(dto, user) {
+        const freshUser = await this.userRepo.findOne({ where: { id: user.id } });
+        if (!freshUser) {
+            throw new common_1.NotFoundException('Usuario no encontrado');
+        }
+        const existingUser = await this.userRepo.findOne({ where: { email: dto.newEmail } });
+        if (existingUser && existingUser.id !== user.id) {
+            throw new common_1.ConflictException('El nuevo correo electrónico ya está en uso');
+        }
+        const pendingChange = await this.emailChangeRepo.findOne({
+            where: { userId: user.id, verified: false }
+        });
+        if (pendingChange) {
+            throw new common_1.BadRequestException('Ya tienes un cambio de email pendiente. Verifica tu correo o espera a que expire.');
+        }
+        const code = generateCode();
+        const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+        const emailChange = this.emailChangeRepo.create({
+            userId: user.id,
+            currentEmail: freshUser.email,
+            newEmail: dto.newEmail,
+            verificationCode: code,
+            expiresAt,
+            verified: false,
+        });
+        await this.emailChangeRepo.save(emailChange);
+        await this.sendEmailChangeVerification(dto.newEmail, code);
+        return { message: 'Se ha enviado un código de verificación a tu nuevo correo electrónico' };
+    }
+    async verifyNewEmail(dto, user) {
+        const emailChange = await this.emailChangeRepo.findOne({
+            where: {
+                userId: user.id,
+                newEmail: dto.newEmail,
+                verificationCode: dto.code,
+                verified: false
+            }
+        });
+        if (!emailChange) {
+            throw new common_1.BadRequestException('Código de verificación inválido');
+        }
+        if (emailChange.expiresAt < new Date()) {
+            await this.emailChangeRepo.delete(emailChange.id);
+            throw new common_1.BadRequestException('El código de verificación ha expirado');
+        }
+        const freshUser = await this.userRepo.findOne({ where: { id: user.id } });
+        if (!freshUser) {
+            throw new common_1.NotFoundException('Usuario no encontrado');
+        }
+        freshUser.email = dto.newEmail;
+        await this.userRepo.save(freshUser);
+        emailChange.verified = true;
+        await this.emailChangeRepo.save(emailChange);
+        return { message: 'Correo electrónico actualizado correctamente' };
+    }
+    async sendEmailChangeVerification(email, code) {
+        try {
+            const transporter = nodemailer.createTransport({
+                host: process.env.SMTP_HOST,
+                port: parseInt(process.env.SMTP_PORT || '587'),
+                secure: false,
+                auth: {
+                    user: process.env.SMTP_USER,
+                    pass: process.env.SMTP_PASS,
+                },
+            });
+            const htmlContent = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="background: linear-gradient(135deg, #057c39 0%, #23FFBD 100%); padding: 30px; border-radius: 10px; text-align: center;">
+            <h1 style="color: white; margin: 0; font-size: 28px;">MangosCash</h1>
+            <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">Verificación de Correo</p>
+          </div>
+          <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <h2 style="color: #333; margin-bottom: 20px;">Verificación de Cambio de Correo</h2>
+            <p style="color: #666; line-height: 1.6; margin-bottom: 25px;">
+              Has solicitado cambiar tu correo electrónico en nuestra plataforma. Para completar el cambio, necesitamos verificar tu nueva dirección de correo electrónico.
+            </p>
+            <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 2px dashed #057c39;">
+              <h3 style="color: #057c39; margin: 0 0 10px 0; font-size: 24px;">Tu código de verificación</h3>
+              <div style="font-size: 32px; font-weight: 700; color: #057c39; letter-spacing: 4px; font-family: 'Courier New', monospace;">
+                ${code}
+              </div>
+            </div>
+            <p style="color: #666; line-height: 1.6; margin-bottom: 15px;">
+              <strong>Importante:</strong> Este código es válido por 15 minutos. Si no solicitaste este cambio, puedes ignorar este correo.
+            </p>
+            <p style="color: #666; line-height: 1.6; margin-bottom: 15px;">
+              Una vez verificado tu correo, tu cuenta será actualizada con el nuevo correo electrónico.
+            </p>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+            <p style="color: #999; font-size: 14px; text-align: center;">
+              Si tienes problemas con la verificación, contacta nuestro soporte técnico.
+            </p>
+          </div>
+          <div style="text-align: center; margin-top: 20px; color: #999; font-size: 12px;">
+            <p>© ${new Date().getFullYear()} MangosCash. Todos los derechos reservados.</p>
+          </div>
+        </div>
+      `;
+            await transporter.sendMail({
+                from: process.env.SMTP_USER,
+                to: email,
+                subject: 'Verificación de Cambio de Correo - MangosCash',
+                html: htmlContent,
+            });
+            console.log(`[EMAIL] Correo de verificación de cambio enviado a: ${email}`);
+        }
+        catch (err) {
+            console.error('[EMAIL] Error al enviar correo de verificación de cambio:', err);
+        }
     }
 };
 exports.AuthService = AuthService;
@@ -341,7 +512,9 @@ exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
     __param(1, (0, typeorm_1.InjectRepository)(password_reset_entity_1.PasswordReset)),
+    __param(2, (0, typeorm_1.InjectRepository)(email_change_entity_1.EmailChange)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

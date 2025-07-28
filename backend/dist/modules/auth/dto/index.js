@@ -18,4 +18,7 @@ __exportStar(require("./login.dto"), exports);
 __exportStar(require("./register.dto"), exports);
 __exportStar(require("./forgot-password.dto"), exports);
 __exportStar(require("./reset-password.dto"), exports);
+__exportStar(require("./update-profile.dto"), exports);
+__exportStar(require("./change-email.dto"), exports);
+__exportStar(require("./verify-new-email.dto"), exports);
 //# sourceMappingURL=index.js.map

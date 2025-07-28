@@ -54,7 +54,7 @@ import DolarHoyChart from '../components/DolarHoyChart';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UserProfilePage from './UserProfilePage';
-import DashboardAlerts from './DashboardAlerts';
+import DashboardAlerts from '../components/DashboardAlerts';
 
 const drawerWidth = 280;
 

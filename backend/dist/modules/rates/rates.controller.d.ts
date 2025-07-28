@@ -12,4 +12,5 @@ export declare class RatesController {
         time: string;
         value: number;
     }[]>;
+    getDailyAverages(): Promise<any[]>;
 }

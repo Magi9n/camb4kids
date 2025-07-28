@@ -6,8 +6,13 @@ export declare class RatesService {
     private readonly configService;
     private readonly logger;
     private readonly redis;
+    private currentApiKeyIndex;
     constructor(rateRepo: Repository<ExchangeRate>, configService: ConfigService);
+    private getApiKeys;
+    private fetchRateWithApiKey;
+    private tryFetchRate;
     fetchRate(): Promise<void>;
+    onModuleInit(): void;
     getCurrent(): Promise<{
         rate: number;
     }>;
@@ -18,4 +23,5 @@ export declare class RatesService {
         time: string;
         value: number;
     }[]>;
+    getDailyAverages(): Promise<any[]>;
 }

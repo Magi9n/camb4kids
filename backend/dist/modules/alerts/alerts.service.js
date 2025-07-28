@@ -46,6 +46,37 @@ let AlertsService = class AlertsService {
         await this.alertRepo.save(alert);
         return { message: 'Alerta creada correctamente.' };
     }
+    async updateAlert(id, dto, user) {
+        const alert = await this.alertRepo.findOne({
+            where: { id, user: { id: user.id } }
+        });
+        if (!alert) {
+            throw new common_1.NotFoundException('Alerta no encontrada');
+        }
+        const current = await this.ratesService.getCurrent();
+        if (!current.rate)
+            throw new common_1.BadRequestException('No se pudo obtener la tasa actual');
+        if (dto.type === 'buy' && parseFloat(dto.value) <= current.rate) {
+            throw new common_1.BadRequestException('El valor de compra debe ser mayor al precio actual.');
+        }
+        if (dto.type === 'sell' && parseFloat(dto.value) >= current.rate) {
+            throw new common_1.BadRequestException('El valor de venta debe ser menor al precio actual.');
+        }
+        alert.type = dto.type;
+        alert.value = dto.value;
+        await this.alertRepo.save(alert);
+        return { message: 'Alerta actualizada correctamente.' };
+    }
+    async deleteAlert(id, user) {
+        const alert = await this.alertRepo.findOne({
+            where: { id, user: { id: user.id } }
+        });
+        if (!alert) {
+            throw new common_1.NotFoundException('Alerta no encontrada');
+        }
+        await this.alertRepo.remove(alert);
+        return { message: 'Alerta eliminada correctamente.' };
+    }
     async checkAlertsAndNotify() {
         const alerts = await this.alertRepo.find({ where: { triggered: false } });
         if (!alerts.length)
@@ -61,7 +92,7 @@ let AlertsService = class AlertsService {
             }
         }
     }
-    async sendAlertEmail(email, type, value, current) {
+    async sendAlertEmail(email, type, alertValue, currentRate) {
         const transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
             port: parseInt(process.env.SMTP_PORT || '587'),
@@ -71,22 +102,16 @@ let AlertsService = class AlertsService {
                 pass: process.env.SMTP_PASS,
             },
         });
-        const subject = '¡Alerta de tipo de cambio activada!';
-        const text = `Hola,
-
-Tu alerta de tipo de cambio se ha activado:
-
-${type === 'buy' ? 'Compra' : 'Venta'} llegó a ${current} (tu alerta era ${value})
-
-Te avisaremos si vuelve a ocurrir.
-
-Saludos,
-MangosCash`;
+        const subject = type === 'buy' ? '¡Oportunidad de compra!' : '¡Oportunidad de venta!';
+        const message = type === 'buy'
+            ? `El dólar ha bajado a S/ ${currentRate.toFixed(3)}. Es momento de comprar.`
+            : `El dólar ha subido a S/ ${currentRate.toFixed(3)}. Es momento de vender.`;
         await transporter.sendMail({
-            from: process.env.SMTP_FROM,
+            from: process.env.SMTP_USER,
             to: email,
             subject,
-            text,
+            text: message,
+            html: `<h2>${subject}</h2><p>${message}</p>`,
         });
     }
     async getAlertsForUser(user) {

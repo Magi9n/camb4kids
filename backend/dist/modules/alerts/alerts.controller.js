@@ -27,6 +27,12 @@ let AlertsController = class AlertsController {
     async findAll(req) {
         return this.alertsService.getAlertsForUser(req.user);
     }
+    async update(id, dto, req) {
+        return this.alertsService.updateAlert(id, dto, req.user);
+    }
+    async remove(id, req) {
+        return this.alertsService.deleteAlert(id, req.user);
+    }
 };
 exports.AlertsController = AlertsController;
 __decorate([
@@ -44,6 +50,23 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AlertsController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Put)(':id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, alert_dto_1.CreateAlertDto, Object]),
+    __metadata("design:returntype", Promise)
+], AlertsController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], AlertsController.prototype, "remove", null);
 exports.AlertsController = AlertsController = __decorate([
     (0, common_1.Controller)('alerts'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),

@@ -30,6 +30,9 @@ let RatesController = class RatesController {
     async getHourly() {
         return this.ratesService.getHourly();
     }
+    async getDailyAverages() {
+        return this.ratesService.getDailyAverages();
+    }
 };
 exports.RatesController = RatesController;
 __decorate([
@@ -52,6 +55,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], RatesController.prototype, "getHourly", null);
+__decorate([
+    (0, common_1.Get)('daily-averages'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], RatesController.prototype, "getDailyAverages", null);
 exports.RatesController = RatesController = __decorate([
     (0, common_1.Controller)('rates'),
     __metadata("design:paramtypes", [rates_service_1.RatesService])

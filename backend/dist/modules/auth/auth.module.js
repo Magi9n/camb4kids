@@ -15,13 +15,14 @@ const bank_accounts_controller_1 = require("./bank-accounts.controller");
 const bank_accounts_service_1 = require("./bank-accounts.service");
 const user_entity_1 = require("./entities/user.entity");
 const password_reset_entity_1 = require("./entities/password-reset.entity");
+const email_change_entity_1 = require("./entities/email-change.entity");
 const bank_account_entity_1 = require("./entities/bank-account.entity");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, password_reset_entity_1.PasswordReset, bank_account_entity_1.BankAccount])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, password_reset_entity_1.PasswordReset, email_change_entity_1.EmailChange, bank_account_entity_1.BankAccount])],
         controllers: [auth_controller_1.AuthController, bank_accounts_controller_1.BankAccountsController],
         providers: [auth_service_1.AuthService, bank_accounts_service_1.BankAccountsService],
         exports: [auth_service_1.AuthService, bank_accounts_service_1.BankAccountsService],

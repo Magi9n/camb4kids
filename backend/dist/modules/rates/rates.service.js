@@ -18,7 +18,6 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const exchange_rate_entity_1 = require("./entities/exchange-rate.entity");
-const schedule_1 = require("@nestjs/schedule");
 const config_1 = require("@nestjs/config");
 const axios_1 = require("axios");
 const ioredis_1 = require("ioredis");
@@ -27,18 +26,53 @@ let RatesService = RatesService_1 = class RatesService {
         this.rateRepo = rateRepo;
         this.configService = configService;
         this.logger = new common_1.Logger(RatesService_1.name);
+        this.currentApiKeyIndex = 0;
         this.redis = new ioredis_1.default({
             host: this.configService.get('REDIS_HOST') || 'localhost',
             port: parseInt(this.configService.get('REDIS_PORT')) || 6379
         });
     }
+    getApiKeys() {
+        return [
+            this.configService.get('TWELVEDATA_API_KEY'),
+            this.configService.get('TWELVEDATA_API_KEY_2'),
+            this.configService.get('TWELVEDATA_API_KEY_3'),
+        ].filter(key => key);
+    }
+    async fetchRateWithApiKey(apiKey) {
+        const url = `${this.configService.get('TWELVEDATA_API_URL')}&apikey=${apiKey}`;
+        const { data } = await axios_1.default.get(url);
+        const rate = parseFloat(data.price);
+        if (!rate)
+            throw new Error('No se pudo obtener la tasa');
+        return rate;
+    }
+    async tryFetchRate() {
+        const apiKeys = this.getApiKeys();
+        if (apiKeys.length === 0) {
+            throw new Error('No hay API keys configuradas');
+        }
+        let lastError = null;
+        for (let attempt = 0; attempt < apiKeys.length; attempt++) {
+            const apiKeyIndex = (this.currentApiKeyIndex + attempt) % apiKeys.length;
+            const apiKey = apiKeys[apiKeyIndex];
+            try {
+                const rate = await this.fetchRateWithApiKey(apiKey);
+                this.currentApiKeyIndex = apiKeyIndex;
+                this.logger.log(`Tasa obtenida exitosamente con API key ${apiKeyIndex + 1}: ${rate}`);
+                return rate;
+            }
+            catch (error) {
+                lastError = error;
+                this.logger.warn(`Error con API key ${apiKeyIndex + 1}: ${error.message}`);
+                continue;
+            }
+        }
+        throw lastError || new Error('Todos los API keys fallaron');
+    }
     async fetchRate() {
         try {
-            const url = `${this.configService.get('TWELVEDATA_API_URL')}&apikey=${this.configService.get('TWELVEDATA_API_KEY')}`;
-            const { data } = await axios_1.default.get(url);
-            const rate = parseFloat(data.price);
-            if (!rate)
-                throw new Error('No se pudo obtener la tasa');
+            const rate = await this.tryFetchRate();
             const exRate = this.rateRepo.create({
                 fromCurrency: 'USD',
                 toCurrency: 'PEN',
@@ -56,6 +90,12 @@ let RatesService = RatesService_1 = class RatesService {
         catch (e) {
             this.logger.error('Error al actualizar tasa', e);
         }
+    }
+    onModuleInit() {
+        this.fetchRate();
+        setInterval(() => {
+            this.fetchRate();
+        }, 108000);
     }
     async getCurrent() {
         var _a, _b;
@@ -87,14 +127,46 @@ let RatesService = RatesService_1 = class RatesService {
             value: parseFloat(Number(r.rate).toFixed(3)),
         }));
     }
+    async getDailyAverages() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const todayRates = await this.rateRepo.find({
+            where: {
+                createdAt: (0, typeorm_2.Between)(today, tomorrow)
+            },
+            order: { createdAt: 'ASC' },
+        });
+        if (todayRates.length === 0) {
+            return [];
+        }
+        const intervals = [];
+        const intervalMinutes = 10;
+        for (let hour = 0; hour < 24; hour++) {
+            for (let minute = 0; minute < 60; minute += intervalMinutes) {
+                const startTime = new Date(today);
+                startTime.setHours(hour, minute, 0, 0);
+                const endTime = new Date(startTime);
+                endTime.setMinutes(endTime.getMinutes() + intervalMinutes);
+                const intervalData = todayRates.filter(rate => rate.createdAt >= startTime && rate.createdAt < endTime);
+                if (intervalData.length > 0) {
+                    const totalRate = intervalData.reduce((sum, rate) => sum + parseFloat(rate.rate.toString()), 0);
+                    const averageRate = totalRate / intervalData.length;
+                    intervals.push({
+                        time: startTime.toLocaleTimeString('es-PE', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }),
+                        value: parseFloat(averageRate.toFixed(3)),
+                    });
+                }
+            }
+        }
+        return intervals;
+    }
 };
 exports.RatesService = RatesService;
-__decorate([
-    (0, schedule_1.Cron)('48 */1 * * * *', { name: 'fetchRate' }),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], RatesService.prototype, "fetchRate", null);
 exports.RatesService = RatesService = RatesService_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(exchange_rate_entity_1.ExchangeRate)),

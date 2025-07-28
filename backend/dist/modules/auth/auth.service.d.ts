@@ -1,11 +1,13 @@
-import { RegisterDto, LoginDto, VerifyEmailDto, CompleteProfileDto, ForgotPasswordDto, ResetPasswordDto } from './dto';
+import { RegisterDto, LoginDto, VerifyEmailDto, CompleteProfileDto, ForgotPasswordDto, ResetPasswordDto, UpdateProfileDto, ChangeEmailDto, VerifyNewEmailDto } from './dto';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { PasswordReset } from './entities/password-reset.entity';
+import { EmailChange } from './entities/email-change.entity';
 export declare class AuthService {
     private readonly userRepo;
     private readonly passwordResetRepo;
-    constructor(userRepo: Repository<User>, passwordResetRepo: Repository<PasswordReset>);
+    private readonly emailChangeRepo;
+    constructor(userRepo: Repository<User>, passwordResetRepo: Repository<PasswordReset>, emailChangeRepo: Repository<EmailChange>);
     register(dto: RegisterDto): Promise<{
         message: string;
     }>;
@@ -47,7 +49,32 @@ export declare class AuthService {
         message?: undefined;
     }>;
     private sendPasswordResetEmail;
-    cleanUnverifiedUsers(): Promise<{
-        deleted: number;
+    cleanUnverifiedUsers(): Promise<void>;
+    getProfileStatus(user: User): Promise<{
+        isComplete: boolean;
+        missingFields: string[];
     }>;
+    private getMissingFields;
+    getProfile(user: User): Promise<{
+        id: number;
+        email: string;
+        name: string;
+        lastname: string;
+        documentType: string;
+        document: string;
+        sex: string;
+        phone: string;
+        role: string;
+        isVerified: boolean;
+    }>;
+    updateProfile(dto: UpdateProfileDto, user: User): Promise<{
+        message: string;
+    }>;
+    changeEmail(dto: ChangeEmailDto, user: User): Promise<{
+        message: string;
+    }>;
+    verifyNewEmail(dto: VerifyNewEmailDto, user: User): Promise<{
+        message: string;
+    }>;
+    private sendEmailChangeVerification;
 }

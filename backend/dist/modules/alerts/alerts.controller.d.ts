@@ -7,4 +7,10 @@ export declare class AlertsController {
         message: string;
     }>;
     findAll(req: any): Promise<import("./alert.entity").Alert[]>;
+    update(id: number, dto: CreateAlertDto, req: any): Promise<{
+        message: string;
+    }>;
+    remove(id: number, req: any): Promise<{
+        message: string;
+    }>;
 }

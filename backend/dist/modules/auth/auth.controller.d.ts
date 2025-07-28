@@ -1,18 +1,18 @@
 import { AuthService } from './auth.service';
-import { RegisterDto, LoginDto, VerifyEmailDto, CompleteProfileDto, ForgotPasswordDto, ResetPasswordDto } from './dto';
+import { RegisterDto, LoginDto, VerifyEmailDto, CompleteProfileDto, ForgotPasswordDto, ResetPasswordDto, UpdateProfileDto, ChangeEmailDto, VerifyNewEmailDto } from './dto';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
-    register(dto: RegisterDto): Promise<{
+    register(registerDto: RegisterDto): Promise<{
         message: string;
     }>;
-    verifyEmail(dto: VerifyEmailDto): Promise<{
+    verifyEmail(verifyEmailDto: VerifyEmailDto): Promise<{
         message: string;
     }>;
-    completeProfile(dto: CompleteProfileDto): Promise<{
+    completeProfile(completeProfileDto: CompleteProfileDto): Promise<{
         message: string;
     }>;
-    login(dto: LoginDto): Promise<{
+    login(loginDto: LoginDto): Promise<{
         token: string;
         user: {
             id: number;
@@ -22,33 +22,39 @@ export declare class AuthController {
             role: string;
         };
     }>;
-    forgotPassword(dto: ForgotPasswordDto): Promise<{
+    forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<{
         message: string;
     }>;
-    resetPassword(dto: ResetPasswordDto): Promise<{
+    resetPassword(resetPasswordDto: ResetPasswordDto): Promise<{
         message: string;
     }>;
-    verifyResetToken(body: {
-        token: string;
-    }): Promise<{
-        valid: {
-            valid: boolean;
-            message: string;
-            email?: undefined;
-        } | {
-            valid: boolean;
-            email: string;
-            message?: undefined;
-        };
-    }>;
-    verifyToken(req: any): Promise<{
+    verify(req: any): Promise<{
         valid: boolean;
-        user: {
-            id: any;
-            email: any;
-            name: any;
-            lastname: any;
-            role: any;
-        };
+        user: any;
+    }>;
+    getProfileStatus(req: any): Promise<{
+        isComplete: boolean;
+        missingFields: string[];
+    }>;
+    getProfile(req: any): Promise<{
+        id: number;
+        email: string;
+        name: string;
+        lastname: string;
+        documentType: string;
+        document: string;
+        sex: string;
+        phone: string;
+        role: string;
+        isVerified: boolean;
+    }>;
+    updateProfile(updateProfileDto: UpdateProfileDto, req: any): Promise<{
+        message: string;
+    }>;
+    changeEmail(changeEmailDto: ChangeEmailDto, req: any): Promise<{
+        message: string;
+    }>;
+    verifyNewEmail(verifyNewEmailDto: VerifyNewEmailDto, req: any): Promise<{
+        message: string;
     }>;
 }
