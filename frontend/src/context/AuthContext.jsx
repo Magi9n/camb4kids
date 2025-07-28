@@ -25,7 +25,9 @@ export function AuthProvider({ children }) {
   // Función para verificar el estado del perfil
   const checkProfileStatus = async () => {
     try {
+      console.log('[DEBUG] Verificando estado del perfil...');
       const response = await api.get('/auth/profile-status');
+      console.log('[DEBUG] Respuesta del perfil:', response.data);
       setProfileComplete(response.data.isComplete);
       return response.data.isComplete;
     } catch (error) {

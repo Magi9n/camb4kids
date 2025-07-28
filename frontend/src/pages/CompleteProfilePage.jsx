@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -34,6 +35,7 @@ const CompleteProfilePage = () => {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { checkProfileStatus } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,6 +43,16 @@ const CompleteProfilePage = () => {
     setSuccess('');
     setLoading(true);
     try {
+      console.log('[DEBUG] Enviando datos del perfil:', {
+        email,
+        documentType,
+        document,
+        name,
+        lastname,
+        sex,
+        phone,
+      });
+      
       await api.post('/auth/complete-profile', {
         email,
         documentType,
@@ -50,9 +62,17 @@ const CompleteProfilePage = () => {
         sex,
         phone,
       });
+      
+      console.log('[DEBUG] Perfil completado exitosamente, verificando estado...');
+      
+      // Actualizar el estado del perfil en el contexto
+      const isComplete = await checkProfileStatus();
+      console.log('[DEBUG] Estado del perfil después de completar:', isComplete);
+      
       setSuccess('¡Perfil completado exitosamente! Redirigiendo al dashboard...');
       setTimeout(() => navigate('/dashboard'), 1500);
     } catch (err) {
+      console.error('[DEBUG] Error al completar perfil:', err);
       setError(err.response?.data?.message || 'Error al guardar el perfil.');
     } finally {
       setLoading(false);

@@ -371,18 +371,28 @@ export class AuthService {
   }
 
   async getProfileStatus(user: User) {
+    // Obtener los datos frescos del usuario desde la base de datos
+    const freshUser = await this.userRepo.findOne({ where: { id: user.id } });
+    
+    if (!freshUser) {
+      return {
+        isComplete: false,
+        missingFields: ['user_not_found'],
+      };
+    }
+
     // Verificar si el perfil está completado
     const isProfileComplete = !!(
-      user.documentType &&
-      user.document &&
-      user.sex &&
-      user.phone &&
-      user.lastname
+      freshUser.documentType &&
+      freshUser.document &&
+      freshUser.sex &&
+      freshUser.phone &&
+      freshUser.lastname
     );
 
     return {
       isComplete: isProfileComplete,
-      missingFields: isProfileComplete ? [] : this.getMissingFields(user),
+      missingFields: isProfileComplete ? [] : this.getMissingFields(freshUser),
     };
   }
 
