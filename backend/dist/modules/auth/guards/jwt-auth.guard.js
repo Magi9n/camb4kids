@@ -18,7 +18,7 @@ let JwtAuthGuard = class JwtAuthGuard {
             throw new common_1.UnauthorizedException('No autenticado');
         try {
             const payload = jwt.verify(token, process.env.JWT_SECRET);
-            req['user'] = payload;
+            req['user'] = Object.assign(Object.assign({}, payload), { id: payload.sub });
             return true;
         }
         catch (_c) {

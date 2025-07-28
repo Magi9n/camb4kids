@@ -24,6 +24,9 @@ let AlertsController = class AlertsController {
     async create(dto, req) {
         return this.alertsService.createAlert(dto, req.user);
     }
+    async findAll(req) {
+        return this.alertsService.getAlertsForUser(req.user);
+    }
 };
 exports.AlertsController = AlertsController;
 __decorate([
@@ -34,6 +37,13 @@ __decorate([
     __metadata("design:paramtypes", [alert_dto_1.CreateAlertDto, Object]),
     __metadata("design:returntype", Promise)
 ], AlertsController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AlertsController.prototype, "findAll", null);
 exports.AlertsController = AlertsController = __decorate([
     (0, common_1.Controller)('alerts'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),

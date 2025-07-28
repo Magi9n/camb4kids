@@ -8,4 +8,8 @@ export declare class RatesController {
     getHistory(from: string, to: string): Promise<{
         history: import("./entities/exchange-rate.entity").ExchangeRate[];
     }>;
+    getHourly(): Promise<{
+        time: string;
+        value: number;
+    }[]>;
 }

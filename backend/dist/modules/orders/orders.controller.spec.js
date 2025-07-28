@@ -64,6 +64,7 @@ describe('OrdersController', () => {
             createdAt: new Date(),
             updatedAt: new Date(),
             orders: [],
+            bankAccounts: [],
         };
         const result = await controller.create({ amount: 100, fromCurrency: 'USD', toCurrency: 'PEN' }, { user: mockUser });
         expect(result).toMatchObject({

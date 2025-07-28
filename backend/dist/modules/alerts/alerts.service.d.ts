@@ -12,4 +12,5 @@ export declare class AlertsService {
     }>;
     checkAlertsAndNotify(): Promise<void>;
     sendAlertEmail(email: string, type: 'buy' | 'sell', value: number, current: number): Promise<void>;
+    getAlertsForUser(user: User): Promise<Alert[]>;
 }

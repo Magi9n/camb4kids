@@ -18,10 +18,15 @@ const orders_module_1 = require("./modules/orders/orders.module");
 const admin_module_1 = require("./modules/admin/admin.module");
 const cache_module_1 = require("./common/cache.module");
 const user_entity_1 = require("./modules/auth/entities/user.entity");
+const password_reset_entity_1 = require("./modules/auth/entities/password-reset.entity");
+const bank_account_entity_1 = require("./modules/auth/entities/bank-account.entity");
 const order_entity_1 = require("./modules/orders/entities/order.entity");
 const exchange_rate_entity_1 = require("./modules/rates/entities/exchange-rate.entity");
 const admin_setting_entity_1 = require("./modules/admin/entities/admin-setting.entity");
 const alerts_module_1 = require("./modules/alerts/alerts.module");
+const alert_entity_1 = require("./modules/alerts/alert.entity");
+const subscriptions_module_1 = require("./modules/subscriptions/subscriptions.module");
+const subscription_entity_1 = require("./modules/subscriptions/subscription.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -41,7 +46,7 @@ exports.AppModule = AppModule = __decorate([
                     username: config.get('DB_USERNAME'),
                     password: config.get('DB_PASSWORD'),
                     database: config.get('DB_DATABASE'),
-                    entities: [user_entity_1.User, order_entity_1.Order, exchange_rate_entity_1.ExchangeRate, admin_setting_entity_1.AdminSetting],
+                    entities: [user_entity_1.User, password_reset_entity_1.PasswordReset, bank_account_entity_1.BankAccount, order_entity_1.Order, exchange_rate_entity_1.ExchangeRate, admin_setting_entity_1.AdminSetting, alert_entity_1.Alert, subscription_entity_1.Subscription],
                     migrations: [
                         config.get('NODE_ENV') === 'development'
                             ? 'src/migrations/*.ts'
@@ -60,6 +65,7 @@ exports.AppModule = AppModule = __decorate([
             orders_module_1.OrdersModule,
             admin_module_1.AdminModule,
             alerts_module_1.AlertsModule,
+            subscriptions_module_1.SubscriptionsModule,
         ],
     })
 ], AppModule);

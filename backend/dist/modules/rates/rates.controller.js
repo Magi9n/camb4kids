@@ -27,6 +27,9 @@ let RatesController = class RatesController {
             throw new common_1.BadRequestException('Debe indicar from y to');
         return this.ratesService.getHistory(from, to);
     }
+    async getHourly() {
+        return this.ratesService.getHourly();
+    }
 };
 exports.RatesController = RatesController;
 __decorate([
@@ -43,6 +46,12 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], RatesController.prototype, "getHistory", null);
+__decorate([
+    (0, common_1.Get)('hourly'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], RatesController.prototype, "getHourly", null);
 exports.RatesController = RatesController = __decorate([
     (0, common_1.Controller)('rates'),
     __metadata("design:paramtypes", [rates_service_1.RatesService])

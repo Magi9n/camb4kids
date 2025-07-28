@@ -1,13 +1,18 @@
 import { AuthService } from './auth.service';
-import { RegisterDto, LoginDto, VerifyEmailDto, CompleteProfileDto } from './dto';
-import { Response, Request } from 'express';
+import { RegisterDto, LoginDto, VerifyEmailDto, CompleteProfileDto, ForgotPasswordDto, ResetPasswordDto } from './dto';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
-    register(dto: RegisterDto, res: Response): Promise<Response<any, Record<string, any>>>;
-    verifyEmail(dto: VerifyEmailDto, res: Response): Promise<Response<any, Record<string, any>>>;
-    completeProfile(dto: CompleteProfileDto, res: Response): Promise<Response<any, Record<string, any>>>;
-    login(loginDto: LoginDto): Promise<{
+    register(dto: RegisterDto): Promise<{
+        message: string;
+    }>;
+    verifyEmail(dto: VerifyEmailDto): Promise<{
+        message: string;
+    }>;
+    completeProfile(dto: CompleteProfileDto): Promise<{
+        message: string;
+    }>;
+    login(dto: LoginDto): Promise<{
         token: string;
         user: {
             id: number;
@@ -17,6 +22,33 @@ export declare class AuthController {
             role: string;
         };
     }>;
-    refresh(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
-    logout(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
+    forgotPassword(dto: ForgotPasswordDto): Promise<{
+        message: string;
+    }>;
+    resetPassword(dto: ResetPasswordDto): Promise<{
+        message: string;
+    }>;
+    verifyResetToken(body: {
+        token: string;
+    }): Promise<{
+        valid: {
+            valid: boolean;
+            message: string;
+            email?: undefined;
+        } | {
+            valid: boolean;
+            email: string;
+            message?: undefined;
+        };
+    }>;
+    verifyToken(req: any): Promise<{
+        valid: boolean;
+        user: {
+            id: any;
+            email: any;
+            name: any;
+            lastname: any;
+            role: any;
+        };
+    }>;
 }

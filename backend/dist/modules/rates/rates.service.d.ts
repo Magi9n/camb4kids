@@ -14,4 +14,8 @@ export declare class RatesService {
     getHistory(from: string, to: string): Promise<{
         history: ExchangeRate[];
     }>;
+    getHourly(): Promise<{
+        time: string;
+        value: number;
+    }[]>;
 }

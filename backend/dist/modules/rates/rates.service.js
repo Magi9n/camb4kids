@@ -34,7 +34,6 @@ let RatesService = RatesService_1 = class RatesService {
     }
     async fetchRate() {
         try {
-            await new Promise(res => setTimeout(res, 10000));
             const url = `${this.configService.get('TWELVEDATA_API_URL')}&apikey=${this.configService.get('TWELVEDATA_API_KEY')}`;
             const { data } = await axios_1.default.get(url);
             const rate = parseFloat(data.price);
@@ -46,6 +45,11 @@ let RatesService = RatesService_1 = class RatesService {
                 rate,
             });
             await this.rateRepo.save(exRate);
+            const allRates = await this.rateRepo.find({ order: { createdAt: 'ASC' } });
+            if (allRates.length > 1) {
+                const oldest = allRates[0];
+                await this.rateRepo.delete(oldest.id);
+            }
             await this.redis.set('EXCHANGE_RATE_USD_PEN', rate, 'EX', 70);
             this.logger.log(`Tasa actualizada: ${rate}`);
         }
@@ -71,10 +75,22 @@ let RatesService = RatesService_1 = class RatesService {
         });
         return { history };
     }
+    async getHourly() {
+        const now = new Date();
+        const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+        const history = await this.rateRepo.find({
+            where: { createdAt: (0, typeorm_2.Between)(oneHourAgo, now) },
+            order: { createdAt: 'ASC' },
+        });
+        return history.map(r => ({
+            time: r.createdAt.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' }),
+            value: parseFloat(Number(r.rate).toFixed(3)),
+        }));
+    }
 };
 exports.RatesService = RatesService;
 __decorate([
-    (0, schedule_1.Cron)(schedule_1.CronExpression.EVERY_MINUTE, { name: 'fetchRate' }),
+    (0, schedule_1.Cron)('48 */1 * * * *', { name: 'fetchRate' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

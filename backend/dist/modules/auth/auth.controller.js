@@ -22,61 +22,107 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    async register(dto, res) {
-        const result = await this.authService.register(dto);
-        return res.json(result);
+    async register(dto) {
+        try {
+            const result = await this.authService.register(dto);
+            return result;
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
     }
-    async verifyEmail(dto, res) {
-        const result = await this.authService.verifyEmail(dto);
-        return res.json(result);
+    async verifyEmail(dto) {
+        try {
+            const result = await this.authService.verifyEmail(dto);
+            return result;
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
     }
-    async completeProfile(dto, res) {
-        const result = await this.authService.completeProfile(dto);
-        return res.json(result);
+    async completeProfile(dto) {
+        try {
+            const result = await this.authService.completeProfile(dto);
+            return result;
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
     }
-    async login(loginDto) {
-        return this.authService.login(loginDto);
+    async login(dto) {
+        try {
+            const result = await this.authService.login(dto);
+            return result;
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.UNAUTHORIZED);
+        }
     }
-    async refresh(req, res) {
-        const oldToken = req.cookies['jwt'];
-        const result = await this.authService.refresh(oldToken);
-        res.cookie('jwt', result.token, {
-            httpOnly: true,
-            secure: process.env.APP_ENV === 'production',
-            sameSite: 'lax',
-            maxAge: 60 * 60 * 1000,
-        });
-        return res.json({ message: 'Token refrescado' });
+    async forgotPassword(dto) {
+        try {
+            await this.authService.forgotPassword(dto);
+            return { message: 'Se ha enviado un correo con las instrucciones para restablecer tu contraseña.' };
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
     }
-    async logout(req, res) {
-        res.clearCookie('jwt');
-        await this.authService.logout('');
-        return res.json({ message: 'Logout exitoso' });
+    async resetPassword(dto) {
+        try {
+            await this.authService.resetPassword(dto);
+            return { message: 'Contraseña actualizada exitosamente.' };
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async verifyResetToken(body) {
+        try {
+            const isValid = await this.authService.verifyResetToken(body.token);
+            return { valid: isValid };
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async verifyToken(req) {
+        try {
+            return {
+                valid: true,
+                user: {
+                    id: req.user.id,
+                    email: req.user.email,
+                    name: req.user.name,
+                    lastname: req.user.lastname,
+                    role: req.user.role
+                }
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException('Token inválido', common_1.HttpStatus.UNAUTHORIZED);
+        }
     }
 };
 exports.AuthController = AuthController;
 __decorate([
     (0, common_1.Post)('register'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [dto_1.RegisterDto, Object]),
+    __metadata("design:paramtypes", [dto_1.RegisterDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "register", null);
 __decorate([
     (0, common_1.Post)('verify-email'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [dto_1.VerifyEmailDto, Object]),
+    __metadata("design:paramtypes", [dto_1.VerifyEmailDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "verifyEmail", null);
 __decorate([
     (0, common_1.Post)('complete-profile'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [dto_1.CompleteProfileDto, Object]),
+    __metadata("design:paramtypes", [dto_1.CompleteProfileDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "completeProfile", null);
 __decorate([
@@ -88,23 +134,35 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 __decorate([
-    (0, common_1.Post)('refresh'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Res)()),
+    (0, common_1.Post)('forgot-password'),
+    (0, throttler_1.Throttle)({ default: { limit: 3, ttl: 300000 } }),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [dto_1.ForgotPasswordDto]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "refresh", null);
+], AuthController.prototype, "forgotPassword", null);
 __decorate([
-    (0, common_1.Post)('logout'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Res)()),
+    (0, common_1.Post)('reset-password'),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [dto_1.ResetPasswordDto]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "logout", null);
+], AuthController.prototype, "resetPassword", null);
+__decorate([
+    (0, common_1.Get)('verify-reset-token'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "verifyResetToken", null);
+__decorate([
+    (0, common_1.Get)('verify'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "verifyToken", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

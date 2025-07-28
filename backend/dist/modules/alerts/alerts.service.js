@@ -25,6 +25,8 @@ let AlertsService = class AlertsService {
         this.ratesService = ratesService;
     }
     async createAlert(dto, user) {
+        console.log('AlertRepo metadata:', this.alertRepo.metadata);
+        console.log('AlertRepo target:', this.alertRepo.target);
         const current = await this.ratesService.getCurrent();
         if (!current.rate)
             throw new common_1.BadRequestException('No se pudo obtener la tasa actual');
@@ -86,6 +88,9 @@ MangosCash`;
             subject,
             text,
         });
+    }
+    async getAlertsForUser(user) {
+        return this.alertRepo.find({ where: { user: { id: user.id } }, order: { createdAt: 'DESC' } });
     }
 };
 exports.AlertsService = AlertsService;
