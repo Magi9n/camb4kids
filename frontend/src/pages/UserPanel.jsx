@@ -50,8 +50,6 @@ import OperationsHistory from '../components/OperationsHistory';
 import BankAccounts from '../components/BankAccounts';
 import { AlertForm } from '../components/AlertBlock';
 import DolarHoyChart from '../components/DolarHoyChart';
-import { useState, useEffect } from 'react';
-import api from '../services/api';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button
 } from '@mui/material';
