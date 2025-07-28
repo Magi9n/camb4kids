@@ -11,7 +11,11 @@ export class JwtAuthGuard implements CanActivate {
     if (!token) throw new UnauthorizedException('No autenticado');
     try {
       const payload = jwt.verify(token, process.env.JWT_SECRET!) as any;
-      req['user'] = payload;
+      // Mapear 'sub' a 'id' para mantener compatibilidad
+      req['user'] = {
+        ...payload,
+        id: payload.sub
+      };
       return true;
     } catch {
       throw new UnauthorizedException('Token inválido');
