@@ -60,8 +60,31 @@ const DashboardAlerts = () => {
   const handleEdit = (alert) => setEditingAlert(alert);
   const closeEditModal = () => setEditingAlert(null);
   const handleDelete = async (id) => {
-    await api.delete(`/alerts/${id}`);
-    loadAlerts();
+    try {
+      await api.delete(`/alerts/${id}`);
+      loadAlerts();
+    } catch (e) {
+      console.error('Error al eliminar alerta:', e);
+    }
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editingAlert || !editingAlert.value) return;
+    
+    try {
+      await api.put(`/alerts/${editingAlert.id}`, { value: parseFloat(editingAlert.value) });
+      closeEditModal();
+      loadAlerts();
+    } catch (e) {
+      console.error('Error al actualizar alerta:', e);
+    }
+  };
+
+  // Función segura para formatear valores numéricos
+  const formatValue = (value) => {
+    if (value === null || value === undefined) return '';
+    const numValue = parseFloat(value);
+    return isNaN(numValue) ? '' : numValue.toFixed(3);
   };
 
   return (
@@ -208,8 +231,8 @@ const DashboardAlerts = () => {
                     {alerts.map(alert => (
                       <TableRow key={alert.id}>
                         <TableCell>{new Date(alert.createdAt).toLocaleDateString('es-PE')}</TableCell>
-                        <TableCell>{alert.type === 'buy' ? alert.value.toFixed(3) : ''}</TableCell>
-                        <TableCell>{alert.type === 'sell' ? alert.value.toFixed(3) : ''}</TableCell>
+                        <TableCell>{alert.type === 'buy' ? formatValue(alert.value) : ''}</TableCell>
+                        <TableCell>{alert.type === 'sell' ? formatValue(alert.value) : ''}</TableCell>
                         <TableCell>
                           <IconButton onClick={() => handleEdit(alert)}><EditIcon /></IconButton>
                           <IconButton onClick={() => handleDelete(alert.id)}><DeleteIcon /></IconButton>
@@ -232,8 +255,11 @@ const DashboardAlerts = () => {
                 </Typography>
                 <TextField
                   label={editingAlert?.type === 'buy' ? 'Compra' : 'Venta'}
-                  value={editingAlert?.value || ''}
-                  onChange={e => setEditingAlert({ ...editingAlert, value: e.target.value.replace(/[^0-9.]/g, '').replace(/^([0-9]+\.[0-9]{0,3}).*$/, '$1') })}
+                  value={editingAlert?.value ? formatValue(editingAlert.value) : ''}
+                  onChange={e => setEditingAlert({ 
+                    ...editingAlert, 
+                    value: e.target.value.replace(/[^0-9.]/g, '').replace(/^([0-9]+\.[0-9]{0,3}).*$/, '$1') 
+                  })}
                   sx={{ bgcolor: '#f9f9f9', borderRadius: 2, width: 180, input: { textAlign: 'center', fontSize: 22, fontWeight: 500, fontFamily: 'Roboto, sans-serif', p: 1.5 } }}
                   inputProps={{ maxLength: 6 }}
                 />
@@ -241,11 +267,7 @@ const DashboardAlerts = () => {
             </DialogContent>
             <DialogActions>
               <Button onClick={closeEditModal} color="inherit">Cancelar</Button>
-              <Button onClick={async () => {
-                await api.put(`/alerts/${editingAlert.id}`, { value: parseFloat(editingAlert.value) });
-                closeEditModal();
-                loadAlerts();
-              }} color="primary" variant="contained">Guardar</Button>
+              <Button onClick={handleSaveEdit} color="primary" variant="contained">Guardar</Button>
             </DialogActions>
           </Dialog>
         </Box>
