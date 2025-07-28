@@ -169,12 +169,21 @@ const BankAccounts = () => {
       return;
     }
 
+    // Solo enviar los campos válidos para el backend
+    const payload = {
+      accountType: formData.accountType,
+      bank: formData.bank,
+      accountNumber: formData.accountNumber,
+      accountName: formData.accountName,
+      currency: formData.currency,
+    };
+
     try {
       if (editingAccount) {
-        await api.put(`/bank-accounts/${editingAccount.id}`, formData);
+        await api.put(`/bank-accounts/${editingAccount.id}`, payload);
         setSnackbar({ open: true, message: 'Cuenta actualizada exitosamente', severity: 'success' });
       } else {
-        await api.post('/bank-accounts', formData);
+        await api.post('/bank-accounts', payload);
         setSnackbar({ open: true, message: 'Cuenta creada exitosamente', severity: 'success' });
       }
       handleCloseModal();

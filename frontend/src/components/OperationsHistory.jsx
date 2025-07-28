@@ -548,5 +548,3 @@ const OperationsHistory = () => {
     </Box>
   );
 };
-
-export default OperationsHistory; 
