@@ -29,12 +29,16 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
-          <Route path="/complete-profile" element={<CompleteProfilePage />} />
+          <Route path="/complete-profile" element={
+            <ProtectedRoute requireProfile={false}>
+              <CompleteProfilePage />
+            </ProtectedRoute>
+          } />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requireProfile={true}>
                 <UserPanel />
               </ProtectedRoute>
             }

@@ -1,150 +1,205 @@
 import React, { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import {
+  Box,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Alert,
+  CircularProgress
+} from '@mui/material';
 import api from '../services/api';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import MenuItem from '@mui/material/MenuItem';
-
-const DOCUMENT_TYPES = [
-  { value: 'DNI', label: 'DNI' },
-  { value: 'CE', label: 'Carnet de Extranjería' },
-  { value: 'PTP', label: 'PTP' },
-  { value: 'PASAPORTE', label: 'Pasaporte' },
-];
-
-const SEX_OPTIONS = [
-  { value: 'M', label: 'Masculino' },
-  { value: 'F', label: 'Femenino' },
-  { value: 'O', label: 'Otros' },
-];
 
 const CompleteProfilePage = () => {
-  const [searchParams] = useSearchParams();
-  const email = searchParams.get('email') || '';
-  const [documentType, setDocumentType] = useState('DNI');
-  const [document, setDocument] = useState('');
-  const [name, setName] = useState('');
-  const [lastname, setLastname] = useState('');
-  const [sex, setSex] = useState('');
-  const [phone, setPhone] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { user, checkProfileStatus } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    lastname: '',
+    documentType: '',
+    document: '',
+    sex: '',
+    phone: ''
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
     setLoading(true);
+    setError('');
+
     try {
-      await api.post('/auth/complete-profile', {
-        email,
-        documentType,
-        document,
-        name,
-        lastname,
-        sex,
-        phone,
-      });
-      setSuccess('¡Perfil completado! Ya puedes iniciar sesión.');
-      setTimeout(() => navigate('/login'), 1500);
+      await api.post('/auth/complete-profile', formData);
+      setSuccess(true);
+      
+      // Verificar el estado del perfil
+      await checkProfileStatus();
+      
+      // Redirigir al dashboard después de 2 segundos
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
+      
     } catch (err) {
-      setError(err.response?.data?.message || 'Error al guardar el perfil.');
+      setError(err.response?.data?.message || 'Error al completar el perfil');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f5f5f5' }}>
-      <Paper sx={{ p: 4, minWidth: 350, maxWidth: 420 }} elevation={3}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
-          ¡Tu cuenta ha sido creada!
+    <Box sx={{ 
+      minHeight: '100vh', 
+      bgcolor: '#f8f9fa', 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      p: 2
+    }}>
+      <Paper sx={{ 
+        p: 4, 
+        maxWidth: 500, 
+        width: '100%', 
+        borderRadius: 3,
+        boxShadow: '0 4px 20px rgba(0,0,0,0.08)'
+      }}>
+        <Typography 
+          variant="h4" 
+          sx={{ 
+            textAlign: 'center', 
+            mb: 3, 
+            color: '#057c39',
+            fontWeight: 700,
+            fontFamily: 'Roboto, sans-serif'
+          }}
+        >
+          Completar Perfil
         </Typography>
-        <Typography variant="body1" sx={{ mb: 2 }}>
-          Ahora deberás completar tu información para poder acceder y comenzar a cambiar.
+
+        <Typography 
+          variant="body1" 
+          sx={{ 
+            textAlign: 'center', 
+            mb: 4, 
+            color: '#666',
+            fontFamily: 'Roboto, sans-serif'
+          }}
+        >
+          Para acceder al dashboard, necesitamos que completes tu información personal.
         </Typography>
+
+        {success && (
+          <Alert severity="success" sx={{ mb: 3 }}>
+            ¡Perfil completado exitosamente! Redirigiendo al dashboard...
+          </Alert>
+        )}
+
+        {error && (
+          <Alert severity="error" sx={{ mb: 3 }}>
+            {error}
+          </Alert>
+        )}
+
         <form onSubmit={handleSubmit}>
-          <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
-            <TextField
-              select
-              label="Tipo de doc."
-              value={documentType}
-              onChange={e => setDocumentType(e.target.value)}
-              sx={{ minWidth: 140 }}
+          <TextField
+            fullWidth
+            label="Apellidos"
+            name="lastname"
+            value={formData.lastname}
+            onChange={handleInputChange}
+            required
+            sx={{ mb: 3 }}
+          />
+
+          <FormControl fullWidth sx={{ mb: 3 }}>
+            <InputLabel>Tipo de Documento</InputLabel>
+            <Select
+              name="documentType"
+              value={formData.documentType}
+              onChange={handleInputChange}
               required
+              label="Tipo de Documento"
             >
-              {DOCUMENT_TYPES.map(option => (
-                <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              label="Número de doc."
-              value={document}
-              onChange={e => setDocument(e.target.value.replace(/[^0-9A-Za-z]/g, ''))}
+              <MenuItem value="DNI">DNI</MenuItem>
+              <MenuItem value="CE">Carné de Extranjería</MenuItem>
+              <MenuItem value="PASSPORT">Pasaporte</MenuItem>
+            </Select>
+          </FormControl>
+
+          <TextField
+            fullWidth
+            label="Número de Documento"
+            name="document"
+            value={formData.document}
+            onChange={handleInputChange}
+            required
+            sx={{ mb: 3 }}
+          />
+
+          <FormControl fullWidth sx={{ mb: 3 }}>
+            <InputLabel>Sexo</InputLabel>
+            <Select
+              name="sex"
+              value={formData.sex}
+              onChange={handleInputChange}
               required
-              fullWidth
-            />
-          </Box>
+              label="Sexo"
+            >
+              <MenuItem value="M">Masculino</MenuItem>
+              <MenuItem value="F">Femenino</MenuItem>
+            </Select>
+          </FormControl>
+
           <TextField
-            label="Nombre(s)"
-            value={name}
-            onChange={e => setName(e.target.value)}
             fullWidth
-            margin="normal"
-            required
-          />
-          <TextField
-            label="Apellido(s)"
-            value={lastname}
-            onChange={e => setLastname(e.target.value)}
-            fullWidth
-            margin="normal"
-            required
-          />
-          <TextField
-            select
-            label="Selecciona tu sexo"
-            value={sex}
-            onChange={e => setSex(e.target.value)}
-            fullWidth
-            margin="normal"
-            required
-          >
-            {SEX_OPTIONS.map(option => (
-              <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
-            ))}
-          </TextField>
-          <TextField
             label="Teléfono"
-            value={phone}
-            onChange={e => setPhone(e.target.value.replace(/[^0-9+]/g, ''))}
-            fullWidth
-            margin="normal"
+            name="phone"
+            value={formData.phone}
+            onChange={handleInputChange}
             required
+            sx={{ mb: 4 }}
           />
-          {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
-          {success && <Typography color="success.main" sx={{ mt: 1 }}>{success}</Typography>}
-          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }} disabled={loading}>
-            Completar
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            disabled={loading}
+            sx={{
+              bgcolor: '#057c39',
+              color: 'white',
+              py: 1.5,
+              fontSize: 16,
+              fontWeight: 600,
+              fontFamily: 'Roboto, sans-serif',
+              '&:hover': {
+                bgcolor: '#046a30'
+              }
+            }}
+          >
+            {loading ? (
+              <CircularProgress size={24} sx={{ color: 'white' }} />
+            ) : (
+              'Completar Perfil'
+            )}
           </Button>
         </form>
-        <Button
-          variant="outlined"
-          color="inherit"
-          fullWidth
-          sx={{ mt: 2 }}
-          onClick={() => navigate('/')}
-        >
-          Volver Al Inicio
-        </Button>
-        <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 2 }}>
-          <a href="#" style={{ color: '#4cafaa', textDecoration: 'underline' }}>¿Por qué me piden estos datos?</a>
-        </Typography>
       </Paper>
     </Box>
   );

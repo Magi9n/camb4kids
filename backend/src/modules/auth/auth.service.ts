@@ -274,20 +274,30 @@ export class AuthService {
   }
 
   async verifyResetToken(token: string) {
-    const passwordReset = await this.passwordResetRepo.findOne({
-      where: { token, used: false }
-    });
+    const reset = await this.passwordResetRepo.findOne({ where: { token } });
+    if (!reset || reset.expiresAt < new Date()) {
+      throw new BadRequestException('Token inválido o expirado');
+    }
+    return { valid: true };
+  }
 
-    if (!passwordReset) {
-      return { valid: false, message: 'Token inválido o ya utilizado' };
+  async isProfileComplete(userId: number): Promise<boolean> {
+    const user = await this.userRepo.findOne({ where: { id: userId } });
+    if (!user) {
+      return false;
     }
 
-    if (passwordReset.expiresAt < new Date()) {
-      await this.passwordResetRepo.delete(passwordReset.id);
-      return { valid: false, message: 'El enlace de recuperación ha expirado' };
-    }
+    // Verificar que todos los campos requeridos estén completados
+    const requiredFields = [
+      user.lastname,
+      user.documentType,
+      user.document,
+      user.sex,
+      user.phone
+    ];
 
-    return { valid: true, email: passwordReset.email };
+    // Si algún campo requerido está vacío, el perfil no está completo
+    return requiredFields.every(field => field && field.trim() !== '');
   }
 
   private async sendPasswordResetEmail(email: string, token: string) {

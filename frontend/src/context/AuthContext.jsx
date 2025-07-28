@@ -7,6 +7,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [profileComplete, setProfileComplete] = useState(false);
 
   // Función para verificar el token
   const verifyToken = async () => {
@@ -18,6 +19,18 @@ export function AuthProvider({ children }) {
     } catch (error) {
       console.error('Error verificando token:', error);
       logout();
+    }
+  };
+
+  // Función para verificar el estado del perfil
+  const checkProfileStatus = async () => {
+    try {
+      const response = await api.get('/auth/profile-status');
+      setProfileComplete(response.data.isComplete);
+      return response.data.isComplete;
+    } catch (error) {
+      console.error('Error verificando estado del perfil:', error);
+      return false;
     }
   };
 
@@ -39,6 +52,9 @@ export function AuthProvider({ children }) {
           if (response.status === 200) {
             setToken(savedToken);
             setUser(JSON.parse(savedUser));
+            
+            // Verificar el estado del perfil
+            await checkProfileStatus();
           } else {
             // Token inválido, limpiar datos
             logout();
@@ -66,18 +82,22 @@ export function AuthProvider({ children }) {
     }
   }, [token]);
 
-  const login = (userData, jwt) => {
+  const login = async (userData, jwt) => {
     setUser(userData);
     setToken(jwt);
     sessionStorage.setItem('token', jwt);
     sessionStorage.setItem('user', JSON.stringify(userData));
     // Configurar el token en el header de la API
     api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+    
+    // Verificar el estado del perfil después del login
+    await checkProfileStatus();
   };
 
   const logout = () => {
     setUser(null);
     setToken(null);
+    setProfileComplete(false);
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('user');
     // Remover el token del header de la API
@@ -90,7 +110,15 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, loading }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      token, 
+      login, 
+      logout, 
+      loading, 
+      profileComplete,
+      checkProfileStatus 
+    }}>
       {children}
     </AuthContext.Provider>
   );

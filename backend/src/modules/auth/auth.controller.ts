@@ -82,21 +82,17 @@ export class AuthController {
 
   @Get('verify')
   @UseGuards(JwtAuthGuard)
-  async verifyToken(@Request() req) {
-    try {
-      // Si llegamos aquí, el token es válido (el guard lo verificó)
-      return { 
-        valid: true, 
-        user: {
-          id: req.user.id,
-          email: req.user.email,
-          name: req.user.name,
-          lastname: req.user.lastname,
-          role: req.user.role
-        }
-      };
-    } catch (error) {
-      throw new HttpException('Token inválido', HttpStatus.UNAUTHORIZED);
-    }
+  async verify(@Request() req) {
+    return { valid: true, user: req.user };
+  }
+
+  @Get('profile-status')
+  @UseGuards(JwtAuthGuard)
+  async getProfileStatus(@Request() req) {
+    const isComplete = await this.authService.isProfileComplete(req.user.id);
+    return { 
+      isComplete,
+      user: req.user 
+    };
   }
 } 
