@@ -10,14 +10,27 @@ const DolarHoyChart = ({ compact = false }) => {
   const [data, setData] = useState([]);
   const [labels, setLabels] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     // Llama al endpoint que devuelve la variación del dólar en la última hora
-    api.get('/rates/hourly').then(res => {
-      setData(res.data.map(d => parseFloat(Number(d.value).toFixed(3))));
-      setLabels(res.data.map(d => d.time));
-      setLoading(false);
-    }).catch(() => setLoading(false));
+    api.get('/rates/hourly')
+      .then(res => {
+        console.log('Datos del gráfico:', res.data);
+        if (res.data && res.data.length > 0) {
+          setData(res.data.map(d => parseFloat(Number(d.value).toFixed(3))));
+          setLabels(res.data.map(d => d.time));
+          setError('');
+        } else {
+          setError('No hay datos disponibles para mostrar la variación del dólar');
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error al cargar datos del gráfico:', err);
+        setError('Error al cargar los datos del gráfico');
+        setLoading(false);
+      });
   }, []);
 
   const chartData = {
@@ -62,9 +75,21 @@ const DolarHoyChart = ({ compact = false }) => {
       <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: compact ? 16 : 18, mb: 2 }}>
         EL DÓLAR HOY
       </Typography>
-      <Box sx={{ width: '100%', height: compact ? 160 : 260 }}>
-        {loading ? 'Cargando...' : (
+      <Box sx={{ width: '100%', height: compact ? 160 : 260, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {loading ? (
+          <Typography sx={{ color: '#666', fontFamily: 'Roboto, sans-serif' }}>
+            Cargando datos...
+          </Typography>
+        ) : error ? (
+          <Typography sx={{ color: '#666', fontFamily: 'Roboto, sans-serif', textAlign: 'center', fontSize: compact ? 12 : 14 }}>
+            {error}
+          </Typography>
+        ) : data.length > 0 ? (
           <Line data={chartData} options={options} height={compact ? 120 : 220} />
+        ) : (
+          <Typography sx={{ color: '#666', fontFamily: 'Roboto, sans-serif', textAlign: 'center', fontSize: compact ? 12 : 14 }}>
+            No hay datos disponibles para mostrar la variación del dólar
+          </Typography>
         )}
       </Box>
     </Paper>
