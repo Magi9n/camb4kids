@@ -407,11 +407,24 @@ const UserPanel = () => {
                       justifyContent: 'center',
                       mr: 2,
                       boxShadow: '0 2px 8px rgba(5,124,57,0.10)',
-                      aspectRatio: '1 / 1'
+                      aspectRatio: '1 / 1',
+                      position: 'relative',
+                      p: 0
                     }}>
-                      <Typography sx={{ color: 'white', fontSize: 14, fontWeight: 700, letterSpacing: 1 }}>
-                        15 MIN
-                      </Typography>
+                      <Box sx={{
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0
+                      }}>
+                        <Typography sx={{ color: 'white', fontSize: 14, fontWeight: 700, letterSpacing: 1, textAlign: 'center', width: '100%' }}>
+                          15 MIN
+                        </Typography>
+                      </Box>
                     </Box>
                     <Typography sx={{ 
                       fontFamily: 'Roboto, sans-serif', 
@@ -468,11 +481,24 @@ const UserPanel = () => {
                       justifyContent: 'center',
                       mr: 2,
                       boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
-                      aspectRatio: '1 / 1'
+                      aspectRatio: '1 / 1',
+                      position: 'relative',
+                      p: 0
                     }}>
-                      <Typography sx={{ color: 'white', fontSize: 14, fontWeight: 700, letterSpacing: 1 }}>
-                        24 HRS
-                      </Typography>
+                      <Box sx={{
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0
+                      }}>
+                        <Typography sx={{ color: 'white', fontSize: 14, fontWeight: 700, letterSpacing: 1, textAlign: 'center', width: '100%' }}>
+                          24 HRS
+                        </Typography>
+                      </Box>
                     </Box>
                     <Typography sx={{ 
                       fontFamily: 'Roboto, sans-serif', 
@@ -542,8 +568,10 @@ const UserPanel = () => {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            bgcolor: 'white',
-            borderRight: '1px solid #e0e0e0',
+            overflowX: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
           },
         }}
       >
@@ -595,6 +623,8 @@ const UserPanel = () => {
           left: 0,
           width: '100%',
           px: 3,
+          display: 'flex',
+          justifyContent: 'center',
         }}>
           <Button
             variant="contained"
