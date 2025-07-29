@@ -9,6 +9,7 @@ import CompleteProfilePage from './pages/CompleteProfilePage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import UserPanel from './pages/UserPanel';
 import AdminPanel from './pages/AdminPanel';
+import OperationFlowPage from './pages/OperationFlowPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -36,6 +37,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <UserPanel />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/operation-flow"
+            element={
+              <ProtectedRoute>
+                <OperationFlowPage />
               </ProtectedRoute>
             }
           />

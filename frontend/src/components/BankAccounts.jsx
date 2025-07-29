@@ -53,7 +53,7 @@ const LottieAnimation = () => (
   </Box>
 );
 
-const BankAccounts = () => {
+const BankAccounts = ({ isModal = false, onAccountAdded }) => {
   const [accounts, setAccounts] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [editingAccount, setEditingAccount] = useState(null);
@@ -168,6 +168,11 @@ const BankAccounts = () => {
       } else {
         await api.post('/bank-accounts', payload);
         setSnackbar({ open: true, message: 'Cuenta creada exitosamente', severity: 'success' });
+        
+        // Llamar callback si existe
+        if (onAccountAdded) {
+          onAccountAdded();
+        }
       }
       handleCloseModal();
       loadAccounts();
@@ -201,9 +206,157 @@ const BankAccounts = () => {
   };
 
   const solesAccounts = accounts.filter(account => account.currency === 'soles');
-  const dollarAccounts = accounts.filter(account => account.currency === 'dollars');
+  const dollarsAccounts = accounts.filter(account => account.currency === 'dollars');
 
   const hasAccounts = accounts.length > 0;
+
+  // Si es modal, solo mostrar el formulario
+  if (isModal) {
+    return (
+      <Box>
+        {/* Banner informativo naranja */}
+        <Alert 
+          severity="warning" 
+          icon={<InfoIcon />}
+          sx={{ 
+            mb: 3, 
+            bgcolor: '#fff3cd', 
+            color: '#856404',
+            '& .MuiAlert-icon': { color: '#f39c12' }
+          }}
+        >
+          La cuenta que agregues debe estar a <strong>tu nombre</strong> para que tu operación sea exitosa. 
+          MangosCash no realiza transferencias a <strong>cuentas de terceros</strong>.
+        </Alert>
+
+        {/* Formulario */}
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <FormControl fullWidth>
+            <InputLabel>Tipo de cuenta</InputLabel>
+            <Select
+              value={formData.accountType}
+              onChange={(e) => handleInputChange('accountType', e.target.value)}
+              label="Tipo de cuenta"
+            >
+              {accountTypes.map((type) => (
+                <MenuItem key={type} value={type}>{type}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth>
+            <InputLabel>Banco</InputLabel>
+            <Select
+              value={formData.bank}
+              onChange={(e) => handleInputChange('bank', e.target.value)}
+              label="Banco"
+            >
+              {banks.map((bank) => (
+                <MenuItem key={bank.name} value={bank.name}>
+                  {bank.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <TextField
+            label="Número de cuenta"
+            value={formData.accountNumber}
+            onChange={(e) => handleInputChange('accountNumber', e.target.value)}
+            fullWidth
+            placeholder="Ej: 123-456789-0-12"
+          />
+
+          <TextField
+            label="Alias de la cuenta"
+            value={formData.accountName}
+            onChange={(e) => handleInputChange('accountName', e.target.value)}
+            fullWidth
+            placeholder="Ej: Mi cuenta principal"
+          />
+
+          <FormControl fullWidth>
+            <InputLabel>Moneda</InputLabel>
+            <Select
+              value={formData.currency}
+              onChange={(e) => handleInputChange('currency', e.target.value)}
+              label="Moneda"
+            >
+              <MenuItem value="soles">Soles (PEN)</MenuItem>
+              <MenuItem value="dollars">Dólares (USD)</MenuItem>
+            </Select>
+          </FormControl>
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={formData.isMine}
+                onChange={(e) => handleInputChange('isMine', e.target.checked)}
+                sx={{
+                  color: '#57C9A6',
+                  '&.Mui-checked': {
+                    color: '#57C9A6',
+                  },
+                }}
+              />
+            }
+            label="Confirmo que esta cuenta está a mi nombre"
+            sx={{
+              '& .MuiFormControlLabel-label': {
+                fontFamily: 'Roboto, sans-serif',
+                fontSize: 14,
+                color: '#333'
+              }
+            }}
+          />
+        </Box>
+
+        {/* Botón de guardar */}
+        <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            variant="contained"
+            onClick={handleSaveAccount}
+            disabled={!formData.accountType || !formData.bank || !formData.accountNumber || !formData.accountName || !formData.isMine}
+            sx={{
+              bgcolor: '#57C9A6',
+              color: 'white',
+              fontWeight: 700,
+              px: 4,
+              py: 1.5,
+              borderRadius: 2,
+              textTransform: 'none',
+              fontSize: 16,
+              '&:hover': {
+                bgcolor: '#3bbd8c',
+              },
+              '&:disabled': {
+                bgcolor: '#ccc',
+                color: '#666'
+              }
+            }}
+          >
+            {editingAccount ? 'ACTUALIZAR CUENTA' : 'GUARDAR CUENTA'}
+          </Button>
+        </Box>
+
+        {/* Snackbar para notificaciones */}
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={6000}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert 
+            onClose={() => setSnackbar({ ...snackbar, open: false })} 
+            severity={snackbar.severity}
+            sx={{ width: '100%' }}
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ 
@@ -345,7 +498,7 @@ const BankAccounts = () => {
                                   <IconButton 
                                     size="small"
                                     onClick={() => handleDeleteAccount(account.id)}
-                                    sx={{ color: '#d32f2f' }}
+                                    sx={{ color: '#f44336' }}
                                   >
                                     <DeleteIcon fontSize="small" />
                                   </IconButton>
@@ -354,14 +507,11 @@ const BankAccounts = () => {
                             ))}
                           </Box>
                         ) : (
-                          <Typography sx={{ 
-                            fontFamily: 'Roboto, sans-serif', 
-                            fontSize: 14, 
-                            color: '#666',
-                            fontStyle: 'italic'
-                          }}>
-                            No tienes cuentas en soles registradas
-                          </Typography>
+                          <Box sx={{ textAlign: 'center', py: 3 }}>
+                            <Typography sx={{ color: '#666', fontFamily: 'Roboto, sans-serif' }}>
+                              No tienes cuentas en soles registradas
+                            </Typography>
+                          </Box>
                         )}
                       </AccordionDetails>
                     </Accordion>
@@ -390,9 +540,9 @@ const BankAccounts = () => {
                         </Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-                        {dollarAccounts.length > 0 ? (
+                        {dollarsAccounts.length > 0 ? (
                           <Box>
-                            {dollarAccounts.map((account) => (
+                            {dollarsAccounts.map((account) => (
                               <Box key={account.id} sx={{ 
                                 p: 3, 
                                 mb: 2, 
@@ -491,7 +641,7 @@ const BankAccounts = () => {
                                   <IconButton 
                                     size="small"
                                     onClick={() => handleDeleteAccount(account.id)}
-                                    sx={{ color: '#d32f2f' }}
+                                    sx={{ color: '#f44336' }}
                                   >
                                     <DeleteIcon fontSize="small" />
                                   </IconButton>
@@ -500,110 +650,80 @@ const BankAccounts = () => {
                             ))}
                           </Box>
                         ) : (
-                          <Typography sx={{ 
-                            fontFamily: 'Roboto, sans-serif', 
-                            fontSize: 14, 
-                            color: '#666',
-                            fontStyle: 'italic'
-                          }}>
-                            No tienes cuentas en dólares registradas
-                          </Typography>
+                          <Box sx={{ textAlign: 'center', py: 3 }}>
+                            <Typography sx={{ color: '#666', fontFamily: 'Roboto, sans-serif' }}>
+                              No tienes cuentas en dólares registradas
+                            </Typography>
+                          </Box>
                         )}
                       </AccordionDetails>
                     </Accordion>
                   </Paper>
-
-                  {/* Botón Agregar Cuenta */}
-                  <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-                    <Button
-                      variant="contained"
-                      startIcon={<AddIcon />}
-                      onClick={() => handleOpenModal()}
-                      sx={{
-                        bgcolor: '#057c39',
-                        color: 'white',
-                        fontWeight: 700,
-                        px: 4,
-                        py: 1.5,
-                        borderRadius: 2,
-                        textTransform: 'none',
-                        fontSize: 16,
-                        '&:hover': {
-                          bgcolor: '#046a30',
-                        }
-                      }}
-                    >
-                      Agregar cuenta
-                    </Button>
-                  </Box>
-
-                  <Typography sx={{ 
-                    fontFamily: 'Roboto, sans-serif', 
-                    fontSize: 12, 
-                    color: '#999',
-                    textAlign: 'center',
-                    mt: 2
-                  }}>
-                    Puedes tener hasta 20 cuentas agregadas.
-                  </Typography>
                 </Box>
               </Grow>
             ) : (
-              // Estado vacío
+              // Estado sin cuentas
               <Grow in={showContent} timeout={1000}>
-                <Box sx={{ 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
-                  minHeight: '60vh',
-                  textAlign: 'center'
-                }}>
-                  <Box sx={{ mb: 4 }}>
-                    <LottieAnimation />
-                  </Box>
-                  
-                  <Typography sx={{ 
-                    fontFamily: 'Roboto, sans-serif', 
-                    fontSize: 18, 
-                    fontWeight: 600,
-                    color: '#333',
-                    mb: 1
-                  }}>
-                    Aún no has agregado ninguna cuenta
-                  </Typography>
-                  <Typography sx={{ 
-                    fontFamily: 'Roboto, sans-serif', 
-                    fontSize: 16, 
-                    color: '#666',
-                    mb: 4
-                  }}>
-                    para realizar tus cambios.
-                  </Typography>
-
-                  <Button
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    onClick={() => handleOpenModal()}
-                    sx={{
-                      bgcolor: '#057c39',
-                      color: 'white',
+                <Box sx={{ textAlign: 'center', py: 8 }}>
+                  <LottieAnimation />
+                  <Typography 
+                    variant="h4" 
+                    sx={{ 
+                      fontFamily: 'Roboto, sans-serif',
                       fontWeight: 700,
-                      px: 4,
-                      py: 1.5,
-                      borderRadius: 2,
-                      textTransform: 'none',
-                      fontSize: 16,
-                      '&:hover': {
-                        bgcolor: '#046a30',
-                      }
+                      color: '#333',
+                      mb: 2
                     }}
                   >
-                    + Agregar cuenta personal
-                  </Button>
+                    No tienes cuentas bancarias
+                  </Typography>
+                  <Typography 
+                    variant="body1" 
+                    sx={{ 
+                      color: '#666',
+                      fontFamily: 'Roboto, sans-serif',
+                      mb: 4,
+                      maxWidth: 500,
+                      mx: 'auto'
+                    }}
+                  >
+                    Agrega tu primera cuenta bancaria para poder realizar operaciones de cambio de divisas de forma rápida y segura.
+                  </Typography>
                 </Box>
               </Grow>
             )}
+
+            {/* Botón flotante para agregar cuenta */}
+            <Box sx={{ 
+              position: 'fixed', 
+              bottom: 24, 
+              right: 24, 
+              zIndex: 1000 
+            }}>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={() => handleOpenModal()}
+                sx={{
+                  bgcolor: '#57C9A6',
+                  color: 'white',
+                  borderRadius: 999,
+                  px: 3,
+                  py: 1.5,
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                  '&:hover': {
+                    bgcolor: '#3bbd8c',
+                    boxShadow: '0 6px 25px rgba(0,0,0,0.2)',
+                  },
+                  fontFamily: 'Roboto, sans-serif',
+                  fontWeight: 700,
+                  textTransform: 'none',
+                  fontSize: 16
+                }}
+              >
+                Agregar cuenta
+              </Button>
+            </Box>
           </Box>
         </Fade>
       </Box>
@@ -667,7 +787,7 @@ const BankAccounts = () => {
           </Alert>
 
           {/* Formulario */}
-          <Box sx={{ display: 'flex', gap: 3, mb: 3 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
             <FormControl fullWidth>
               <InputLabel>Tipo de cuenta</InputLabel>
               <Select
@@ -689,116 +809,64 @@ const BankAccounts = () => {
                 label="Banco"
               >
                 {banks.map((bank) => (
-                  <MenuItem key={bank.name} value={bank.name}>{bank.name}</MenuItem>
+                  <MenuItem key={bank.name} value={bank.name}>
+                    {bank.name}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
-          </Box>
 
-          <Box sx={{ display: 'flex', gap: 3, mb: 3 }}>
             <TextField
-              fullWidth
               label="Número de cuenta"
-              placeholder="Escribe tu cuenta destino"
               value={formData.accountNumber}
               onChange={(e) => handleInputChange('accountNumber', e.target.value)}
+              fullWidth
+              placeholder="Ej: 123-456789-0-12"
             />
 
             <TextField
-              fullWidth
-              label="Ponle nombre a tu cuenta"
-              placeholder="Escribe un alias"
+              label="Alias de la cuenta"
               value={formData.accountName}
               onChange={(e) => handleInputChange('accountName', e.target.value)}
+              fullWidth
+              placeholder="Ej: Mi cuenta principal"
+            />
+
+            <FormControl fullWidth>
+              <InputLabel>Moneda</InputLabel>
+              <Select
+                value={formData.currency}
+                onChange={(e) => handleInputChange('currency', e.target.value)}
+                label="Moneda"
+              >
+                <MenuItem value="soles">Soles (PEN)</MenuItem>
+                <MenuItem value="dollars">Dólares (USD)</MenuItem>
+              </Select>
+            </FormControl>
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={formData.isMine}
+                  onChange={(e) => handleInputChange('isMine', e.target.checked)}
+                  sx={{
+                    color: '#57C9A6',
+                    '&.Mui-checked': {
+                      color: '#57C9A6',
+                    },
+                  }}
+                />
+              }
+              label="Confirmo que esta cuenta está a mi nombre"
+              sx={{
+                '& .MuiFormControlLabel-label': {
+                  fontFamily: 'Roboto, sans-serif',
+                  fontSize: 14,
+                  color: '#333'
+                }
+              }}
             />
           </Box>
-
-          {/* Banner informativo azul */}
-          <Alert 
-            severity="info" 
-            icon={<InfoIcon />}
-            sx={{ 
-              mb: 3, 
-              bgcolor: '#e3f2fd', 
-              color: '#0d47a1',
-              '& .MuiAlert-icon': { color: '#1976d2' }
-            }}
-          >
-            Operamos en Lima con todos los bancos. Y en provincia con el BCP y cuentas digitales Interbank.
-          </Alert>
-
-          {/* Selección de moneda */}
-          <Typography sx={{ 
-            fontFamily: 'Roboto, sans-serif', 
-            fontSize: 16, 
-            fontWeight: 600,
-            color: '#333',
-            mb: 2
-          }}>
-            Moneda
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
-            <Button
-              variant={formData.currency === 'soles' ? 'contained' : 'outlined'}
-              onClick={() => handleInputChange('currency', 'soles')}
-              sx={{
-                flex: 1,
-                py: 1.5,
-                bgcolor: formData.currency === 'soles' ? '#333' : 'transparent',
-                color: formData.currency === 'soles' ? 'white' : '#333',
-                borderColor: '#333',
-                textTransform: 'none',
-                fontWeight: 600,
-                '&:hover': {
-                  bgcolor: formData.currency === 'soles' ? '#222' : 'rgba(0,0,0,0.04)',
-                }
-              }}
-            >
-              SOLES
-            </Button>
-            <Button
-              variant={formData.currency === 'dollars' ? 'contained' : 'outlined'}
-              onClick={() => handleInputChange('currency', 'dollars')}
-              sx={{
-                flex: 1,
-                py: 1.5,
-                bgcolor: formData.currency === 'dollars' ? '#333' : 'transparent',
-                color: formData.currency === 'dollars' ? 'white' : '#333',
-                borderColor: '#333',
-                textTransform: 'none',
-                fontWeight: 600,
-                '&:hover': {
-                  bgcolor: formData.currency === 'dollars' ? '#222' : 'rgba(0,0,0,0.04)',
-                }
-              }}
-            >
-              DÓLARES
-            </Button>
-          </Box>
-
-          {/* Checkbox */}
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={formData.isMine}
-                onChange={(e) => handleInputChange('isMine', e.target.checked)}
-                sx={{
-                  color: '#057c39',
-                  '&.Mui-checked': {
-                    color: '#057c39',
-                  },
-                }}
-              />
-            }
-            label="Declaro que esta cuenta es mía"
-            sx={{
-              '& .MuiFormControlLabel-label': {
-                fontFamily: 'Roboto, sans-serif',
-                fontSize: 14,
-                color: '#333'
-              }
-            }}
-          />
         </DialogContent>
 
         <DialogActions sx={{ p: 3, pt: 0 }}>

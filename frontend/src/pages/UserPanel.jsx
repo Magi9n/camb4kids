@@ -55,6 +55,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UserProfilePage from './UserProfilePage';
 import DashboardAlerts from '../components/DashboardAlerts';
+import api from '../services/api';
+import { Global } from '@emotion/react';
+import Lottie from 'lottie-react';
+import cuentasBankAnim from '../assets/cuentasbank.json';
 
 const drawerWidth = 280;
 
@@ -107,12 +111,27 @@ const UserPanel = () => {
     setPenAmount(amount);
   };
 
+  const handleStartOperation = () => {
+    // Recopilar datos de la calculadora
+    const calculatorData = {
+      amount: penAmount,
+      swap: swap,
+      // Agregar más datos si es necesario
+    };
+    
+    // Navegar a la página de flujo de operación
+    navigate('/operation-flow', { 
+      state: { calculatorData } 
+    });
+  };
+
   const menuItems = [
     { id: 'dashboard', text: 'Dashboard', icon: <HomeIcon /> },
     { id: 'historial', text: 'Historial de operaciones', icon: <HistoryIcon /> },
     { id: 'cuentas', text: 'Cuentas Bancarias', icon: <BankIcon /> },
     { id: 'alertas', text: 'Alertas', icon: <AlertIcon /> },
     { id: 'manguitos', text: 'Mis Manguitos', icon: <WalletIcon /> },
+    { id: 'perfil', text: 'Mi Perfil', icon: <PersonIcon /> },
     { id: 'ayuda', text: 'Ayuda', icon: <HelpIcon /> },
   ];
 
@@ -201,6 +220,7 @@ const UserPanel = () => {
                   <Button
                     variant="contained"
                     size="large"
+                    onClick={handleStartOperation}
                     sx={{
                       bgcolor: '#57C9A6',
                       color: 'white',
