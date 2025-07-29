@@ -515,7 +515,13 @@ const UserPanel = () => {
             }
           }}
         >
-          <MenuItem onClick={handleMenuClose} sx={{ py: 1.5 }}>
+          <MenuItem
+            onClick={() => {
+              setSelectedMenu('perfil');
+              handleMenuClose();
+            }}
+            sx={{ py: 1.5 }}
+          >
             <ListItemIcon>
               <PersonIcon fontSize="small" />
             </ListItemIcon>
