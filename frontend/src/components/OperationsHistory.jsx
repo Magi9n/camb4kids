@@ -227,7 +227,15 @@ const OperationsHistory = () => {
               color: '#666',
               fontWeight: 500
             }}>
-              Horario: Lunes a viernes 9:00 am a 7:00 p.m Sábados de 09:00 am a 2:00 pm
+              Horario: Lunes a viernes 9:00 am a 7:00 p.m
+            </Typography>
+            <Typography sx={{ 
+              fontFamily: 'Roboto, sans-serif', 
+              fontSize: 14, 
+              color: '#666',
+              fontWeight: 500
+            }}>
+              Sábados de 09:00 am a 2:00 pm
             </Typography>
           </Box>
 

@@ -87,21 +87,21 @@ const ManguitosToggle = ({ isOpen = true }) => {
     <Box sx={{
       display: 'inline-block',
       position: 'relative',
-      width: 140,
-      height: 60,
+      width: 100,
+      height: 40,
       perspective: 1000,
-      ml: 2
+      mr: 1
     }}>
       <Box sx={{
         position: 'relative',
         width: '100%',
         height: '100%',
         background: 'linear-gradient(135deg, #2a2a3e 0%, #16161e 100%)',
-        borderRadius: 30,
+        borderRadius: 20,
         cursor: 'default',
         boxShadow: isOpen 
-          ? '0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(46, 213, 115, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1)'
-          : '0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(255, 71, 87, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1)',
+          ? '0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(46, 213, 115, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1)'
+          : '0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(255, 71, 87, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1)',
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         transformStyle: 'preserve-3d',
         overflow: 'visible',
@@ -112,18 +112,18 @@ const ManguitosToggle = ({ isOpen = true }) => {
         {/* Slider */}
         <Box sx={{
           position: 'absolute',
-          top: 5,
-          left: isOpen ? 5 : 'calc(100% - 55px)',
-          width: 50,
-          height: 50,
+          top: 3,
+          left: isOpen ? 3 : 'calc(100% - 37px)',
+          width: 34,
+          height: 34,
           background: isOpen 
             ? 'linear-gradient(145deg, #fff, #f0f0f0)'
             : 'linear-gradient(145deg, #ff4757, #ee5a6f)',
           borderRadius: '50%',
           transition: 'all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
           boxShadow: isOpen
-            ? '0 5px 20px rgba(0, 0, 0, 0.2), inset 0 -3px 5px rgba(0, 0, 0, 0.1), inset 0 3px 5px rgba(255, 255, 255, 0.5)'
-            : '0 5px 20px rgba(255, 71, 87, 0.4), inset 0 -3px 5px rgba(0, 0, 0, 0.1), inset 0 3px 5px rgba(255, 255, 255, 0.3)',
+            ? '0 3px 12px rgba(0, 0, 0, 0.2), inset 0 -2px 4px rgba(0, 0, 0, 0.1), inset 0 2px 4px rgba(255, 255, 255, 0.5)'
+            : '0 3px 12px rgba(255, 71, 87, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.1), inset 0 2px 4px rgba(255, 255, 255, 0.3)',
           zIndex: 3,
           display: 'flex',
           alignItems: 'center',
@@ -132,7 +132,7 @@ const ManguitosToggle = ({ isOpen = true }) => {
         }}>
           <Typography sx={{
             color: isOpen ? '#2ed573' : '#fff',
-            fontSize: '1.5rem',
+            fontSize: '1rem',
             fontWeight: 600
           }}>
             {isOpen ? '✓' : '✕'}
@@ -144,18 +144,18 @@ const ManguitosToggle = ({ isOpen = true }) => {
           position: 'absolute',
           top: '50%',
           transform: 'translateY(-50%)',
-          fontSize: '1rem',
+          fontSize: '0.7rem',
           fontWeight: 600,
-          letterSpacing: 1,
+          letterSpacing: 0.5,
           textTransform: 'uppercase',
           transition: 'all 0.4s ease',
           zIndex: 2,
-          left: isOpen ? 70 : 10,
+          left: isOpen ? 50 : 8,
           color: isOpen ? '#2ed573' : '#ff4757',
-          textShadow: isOpen ? '0 0 20px rgba(46, 213, 115, 0.5)' : '0 0 20px rgba(255, 71, 87, 0.5)',
+          textShadow: isOpen ? '0 0 10px rgba(46, 213, 115, 0.5)' : '0 0 10px rgba(255, 71, 87, 0.5)',
           opacity: isOpen ? 1 : 0.3
         }}>
-          {isOpen ? 'Abierto' : 'Cerrado'}
+          {isOpen ? 'ON' : 'OFF'}
         </Typography>
       </Box>
       
@@ -164,24 +164,24 @@ const ManguitosToggle = ({ isOpen = true }) => {
         {`
           @keyframes pulse-green {
             0% {
-              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(46, 213, 115, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(46, 213, 115, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
             }
             50% {
-              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 20px rgba(46, 213, 115, 0), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 15px rgba(46, 213, 115, 0), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
             }
             100% {
-              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(46, 213, 115, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(46, 213, 115, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
             }
           }
           @keyframes pulse-red {
             0% {
-              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(255, 71, 87, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(255, 71, 87, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
             }
             50% {
-              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 20px rgba(255, 71, 87, 0), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 15px rgba(255, 71, 87, 0), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
             }
             100% {
-              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(255, 71, 87, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(255, 71, 87, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
             }
           }
         `}
@@ -406,7 +406,8 @@ const UserPanel = () => {
                       alignItems: 'center', 
                       justifyContent: 'center',
                       mr: 2,
-                      boxShadow: '0 2px 8px rgba(5,124,57,0.10)'
+                      boxShadow: '0 2px 8px rgba(5,124,57,0.10)',
+                      aspectRatio: '1 / 1'
                     }}>
                       <Typography sx={{ color: 'white', fontSize: 14, fontWeight: 700, letterSpacing: 1 }}>
                         15 MIN
@@ -466,7 +467,8 @@ const UserPanel = () => {
                       alignItems: 'center', 
                       justifyContent: 'center',
                       mr: 2,
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.10)'
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
+                      aspectRatio: '1 / 1'
                     }}>
                       <Typography sx={{ color: 'white', fontSize: 14, fontWeight: 700, letterSpacing: 1 }}>
                         24 HRS
@@ -489,9 +491,9 @@ const UserPanel = () => {
                   }}>
                     Lima
                   </Typography>
-                  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, mb: 2 }}>
+                  <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
                     <img src={bbvaLogo} alt="BBVA" style={{ height: 24, width: 'auto' }} />
-                    <img src={pichinchaLogo} alt="Banco Pichincha" style={{ height: 24, width: 'auto', marginTop: 6 }} />
+                    <img src={pichinchaLogo} alt="Banco Pichincha" style={{ height: 24, width: 'auto' }} />
                   </Box>
                   <Typography sx={{ 
                     fontFamily: 'Roboto, sans-serif', 
@@ -601,13 +603,14 @@ const UserPanel = () => {
             sx={{
               bgcolor: '#ff4757',
               color: 'white',
-              fontWeight: 700,
+              fontWeight: 600,
               borderRadius: 2,
-              width: '100%',
-              py: 1.5,
-              fontSize: 16,
+              width: 'auto',
+              px: 3,
+              py: 1,
+              fontSize: 14,
               textTransform: 'none',
-              boxShadow: '0 4px 16px rgba(255,71,87,0.15)',
+              boxShadow: '0 2px 8px rgba(255,71,87,0.15)',
               '&:hover': {
                 bgcolor: '#e84118',
               },
@@ -663,6 +666,9 @@ const UserPanel = () => {
               </Box>
 
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                {/* Toggle Switch para Manguitos */}
+                <ManguitosToggle isOpen={true} />
+                
                 <Chip
                   icon={<StarIcon sx={{ color: '#FFD700' }} />}
                   label={`Tienes ${manguitos} Manguitos`}
@@ -673,9 +679,6 @@ const UserPanel = () => {
                     '& .MuiChip-icon': { color: '#FFD700' }
                   }}
                 />
-                
-                {/* Toggle Switch para Manguitos */}
-                <ManguitosToggle isOpen={true} />
                 
                 <IconButton onClick={handleMenuClick}>
                   <Avatar sx={{ bgcolor: '#057c39', width: 32, height: 32 }}>
