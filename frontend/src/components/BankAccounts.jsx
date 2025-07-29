@@ -689,41 +689,33 @@ const BankAccounts = ({ isModal = false, onAccountAdded }) => {
                   >
                     Agrega tu primera cuenta bancaria para poder realizar operaciones de cambio de divisas de forma rápida y segura.
                   </Typography>
+                  <Button
+                    variant="contained"
+                    startIcon={<AddIcon />}
+                    onClick={() => handleOpenModal()}
+                    sx={{
+                      bgcolor: '#57C9A6',
+                      color: 'white',
+                      borderRadius: 999,
+                      px: 3,
+                      py: 1.5,
+                      boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                      '&:hover': {
+                        bgcolor: '#3bbd8c',
+                        boxShadow: '0 6px 25px rgba(0,0,0,0.2)',
+                      },
+                      fontFamily: 'Roboto, sans-serif',
+                      fontWeight: 700,
+                      textTransform: 'none',
+                      fontSize: 16,
+                      mt: 2
+                    }}
+                  >
+                    Agregar cuenta
+                  </Button>
                 </Box>
               </Grow>
             )}
-
-            {/* Botón flotante para agregar cuenta */}
-            <Box sx={{ 
-              position: 'fixed', 
-              bottom: 24, 
-              right: 24, 
-              zIndex: 1000 
-            }}>
-              <Button
-                variant="contained"
-                startIcon={<AddIcon />}
-                onClick={() => handleOpenModal()}
-                sx={{
-                  bgcolor: '#57C9A6',
-                  color: 'white',
-                  borderRadius: 999,
-                  px: 3,
-                  py: 1.5,
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-                  '&:hover': {
-                    bgcolor: '#3bbd8c',
-                    boxShadow: '0 6px 25px rgba(0,0,0,0.2)',
-                  },
-                  fontFamily: 'Roboto, sans-serif',
-                  fontWeight: 700,
-                  textTransform: 'none',
-                  fontSize: 16
-                }}
-              >
-                Agregar cuenta
-              </Button>
-            </Box>
           </Box>
         </Fade>
       </Box>

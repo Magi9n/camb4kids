@@ -221,25 +221,41 @@ const DashboardAlerts = () => {
               <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: 20, mb: 2, color: '#222' }}>
                 Historial de alertas
               </Typography>
-              <TableContainer>
+              <TableContainer sx={{ borderRadius: 3, boxShadow: '0 2px 12px rgba(5,124,57,0.06)', mt: 2 }}>
                 <Table>
                   <TableHead>
-                    <TableRow>
-                      <TableCell>Fecha</TableCell>
-                      <TableCell>Compra</TableCell>
-                      <TableCell>Venta</TableCell>
-                      <TableCell>Acciones</TableCell>
+                    <TableRow sx={{ bgcolor: '#f5f7fa' }}>
+                      <TableCell sx={{ fontWeight: 700, color: '#057c39', fontFamily: 'Roboto, sans-serif', fontSize: 15 }}>Fecha</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#057c39', fontFamily: 'Roboto, sans-serif', fontSize: 15 }}>Compra</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#057c39', fontFamily: 'Roboto, sans-serif', fontSize: 15 }}>Venta</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#057c39', fontFamily: 'Roboto, sans-serif', fontSize: 15, textAlign: 'center' }}>Acciones</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {alerts.map(alert => (
-                      <TableRow key={alert.id}>
-                        <TableCell>{new Date(alert.createdAt).toLocaleDateString('es-PE')}</TableCell>
-                        <TableCell>{alert.type === 'buy' ? formatValue(alert.value) : ''}</TableCell>
-                        <TableCell>{alert.type === 'sell' ? formatValue(alert.value) : ''}</TableCell>
-                        <TableCell>
-                          <IconButton onClick={() => handleEdit(alert)}><EditIcon /></IconButton>
-                          <IconButton onClick={() => handleDelete(alert.id)}><DeleteIcon /></IconButton>
+                      <TableRow
+                        key={alert.id}
+                        sx={{
+                          bgcolor: '#fff',
+                          borderRadius: 2,
+                          boxShadow: '0 1px 4px rgba(5,124,57,0.03)',
+                          transition: 'box-shadow 0.2s',
+                          '&:hover': {
+                            boxShadow: '0 4px 16px rgba(5,124,57,0.10)',
+                            bgcolor: '#f0f7f4',
+                          },
+                        }}
+                      >
+                        <TableCell sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#333' }}>{new Date(alert.createdAt).toLocaleDateString('es-PE')}</TableCell>
+                        <TableCell sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600, color: alert.type === 'buy' ? '#057c39' : '#bbb', fontSize: 16 }}>
+                          {alert.type === 'buy' ? formatValue(alert.value) : ''}
+                        </TableCell>
+                        <TableCell sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600, color: alert.type === 'sell' ? '#e67e22' : '#bbb', fontSize: 16 }}>
+                          {alert.type === 'sell' ? formatValue(alert.value) : ''}
+                        </TableCell>
+                        <TableCell sx={{ textAlign: 'center' }}>
+                          <IconButton onClick={() => handleEdit(alert)} sx={{ color: '#057c39', mx: 0.5 }}><EditIcon /></IconButton>
+                          <IconButton onClick={() => handleDelete(alert.id)} sx={{ color: '#ff4757', mx: 0.5 }}><DeleteIcon /></IconButton>
                         </TableCell>
                       </TableRow>
                     ))}

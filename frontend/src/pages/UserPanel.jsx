@@ -22,7 +22,26 @@ import {
   FormControl,
   InputLabel,
   Chip,
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Dialog, DialogTitle, DialogContent, DialogActions
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableContainer, 
+  TableHead, 
+  TableRow, 
+  Dialog, 
+  DialogTitle, 
+  DialogContent, 
+  DialogActions,
+  Switch,
+  Alert,
+  Snackbar,
+  Checkbox,
+  FormControlLabel,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Fade,
+  Grow
 } from '@mui/material';
 import { 
   Home as HomeIcon,
@@ -36,7 +55,9 @@ import {
   SwapHoriz as SwapIcon,
   Star as StarIcon,
   Info as InfoIcon,
-  WhatsApp as WhatsAppIcon
+  WhatsApp as WhatsAppIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon
 } from '@mui/icons-material';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -51,8 +72,6 @@ import OperationsHistory from '../components/OperationsHistory';
 import BankAccounts from '../components/BankAccounts';
 import { AlertForm } from '../components/AlertBlock';
 import DolarHoyChart from '../components/DolarHoyChart';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import UserProfilePage from './UserProfilePage';
 import DashboardAlerts from '../components/DashboardAlerts';
 import api from '../services/api';
@@ -61,6 +80,115 @@ import Lottie from 'lottie-react';
 import cuentasBankAnim from '../assets/cuentasbank.json';
 
 const drawerWidth = 280;
+
+// Componente Toggle Switch para Manguitos
+const ManguitosToggle = ({ isOpen = true }) => {
+  return (
+    <Box sx={{
+      display: 'inline-block',
+      position: 'relative',
+      width: 140,
+      height: 60,
+      perspective: 1000,
+      ml: 2
+    }}>
+      <Box sx={{
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        background: 'linear-gradient(135deg, #2a2a3e 0%, #16161e 100%)',
+        borderRadius: 30,
+        cursor: 'default',
+        boxShadow: isOpen 
+          ? '0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(46, 213, 115, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1)'
+          : '0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(255, 71, 87, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1)',
+        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        transformStyle: 'preserve-3d',
+        overflow: 'visible',
+        animation: isOpen 
+          ? 'pulse-green 2s ease-in-out infinite'
+          : 'pulse-red 2s ease-in-out infinite'
+      }}>
+        {/* Slider */}
+        <Box sx={{
+          position: 'absolute',
+          top: 5,
+          left: isOpen ? 5 : 'calc(100% - 55px)',
+          width: 50,
+          height: 50,
+          background: isOpen 
+            ? 'linear-gradient(145deg, #fff, #f0f0f0)'
+            : 'linear-gradient(145deg, #ff4757, #ee5a6f)',
+          borderRadius: '50%',
+          transition: 'all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+          boxShadow: isOpen
+            ? '0 5px 20px rgba(0, 0, 0, 0.2), inset 0 -3px 5px rgba(0, 0, 0, 0.1), inset 0 3px 5px rgba(255, 255, 255, 0.5)'
+            : '0 5px 20px rgba(255, 71, 87, 0.4), inset 0 -3px 5px rgba(0, 0, 0, 0.1), inset 0 3px 5px rgba(255, 255, 255, 0.3)',
+          zIndex: 3,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden'
+        }}>
+          <Typography sx={{
+            color: isOpen ? '#2ed573' : '#fff',
+            fontSize: '1.5rem',
+            fontWeight: 600
+          }}>
+            {isOpen ? '✓' : '✕'}
+          </Typography>
+        </Box>
+        
+        {/* Texto del estado */}
+        <Typography sx={{
+          position: 'absolute',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          fontSize: '1rem',
+          fontWeight: 600,
+          letterSpacing: 1,
+          textTransform: 'uppercase',
+          transition: 'all 0.4s ease',
+          zIndex: 2,
+          left: isOpen ? 70 : 10,
+          color: isOpen ? '#2ed573' : '#ff4757',
+          textShadow: isOpen ? '0 0 20px rgba(46, 213, 115, 0.5)' : '0 0 20px rgba(255, 71, 87, 0.5)',
+          opacity: isOpen ? 1 : 0.3
+        }}>
+          {isOpen ? 'Abierto' : 'Cerrado'}
+        </Typography>
+      </Box>
+      
+      {/* Estilos CSS para las animaciones */}
+      <style>
+        {`
+          @keyframes pulse-green {
+            0% {
+              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(46, 213, 115, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
+            }
+            50% {
+              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 20px rgba(46, 213, 115, 0), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
+            }
+            100% {
+              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(46, 213, 115, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
+            }
+          }
+          @keyframes pulse-red {
+            0% {
+              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(255, 71, 87, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
+            }
+            50% {
+              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 20px rgba(255, 71, 87, 0), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
+            }
+            100% {
+              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(255, 71, 87, 0.7), inset 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(255, 255, 255, 0.1);
+            }
+          }
+        `}
+      </style>
+    </Box>
+  );
+};
 
 const UserPanel = () => {
   const { user, logout } = useAuth();
@@ -172,13 +300,23 @@ const UserPanel = () => {
                 />
                 
                 {/* Coupon Section */}
-                <Box sx={{ mt: 4, p: 3, bgcolor: '#f8f9fa', borderRadius: 2 }}>
+                <Box sx={{
+                  mt: 2,
+                  mb: 2,
+                  p: 2,
+                  bgcolor: '#f8f9fa',
+                  borderRadius: 2,
+                  maxWidth: 340,
+                  mx: 'auto',
+                  boxShadow: '0 2px 8px rgba(5,124,57,0.06)'
+                }}>
                   <Typography sx={{ 
                     fontFamily: 'Roboto, sans-serif', 
                     fontSize: 16, 
                     fontWeight: 600, 
                     mb: 2,
-                    color: '#333'
+                    color: '#333',
+                    textAlign: 'center'
                   }}>
                     Cupón de Descuento
                   </Typography>
@@ -216,7 +354,7 @@ const UserPanel = () => {
                 </Box>
 
                 {/* Start Operation Button */}
-                <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+                <Box sx={{ mt: 2, mb: 1, display: 'flex', justifyContent: 'center' }}>
                   <Button
                     variant="contained"
                     size="large"
@@ -260,16 +398,17 @@ const UserPanel = () => {
                 <Box sx={{ mb: 4 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                     <Box sx={{ 
-                      width: 40, 
-                      height: 40, 
+                      width: 48, 
+                      height: 48, 
                       borderRadius: '50%', 
                       bgcolor: '#057c39', 
                       display: 'flex', 
                       alignItems: 'center', 
                       justifyContent: 'center',
-                      mr: 2
+                      mr: 2,
+                      boxShadow: '0 2px 8px rgba(5,124,57,0.10)'
                     }}>
-                      <Typography sx={{ color: 'white', fontSize: 12, fontWeight: 700 }}>
+                      <Typography sx={{ color: 'white', fontSize: 14, fontWeight: 700, letterSpacing: 1 }}>
                         15 MIN
                       </Typography>
                     </Box>
@@ -282,7 +421,6 @@ const UserPanel = () => {
                       Transferencias inmediatas en 15 minutos
                     </Typography>
                   </Box>
-                  
                   <Typography sx={{ 
                     fontFamily: 'Roboto, sans-serif', 
                     fontSize: 12, 
@@ -295,7 +433,6 @@ const UserPanel = () => {
                     <img src={bcpLogo} alt="BCP" style={{ height: 24, width: 'auto' }} />
                     <img src={interbankLogo} alt="Interbank" style={{ height: 24, width: 'auto' }} />
                   </Box>
-                  
                   <Typography sx={{ 
                     fontFamily: 'Roboto, sans-serif', 
                     fontSize: 12, 
@@ -304,9 +441,7 @@ const UserPanel = () => {
                   }}>
                     Lima
                   </Typography>
-                  <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
-                    <img src={pichinchaLogo} alt="BanBif" style={{ height: 24, width: 'auto' }} />
-                  </Box>
+                  {/* Sin logo de Pichincha aquí */}
                   <Typography sx={{ 
                     fontFamily: 'Roboto, sans-serif', 
                     fontSize: 10, 
@@ -323,16 +458,17 @@ const UserPanel = () => {
                 <Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                     <Box sx={{ 
-                      width: 40, 
-                      height: 40, 
+                      width: 48, 
+                      height: 48, 
                       borderRadius: '50%', 
                       bgcolor: '#666', 
                       display: 'flex', 
                       alignItems: 'center', 
                       justifyContent: 'center',
-                      mr: 2
+                      mr: 2,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.10)'
                     }}>
-                      <Typography sx={{ color: 'white', fontSize: 12, fontWeight: 700 }}>
+                      <Typography sx={{ color: 'white', fontSize: 14, fontWeight: 700, letterSpacing: 1 }}>
                         24 HRS
                       </Typography>
                     </Box>
@@ -345,7 +481,6 @@ const UserPanel = () => {
                       Transferencias interbancarias en 1 día hábil
                     </Typography>
                   </Box>
-                  
                   <Typography sx={{ 
                     fontFamily: 'Roboto, sans-serif', 
                     fontSize: 12, 
@@ -354,12 +489,10 @@ const UserPanel = () => {
                   }}>
                     Lima
                   </Typography>
-                  <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, mb: 2 }}>
                     <img src={bbvaLogo} alt="BBVA" style={{ height: 24, width: 'auto' }} />
-                    <img src={scotiabankLogo} alt="Scotiabank" style={{ height: 24, width: 'auto' }} />
-                    <img src={pichinchaLogo} alt="Banco Pichincha" style={{ height: 24, width: 'auto' }} />
+                    <img src={pichinchaLogo} alt="Banco Pichincha" style={{ height: 24, width: 'auto', marginTop: 6 }} />
                   </Box>
-                  
                   <Typography sx={{ 
                     fontFamily: 'Roboto, sans-serif', 
                     fontSize: 12, 
@@ -368,7 +501,6 @@ const UserPanel = () => {
                   }}>
                     y otros bancos
                   </Typography>
-                  
                   <Typography sx={{ 
                     fontFamily: 'Roboto, sans-serif', 
                     fontSize: 12, 
@@ -421,7 +553,7 @@ const UserPanel = () => {
           />
         </Box>
         
-        <List sx={{ pt: 2 }}>
+        <List sx={{ pt: 2, pb: 10 }}>
           {menuItems.map((item) => (
             <ListItem
               key={item.id}
@@ -455,6 +587,36 @@ const UserPanel = () => {
             </ListItem>
           ))}
         </List>
+        <Box sx={{
+          position: 'absolute',
+          bottom: 24,
+          left: 0,
+          width: '100%',
+          px: 3,
+        }}>
+          <Button
+            variant="contained"
+            startIcon={<LogoutIcon />}
+            onClick={handleLogout}
+            sx={{
+              bgcolor: '#ff4757',
+              color: 'white',
+              fontWeight: 700,
+              borderRadius: 2,
+              width: '100%',
+              py: 1.5,
+              fontSize: 16,
+              textTransform: 'none',
+              boxShadow: '0 4px 16px rgba(255,71,87,0.15)',
+              '&:hover': {
+                bgcolor: '#e84118',
+              },
+              mt: 2
+            }}
+          >
+            Cerrar Sesión
+          </Button>
+        </Box>
       </Drawer>
 
       {/* Main Content */}
@@ -478,16 +640,26 @@ const UserPanel = () => {
                   color: '#333',
                   fontWeight: 700
                 }}>
-                  {selectedMenu === 'cuentas' ? 'Mis cuentas' : 'Dashboard'}
+                  {selectedMenu === 'cuentas' ? 'Mis cuentas' : selectedMenu === 'alertas' ? 'Alertas' : selectedMenu === 'perfil' ? 'Mi Perfil' : selectedMenu === 'manguitos' ? 'Mis Manguitos' : selectedMenu === 'historial' ? 'Historial de operaciones' : 'Dashboard'}
                 </Typography>
-                <Typography sx={{ 
-                  fontFamily: 'Roboto, sans-serif', 
-                  fontSize: 14, 
-                  color: '#666',
-                  fontWeight: 500
-                }}>
-                  Horario: Lunes a viernes 9:00 am a 7:00 p.m Sábados de 09:00 am a 2:00 pm
-                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                  <Typography sx={{ 
+                    fontFamily: 'Roboto, sans-serif', 
+                    fontSize: 14, 
+                    color: '#666',
+                    fontWeight: 500
+                  }}>
+                    Horario: Lunes a viernes 9:00 am a 7:00 p.m
+                  </Typography>
+                  <Typography sx={{ 
+                    fontFamily: 'Roboto, sans-serif', 
+                    fontSize: 14, 
+                    color: '#666',
+                    fontWeight: 500
+                  }}>
+                    Sábados de 09:00 am a 2:00 pm
+                  </Typography>
+                </Box>
               </Box>
 
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -501,6 +673,9 @@ const UserPanel = () => {
                     '& .MuiChip-icon': { color: '#FFD700' }
                   }}
                 />
+                
+                {/* Toggle Switch para Manguitos */}
+                <ManguitosToggle isOpen={true} />
                 
                 <IconButton onClick={handleMenuClick}>
                   <Avatar sx={{ bgcolor: '#057c39', width: 32, height: 32 }}>
