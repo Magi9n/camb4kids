@@ -12,6 +12,11 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import Slide from '@mui/material/Slide';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const DOCUMENT_TYPES = [
   { value: 'DNI', label: 'DNI' },
@@ -157,152 +162,271 @@ const UserProfilePage = () => {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f5f5f5', p: 2 }}>
-      <Paper sx={{ p: 4, minWidth: 350, maxWidth: 420 }} elevation={3}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
-          Mi Perfil
-        </Typography>
-        <Typography variant="body1" sx={{ mb: 2 }}>
-          Actualiza tu información personal. Los campos marcados con * no se pueden modificar.
-        </Typography>
-        
-        <form onSubmit={handleSubmit}>
-          <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+    <Box sx={{ 
+      width: '100%', 
+      minHeight: '100vh', 
+      bgcolor: '#f8f9fa', 
+      p: { xs: 1, md: 4 },
+      pt: { xs: 2, md: 4 } // Agregar padding top para evitar superposición
+    }}>
+      <Box sx={{ maxWidth: 600, mx: 'auto' }}>
+        <Paper sx={{ 
+          p: { xs: 2, md: 4 }, 
+          borderRadius: 3, 
+          boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+          mt: 2 // Agregar margen top para separar del header
+        }}>
+          <Typography 
+            variant="h4" 
+            fontWeight="bold" 
+            gutterBottom
+            sx={{ 
+              fontFamily: 'Roboto, sans-serif',
+              color: '#057c39',
+              mb: 3
+            }}
+          >
+            Mi Perfil
+          </Typography>
+          <Typography 
+            variant="body1" 
+            sx={{ 
+              mb: 3, 
+              color: '#666',
+              fontFamily: 'Roboto, sans-serif'
+            }}
+          >
+            Actualiza tu información personal. Los campos marcados con * no se pueden modificar.
+          </Typography>
+          
+          <form onSubmit={handleSubmit}>
+            <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+              <TextField
+                select
+                label="Tipo de doc."
+                value={documentType}
+                onChange={e => setDocumentType(e.target.value)}
+                sx={{ minWidth: 140 }}
+                required
+                disabled
+              >
+                {DOCUMENT_TYPES.map(option => (
+                  <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                label="Número de doc."
+                value={document}
+                onChange={e => setDocument(e.target.value.replace(/[^0-9A-Za-z]/g, ''))}
+                required
+                fullWidth
+                disabled
+              />
+            </Box>
+            
             <TextField
-              select
-              label="Tipo de doc."
-              value={documentType}
-              onChange={e => setDocumentType(e.target.value)}
-              sx={{ minWidth: 140 }}
+              label="Nombre(s)"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              fullWidth
+              margin="normal"
               required
               disabled
+            />
+            
+            <TextField
+              label="Apellido(s)"
+              value={lastname}
+              onChange={e => setLastname(e.target.value)}
+              fullWidth
+              margin="normal"
+              required
+              disabled
+            />
+            
+            <TextField
+              select
+              label="Selecciona tu sexo"
+              value={sex}
+              onChange={e => setSex(e.target.value)}
+              fullWidth
+              margin="normal"
+              required
             >
-              {DOCUMENT_TYPES.map(option => (
+              {SEX_OPTIONS.map(option => (
                 <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
               ))}
             </TextField>
+            
             <TextField
-              label="Número de doc."
-              value={document}
-              onChange={e => setDocument(e.target.value.replace(/[^0-9A-Za-z]/g, ''))}
+              label="Teléfono"
+              value={phone}
+              onChange={e => setPhone(e.target.value.replace(/[^0-9+]/g, ''))}
+              fullWidth
+              margin="normal"
               required
-              fullWidth
-              disabled
             />
-          </Box>
-          
-          <TextField
-            label="Nombre(s)"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            fullWidth
-            margin="normal"
-            required
-            disabled
-          />
-          
-          <TextField
-            label="Apellido(s)"
-            value={lastname}
-            onChange={e => setLastname(e.target.value)}
-            fullWidth
-            margin="normal"
-            required
-            disabled
-          />
-          
-          <TextField
-            select
-            label="Selecciona tu sexo"
-            value={sex}
-            onChange={e => setSex(e.target.value)}
-            fullWidth
-            margin="normal"
-            required
-          >
-            {SEX_OPTIONS.map(option => (
-              <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
-            ))}
-          </TextField>
-          
-          <TextField
-            label="Teléfono"
-            value={phone}
-            onChange={e => setPhone(e.target.value.replace(/[^0-9+]/g, ''))}
-            fullWidth
-            margin="normal"
-            required
-          />
-          
-          <TextField
-            label="Correo electrónico actual"
-            value={email}
-            fullWidth
-            margin="normal"
-            disabled
-            sx={{ mb: 2 }}
-          />
-          
-          <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+            
             <TextField
-              label="Nuevo correo electrónico"
-              value={newEmail}
-              onChange={e => setNewEmail(e.target.value)}
+              label="Correo electrónico actual"
+              value={email}
               fullWidth
-              type="email"
+              margin="normal"
+              disabled
+              sx={{ mb: 2 }}
             />
-            <Button
-              variant="outlined"
-              onClick={handleEmailChange}
-              sx={{ minWidth: 120 }}
+            
+            <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+              <TextField
+                label="Nuevo correo electrónico"
+                value={newEmail}
+                onChange={e => setNewEmail(e.target.value)}
+                fullWidth
+                type="email"
+              />
+              <Button
+                variant="outlined"
+                onClick={handleEmailChange}
+                sx={{ minWidth: 120 }}
+              >
+                Cambiar
+              </Button>
+            </Box>
+            
+            {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
+            {success && <Typography color="success.main" sx={{ mt: 1 }}>{success}</Typography>}
+            
+            <Button 
+              type="submit" 
+              variant="contained" 
+              color="primary" 
+              fullWidth 
+              sx={{ 
+                mt: 2,
+                bgcolor: '#057c39',
+                '&:hover': { bgcolor: '#046a30' }
+              }} 
+              disabled={loading}
             >
-              Cambiar
+              {loading ? 'Actualizando...' : 'Actualizar Perfil'}
             </Button>
-          </Box>
+          </form>
           
-          {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
-          {success && <Typography color="success.main" sx={{ mt: 1 }}>{success}</Typography>}
-          
-          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }} disabled={loading}>
-            {loading ? 'Actualizando...' : 'Actualizar Perfil'}
+          <Button
+            variant="outlined"
+            color="inherit"
+            fullWidth
+            sx={{ mt: 2 }}
+            onClick={() => navigate('/dashboard')}
+          >
+            Volver al Dashboard
           </Button>
-        </form>
-        
-        <Button
-          variant="outlined"
-          color="inherit"
-          fullWidth
-          sx={{ mt: 2 }}
-          onClick={() => navigate('/dashboard')}
-        >
-          Volver al Dashboard
-        </Button>
-      </Paper>
+        </Paper>
+      </Box>
 
-      {/* Dialog para confirmar cambio de email */}
-      <Dialog open={showEmailDialog} onClose={() => setShowEmailDialog(false)}>
-        <DialogTitle>Confirmar cambio de correo</DialogTitle>
+      {/* Dialog para confirmar cambio de email - Diseño moderno */}
+      <Dialog 
+        open={showEmailDialog} 
+        onClose={() => setShowEmailDialog(false)}
+        TransitionComponent={Transition}
+        keepMounted
+        PaperProps={{ 
+          sx: { 
+            borderRadius: 4, 
+            p: 2, 
+            minWidth: 320, 
+            textAlign: 'center' 
+          } 
+        }}
+        BackdropProps={{ sx: { background: 'rgba(0,0,0,0.35)' } }}
+      >
+        <DialogTitle sx={{ 
+          fontWeight: 700, 
+          fontSize: 28, 
+          fontFamily: 'Roboto, sans-serif', 
+          color: '#057c39' 
+        }}>
+          Confirmar cambio de correo
+        </DialogTitle>
         <DialogContent>
-          <Typography>
+          <Typography sx={{ 
+            fontSize: 18, 
+            fontFamily: 'Roboto, sans-serif', 
+            color: '#222',
+            mb: 2
+          }}>
             ¿Estás seguro de que quieres cambiar tu correo electrónico de <strong>{email}</strong> a <strong>{pendingEmail}</strong>?
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+          <Typography sx={{ 
+            fontSize: 16, 
+            fontFamily: 'Roboto, sans-serif', 
+            color: '#666' 
+          }}>
             Se enviará un código de verificación al nuevo correo. Tienes 15 minutos para verificar.
           </Typography>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setShowEmailDialog(false)}>Cancelar</Button>
-          <Button onClick={confirmEmailChange} variant="contained" disabled={emailLoading}>
+        <DialogActions sx={{ justifyContent: 'center' }}>
+          <Button 
+            onClick={() => setShowEmailDialog(false)} 
+            sx={{ 
+              color: '#666',
+              fontFamily: 'Roboto, sans-serif',
+              fontSize: 16
+            }}
+          >
+            Cancelar
+          </Button>
+          <Button 
+            onClick={confirmEmailChange} 
+            variant="contained" 
+            disabled={emailLoading}
+            sx={{ 
+              bgcolor: '#057c39', 
+              color: 'white', 
+              borderRadius: 999, 
+              px: 4, 
+              fontWeight: 700, 
+              fontFamily: 'Roboto, sans-serif', 
+              fontSize: 18,
+              '&:hover': { bgcolor: '#046a30' }
+            }}
+          >
             {emailLoading ? 'Enviando...' : 'Confirmar'}
           </Button>
         </DialogActions>
       </Dialog>
 
-      {/* Dialog para verificar nuevo email */}
-      <Dialog open={showVerificationDialog} onClose={() => setShowVerificationDialog(false)}>
-        <DialogTitle>Verificar nuevo correo</DialogTitle>
+      {/* Dialog para verificar nuevo email - Diseño moderno */}
+      <Dialog 
+        open={showVerificationDialog} 
+        onClose={() => setShowVerificationDialog(false)}
+        TransitionComponent={Transition}
+        keepMounted
+        PaperProps={{ 
+          sx: { 
+            borderRadius: 4, 
+            p: 2, 
+            minWidth: 320, 
+            textAlign: 'center' 
+          } 
+        }}
+        BackdropProps={{ sx: { background: 'rgba(0,0,0,0.35)' } }}
+      >
+        <DialogTitle sx={{ 
+          fontWeight: 700, 
+          fontSize: 28, 
+          fontFamily: 'Roboto, sans-serif', 
+          color: '#057c39' 
+        }}>
+          Verificar nuevo correo
+        </DialogTitle>
         <DialogContent>
-          <Typography sx={{ mb: 2 }}>
+          <Typography sx={{ 
+            fontSize: 18, 
+            fontFamily: 'Roboto, sans-serif', 
+            color: '#222',
+            mb: 3
+          }}>
             Se ha enviado un código de verificación a <strong>{pendingEmail}</strong>
           </Typography>
           <TextField
@@ -311,11 +435,40 @@ const UserProfilePage = () => {
             onChange={e => setEmailVerificationCode(e.target.value)}
             fullWidth
             placeholder="Ingresa el código de 4 dígitos"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: 2,
+                fontFamily: 'Roboto, sans-serif'
+              }
+            }}
           />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setShowVerificationDialog(false)}>Cancelar</Button>
-          <Button onClick={verifyNewEmail} variant="contained" disabled={emailLoading}>
+        <DialogActions sx={{ justifyContent: 'center' }}>
+          <Button 
+            onClick={() => setShowVerificationDialog(false)} 
+            sx={{ 
+              color: '#666',
+              fontFamily: 'Roboto, sans-serif',
+              fontSize: 16
+            }}
+          >
+            Cancelar
+          </Button>
+          <Button 
+            onClick={verifyNewEmail} 
+            variant="contained" 
+            disabled={emailLoading}
+            sx={{ 
+              bgcolor: '#057c39', 
+              color: 'white', 
+              borderRadius: 999, 
+              px: 4, 
+              fontWeight: 700, 
+              fontFamily: 'Roboto, sans-serif', 
+              fontSize: 18,
+              '&:hover': { bgcolor: '#046a30' }
+            }}
+          >
             {emailLoading ? 'Verificando...' : 'Verificar'}
           </Button>
         </DialogActions>

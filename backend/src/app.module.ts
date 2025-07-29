@@ -18,6 +18,7 @@ import { AlertsModule } from './modules/alerts/alerts.module';
 import { Alert } from './modules/alerts/alert.entity';
 import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
 import { Subscription } from './modules/subscriptions/subscription.entity';
+import { EmailChange } from './modules/auth/entities/email-change.entity';
 
 @Module({
   imports: [
@@ -34,7 +35,7 @@ import { Subscription } from './modules/subscriptions/subscription.entity';
         username: config.get('DB_USERNAME'),
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_DATABASE'),
-        entities: [User, PasswordReset, BankAccount, Order, ExchangeRate, AdminSetting, Alert, Subscription],
+        entities: [User, PasswordReset, BankAccount, Order, ExchangeRate, AdminSetting, Alert, Subscription, EmailChange],
         migrations: [
           config.get('NODE_ENV') === 'development'
             ? 'src/migrations/*.ts'
