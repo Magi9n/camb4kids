@@ -577,8 +577,8 @@ const UserPanel = () => {
           />
         </Box>
         
-        <List sx={{ pt: 2, pb: 10, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-          {menuItems.map((item, idx) => (
+        <List sx={{ pt: 2, pb: 2, flex: 1, display: 'flex', flexDirection: 'column' }}>
+          {menuItems.filter(item => !item.logout).map((item) => (
             <ListItem
               key={item.id}
               button
@@ -590,13 +590,10 @@ const UserPanel = () => {
                 },
                 py: 1.5,
                 px: 3,
-                mt: item.logout ? 'auto' : 0,
-                borderTop: item.logout ? '1px solid #eee' : 'none',
-                color: item.logout ? '#ff4757' : undefined,
               }}
             >
               <ListItemIcon sx={{ 
-                color: item.logout ? '#ff4757' : (selectedMenu === item.id ? '#057c39' : '#666'),
+                color: selectedMenu === item.id ? '#057c39' : '#666',
                 minWidth: 40 
               }}>
                 {item.icon}
@@ -607,12 +604,34 @@ const UserPanel = () => {
                   '& .MuiTypography-root': {
                     fontSize: 14,
                     fontWeight: selectedMenu === item.id ? 600 : 400,
-                    color: item.logout ? '#ff4757' : (selectedMenu === item.id ? '#057c39' : '#333'),
+                    color: selectedMenu === item.id ? '#057c39' : '#333',
                   }
                 }}
               />
             </ListItem>
           ))}
+        </List>
+        <List sx={{ position: 'absolute', bottom: 0, left: 0, width: '100%', borderTop: '1px solid #eee', bgcolor: 'white' }}>
+          <ListItem
+            button
+            onClick={handleLogout}
+            sx={{
+              py: 1.5,
+              px: 3,
+              justifyContent: 'flex-start',
+              '&:hover': {
+                bgcolor: '#fafafa',
+              },
+            }}
+          >
+            <ListItemIcon sx={{ color: '#666', minWidth: 40 }}>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Cerrar Sesión"
+              sx={{ '& .MuiTypography-root': { fontSize: 14, fontWeight: 400, color: '#333' } }}
+            />
+          </ListItem>
         </List>
       </Drawer>
 
