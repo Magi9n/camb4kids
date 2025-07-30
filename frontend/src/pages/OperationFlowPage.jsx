@@ -18,7 +18,6 @@ import {
 import AccountSelectionStep from '../components/AccountSelectionStep';
 import TransactionSummary from '../components/TransactionSummary';
 import CountdownTimer from '../components/CountdownTimer';
-import { useRealTimeRate } from '../hooks/useRealTimeRate';
 import api from '../services/api';
 
 const steps = ['Cuentas', 'Transferir', 'Completar'];
@@ -26,7 +25,6 @@ const steps = ['Cuentas', 'Transferir', 'Completar'];
 const OperationFlowPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentRate, rateWithMargin, isConnected } = useRealTimeRate();
   const [activeStep, setActiveStep] = useState(0);
   const [operationData, setOperationData] = useState({
     // Datos de la calculadora
@@ -64,16 +62,15 @@ const OperationFlowPage = () => {
           return;
         }
 
-        // Obtener márgenes y cuentas
-        const [marginsRes, accountsRes] = await Promise.all([
+        // Obtener tasas y márgenes
+        const [rateRes, marginsRes, accountsRes] = await Promise.all([
+          api.get('/rates/current'),
           api.get('/admin/public-margins'),
           api.get('/bank-accounts')
         ]);
 
+        const rate = rateRes.data.rate;
         const { buyPercent, sellPercent } = marginsRes.data;
-        
-        // Usar el tipo de cambio en tiempo real con margen aplicado
-        const rate = rateWithMargin;
         
         // Determinar monedas según el swap
         const isSwapped = calculatorData.swap;
@@ -107,26 +104,7 @@ const OperationFlowPage = () => {
     };
 
     loadInitialData();
-  }, [location.state, navigate, rateWithMargin]);
-
-  // Actualizar datos cuando cambie el tipo de cambio en tiempo real
-  useEffect(() => {
-    if (rateWithMargin && operationData.amount) {
-      const { fromCurrency, buyPercent, sellPercent } = operationData;
-      
-      // Recalcular Manguitos con el nuevo tipo de cambio
-      const manguitos = fromCurrency === 'USD' 
-        ? Math.floor(parseFloat(operationData.amount || 0))
-        : Math.floor(parseFloat(operationData.amount || 0) / rateWithMargin);
-
-      setOperationData(prev => ({
-        ...prev,
-        rate: rateWithMargin,
-        currentRate: rateWithMargin,
-        manguitos
-      }));
-    }
-  }, [rateWithMargin, operationData.amount, operationData.fromCurrency]);
+  }, [location.state, navigate]);
 
   const handleNext = () => {
     if (activeStep === 0) {
@@ -252,36 +230,6 @@ const OperationFlowPage = () => {
           )}
         </Box>
 
-        {/* Indicador de conexión en tiempo real */}
-        {isConnected && (
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 1, 
-            mb: 2,
-            p: 1,
-            bgcolor: '#e8f5e8',
-            borderRadius: 1,
-            border: '1px solid #4caf50'
-          }}>
-            <Box sx={{ 
-              width: 8, 
-              height: 8, 
-              borderRadius: '50%', 
-              backgroundColor: '#4CAF50',
-              animation: 'pulse 2s infinite'
-            }} />
-            <Typography sx={{ 
-              fontSize: 12, 
-              color: '#2e7d32', 
-              fontWeight: 500,
-              fontFamily: 'Roboto, sans-serif'
-            }}>
-              Tipo de cambio en tiempo real
-            </Typography>
-          </Box>
-        )}
-
         {/* Stepper */}
         <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
           {steps.map((label) => (
@@ -317,14 +265,6 @@ const OperationFlowPage = () => {
           </Box>
         )}
       </Paper>
-
-      <style jsx>{`
-        @keyframes pulse {
-          0% { opacity: 1; }
-          50% { opacity: 0.5; }
-          100% { opacity: 1; }
-        }
-      `}</style>
     </Box>
   );
 };

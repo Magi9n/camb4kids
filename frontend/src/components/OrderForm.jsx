@@ -32,7 +32,15 @@ const OrderForm = ({ onOrderCreated }) => {
         setError('No se pudo obtener la tasa de cambio.');
       }
     };
+    
+    // Cargar datos iniciales
     fetchRate();
+    
+    // Actualizar cada 5 segundos
+    const interval = setInterval(fetchRate, 5000);
+    
+    // Limpiar intervalo cuando el componente se desmonte
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {

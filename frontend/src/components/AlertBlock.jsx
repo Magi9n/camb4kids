@@ -30,7 +30,18 @@ export const AlertForm = ({ onSuccess, initialBuy, initialSell, editing, onCance
   const [currentRate, setCurrentRate] = useState(null);
 
   React.useEffect(() => {
-    api.get('/rates/current').then(res => setCurrentRate(res.data.rate)).catch(() => {});
+    const fetchRate = () => {
+      api.get('/rates/current').then(res => setCurrentRate(res.data.rate)).catch(() => {});
+    };
+    
+    // Cargar datos iniciales
+    fetchRate();
+    
+    // Actualizar cada 5 segundos
+    const interval = setInterval(fetchRate, 5000);
+    
+    // Limpiar intervalo cuando el componente se desmonte
+    return () => clearInterval(interval);
   }, []);
 
   const validate = () => {
@@ -180,7 +191,18 @@ const AlertBlock = () => {
   const [currentRate, setCurrentRate] = useState(null);
 
   React.useEffect(() => {
-    api.get('/rates/current').then(res => setCurrentRate(res.data.rate)).catch(() => {});
+    const fetchRate = () => {
+      api.get('/rates/current').then(res => setCurrentRate(res.data.rate)).catch(() => {});
+    };
+    
+    // Cargar datos iniciales
+    fetchRate();
+    
+    // Actualizar cada 5 segundos
+    const interval = setInterval(fetchRate, 5000);
+    
+    // Limpiar intervalo cuando el componente se desmonte
+    return () => clearInterval(interval);
   }, []);
 
   const validate = () => {
