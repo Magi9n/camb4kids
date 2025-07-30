@@ -5,19 +5,16 @@ import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { User } from './entities/user.entity';
-import { PasswordReset } from './entities/password-reset.entity';
-import { EmailChange } from './entities/email-change.entity';
-import { BankAccount } from './entities/bank-account.entity';
+import { User } from './user.entity';
+import { PasswordReset } from './password-reset.entity';
+import { EmailChange } from './email-change.entity';
+import { BankAccount } from './bank-account.entity';
 import { MangosCashAccount } from './mangos-cash-account.entity';
-import { Operation } from './operation.entity';
 import { JwtStrategy } from './jwt.strategy';
 import { BankAccountsService } from './bank-accounts.service';
 import { BankAccountsController } from './bank-accounts.controller';
 import { MangosCashAccountsService } from './mangos-cash-accounts.service';
 import { MangosCashAccountsController } from './mangos-cash-accounts.controller';
-import { OperationsService } from './operations.service';
-import { OperationsController } from './operations.controller';
 
 @Module({
   imports: [
@@ -26,8 +23,7 @@ import { OperationsController } from './operations.controller';
       PasswordReset, 
       EmailChange, 
       BankAccount,
-      MangosCashAccount,
-      Operation
+      MangosCashAccount
     ]),
     PassportModule,
     JwtModule.registerAsync({
@@ -43,15 +39,13 @@ import { OperationsController } from './operations.controller';
     AuthService, 
     JwtStrategy, 
     BankAccountsService,
-    MangosCashAccountsService,
-    OperationsService
+    MangosCashAccountsService
   ],
   controllers: [
     AuthController, 
     BankAccountsController,
-    MangosCashAccountsController,
-    OperationsController
+    MangosCashAccountsController
   ],
-  exports: [AuthService, BankAccountsService, MangosCashAccountsService, OperationsService],
+  exports: [AuthService, BankAccountsService, MangosCashAccountsService],
 })
 export class AuthModule {} 

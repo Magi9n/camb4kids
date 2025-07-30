@@ -7,29 +7,52 @@ import {
   IconButton,
   Chip,
   Alert,
-  Link,
-  Divider,
-  Card,
-  CardContent,
-  Grid
+  Link
 } from '@mui/material';
 import {
   ContentCopy as CopyIcon,
-  WhatsApp as WhatsAppIcon,
-  AccountBalance as BankIcon,
-  Payment as PaymentIcon,
-  Schedule as ScheduleIcon,
-  Security as SecurityIcon
+  WhatsApp as WhatsAppIcon
 } from '@mui/icons-material';
 import Lottie from 'lottie-react';
 import transferAnim from '../assets/transfer.json';
 import api from '../services/api';
+import { registrarOperacion } from '../services/api';
 
 const TransferStep = ({ operationData }) => {
   const [mangosCashAccount, setMangosCashAccount] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [operationId, setOperationId] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+
+  // Registrar operación al entrar a la pantalla de transferir
+  useEffect(() => {
+    let registrado = false;
+    if (
+      operationData &&
+      operationData.fromAccount &&
+      operationData.toAccount &&
+      operationData.amount &&
+      !registrado
+    ) {
+      registrado = true;
+      // Preparar datos para la operación
+      const payload = {
+        nombre: `${operationData.user?.name || ''} ${operationData.user?.lastname || ''}`.trim(),
+        dni: operationData.user?.document || '',
+        telefono: operationData.user?.phone || '',
+        importe_envia: parseFloat(operationData.amount),
+        importe_recibe: operationData.toCurrency === 'PEN'
+          ? (parseFloat(operationData.amount) * (operationData.currentRate * operationData.buyPercent)).toFixed(2)
+          : (parseFloat(operationData.amount) / (operationData.currentRate * operationData.sellPercent)).toFixed(2),
+        tipo_cambio: operationData.toCurrency === 'PEN'
+          ? (operationData.currentRate * operationData.buyPercent).toFixed(4)
+          : (operationData.currentRate * operationData.sellPercent).toFixed(4),
+        moneda_envia: operationData.fromCurrency,
+        moneda_recibe: operationData.toCurrency,
+        estado: 'Falta Transferir'
+      };
+      registrarOperacion(payload).catch(() => {});
+    }
+  }, [operationData]);
 
   useEffect(() => {
     const loadMangosCashAccount = async () => {
@@ -54,9 +77,6 @@ const TransferStep = ({ operationData }) => {
         const response = await api.get(`/admin/mangos-cash-accounts/${bankCode}/${currency.toLowerCase()}`);
         setMangosCashAccount(response.data);
         
-        // Crear la operación en la base de datos
-        await createOperation();
-        
       } catch (error) {
         console.error('Error cargando cuenta de MangosCash:', error);
         setSnackbar({ 
@@ -73,36 +93,6 @@ const TransferStep = ({ operationData }) => {
       loadMangosCashAccount();
     }
   }, [operationData.fromAccount, operationData.fromCurrency]);
-
-  const createOperation = async () => {
-    try {
-      const amounts = calculateAmounts();
-      
-      const operationData = {
-        userName: `${operationData.fromAccount?.accountName || 'Usuario'}`,
-        userDni: '12345678', // Esto debería venir del usuario autenticado
-        userPhone: '+51 999 999 999', // Esto debería venir del usuario autenticado
-        amountToSend: parseFloat(operationData.amount),
-        exchangeRate: parseFloat(amounts.rateUsed),
-        amountToReceive: parseFloat(amounts.receive.replace(/[^0-9.]/g, '')),
-        fromCurrency: operationData.fromCurrency,
-        toCurrency: operationData.toCurrency,
-        fromBank: operationData.fromAccount?.bank,
-        toBank: operationData.toAccount?.bank,
-        fromAccountNumber: operationData.fromAccount?.accountNumber,
-        toAccountNumber: operationData.toAccount?.accountNumber,
-        manguitos: operationData.manguitos,
-        status: 'PENDING_TRANSFER'
-      };
-
-      const response = await api.post('/operations', operationData);
-      setOperationId(response.data.id);
-      
-      console.log('Operación creada:', response.data);
-    } catch (error) {
-      console.error('Error creando operación:', error);
-    }
-  };
 
   const handleCopy = async (text, fieldName) => {
     try {
@@ -140,35 +130,6 @@ const TransferStep = ({ operationData }) => {
     return fromBank !== 'Interbank' && toBank === 'Interbank';
   };
 
-  const calculateAmounts = () => {
-    const { amount, fromCurrency, toCurrency, buyPercent, sellPercent } = operationData;
-    const rate = operationData.currentRate || operationData.rate;
-    
-    if (!rate || isNaN(rate)) {
-      return { send: '0.00', receive: '0.00', rateUsed: '0.0000' };
-    }
-    
-    if (fromCurrency === 'PEN' && toCurrency === 'USD') {
-      const rateUsed = rate * sellPercent;
-      const receivedAmount = (parseFloat(amount) / rateUsed).toFixed(2);
-      return {
-        send: `${parseFloat(amount).toFixed(2)} S/`,
-        receive: `$${receivedAmount}`,
-        rateUsed: rateUsed.toFixed(4)
-      };
-    } else {
-      const rateUsed = rate * buyPercent;
-      const receivedAmount = (parseFloat(amount) * rateUsed).toFixed(2);
-      return {
-        send: `$${parseFloat(amount).toFixed(2)}`,
-        receive: `${receivedAmount} S/`,
-        rateUsed: rateUsed.toFixed(4)
-      };
-    }
-  };
-
-  const amounts = calculateAmounts();
-
   if (loading) {
     return (
       <Box sx={{ textAlign: 'center', py: 4 }}>
@@ -188,354 +149,208 @@ const TransferStep = ({ operationData }) => {
   }
 
   return (
-    <Box sx={{ py: 2 }}>
-      {/* Header con animación */}
-      <Box sx={{ textAlign: 'center', mb: 4 }}>
-        <Box sx={{ 
-          width: 150, 
-          height: 150, 
-          mx: 'auto', 
-          mb: 3,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
-          <Lottie 
-            animationData={transferAnim} 
-            loop={true} 
-            style={{ width: '100%', height: '100%' }}
-          />
-        </Box>
+    <Box sx={{ textAlign: 'center', py: 2 }}>
+      {/* Lottie Animation */}
+      <Box sx={{ 
+        width: 200, 
+        height: 200, 
+        mx: 'auto', 
+        mb: 3,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <Lottie 
+          animationData={transferAnim} 
+          loop={true} 
+          style={{ width: '100%', height: '100%' }}
+        />
+      </Box>
 
+      {/* Título */}
+      <Typography 
+        variant="h4" 
+        sx={{ 
+          fontFamily: 'Roboto, sans-serif',
+          fontWeight: 700,
+          color: '#333',
+          mb: 3
+        }}
+      >
+        Transfiere a MangosCash
+      </Typography>
+
+      {/* Instrucciones */}
+      <Box sx={{ mb: 4 }}>
         <Typography 
-          variant="h4" 
+          variant="h6" 
           sx={{ 
             fontFamily: 'Roboto, sans-serif',
-            fontWeight: 700,
+            fontWeight: 600,
             color: '#333',
-            mb: 1
+            mb: 2
           }}
         >
-          Transfiere a MangosCash
+          1. Transfiere{' '}
+          <Box component="span" sx={{ fontWeight: 700, color: '#057c39' }}>
+            {formatAmount()}
+          </Box>
+          {' '}desde tu banco{' '}
+          <Box component="span" sx={{ fontWeight: 700, color: '#057c39' }}>
+            {getBankDisplayName()}
+          </Box>
+          {' '}a nuestra cuenta.
         </Typography>
         
         <Typography 
-          variant="body1" 
+          variant="h6" 
           sx={{ 
-            color: '#666',
-            fontFamily: 'Roboto, sans-serif'
+            fontFamily: 'Roboto, sans-serif',
+            fontWeight: 600,
+            color: '#333'
           }}
         >
-          Operación #{operationId} - Estado: Pendiente de transferencia
+          2. Guarda el{' '}
+          <Box component="span" sx={{ 
+            fontWeight: 700, 
+            color: '#057c39',
+            textDecoration: 'underline'
+          }}>
+            número de tu operación
+          </Box>
+          {' '}para el siguiente paso.
         </Typography>
       </Box>
 
-      {/* Resumen de la operación */}
-      <Card sx={{ mb: 4, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-        <CardContent sx={{ p: 3 }}>
-          <Typography 
-            variant="h6" 
-            sx={{ 
-              fontFamily: 'Roboto, sans-serif',
-              fontWeight: 700,
-              color: '#333',
-              mb: 3,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1
-            }}
-          >
-            <PaymentIcon sx={{ color: '#057c39' }} />
-            Resumen de tu operación
-          </Typography>
-
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
-                  Envías:
-                </Typography>
-                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: 18, color: '#057c39' }}>
-                  {amounts.send}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
-                  Recibes:
-                </Typography>
-                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: 18, color: '#057c39' }}>
-                  {amounts.receive}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
-                  Tipo de cambio:
-                </Typography>
-                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#057c39' }}>
-                  {amounts.rateUsed}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
-                  Manguitos:
-                </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700 }}>
-                    {operationData.manguitos}
-                  </Typography>
-                  <Chip 
-                    label="🪙" 
-                    size="small" 
-                    sx={{ 
-                      bgcolor: '#ffd700',
-                      color: '#333',
-                      fontWeight: 700
-                    }}
-                  />
-                </Box>
-              </Box>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
-
-      {/* Instrucciones */}
-      <Card sx={{ mb: 4, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-        <CardContent sx={{ p: 3 }}>
-          <Typography 
-            variant="h6" 
-            sx={{ 
-              fontFamily: 'Roboto, sans-serif',
-              fontWeight: 700,
-              color: '#333',
-              mb: 3,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1
-            }}
-          >
-            <ScheduleIcon sx={{ color: '#057c39' }} />
-            Instrucciones de transferencia
-          </Typography>
-
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Typography 
-              variant="body1" 
-              sx={{ 
-                fontFamily: 'Roboto, sans-serif',
-                fontWeight: 500,
-                color: '#333',
-                lineHeight: 1.6
-              }}
-            >
-              1. Transfiere{' '}
-              <Box component="span" sx={{ fontWeight: 700, color: '#057c39' }}>
-                {formatAmount()}
-              </Box>
-              {' '}desde tu banco{' '}
-              <Box component="span" sx={{ fontWeight: 700, color: '#057c39' }}>
-                {getBankDisplayName()}
-              </Box>
-              {' '}a nuestra cuenta.
-            </Typography>
-            
-            <Typography 
-              variant="body1" 
-              sx={{ 
-                fontFamily: 'Roboto, sans-serif',
-                fontWeight: 500,
-                color: '#333',
-                lineHeight: 1.6
-              }}
-            >
-              2. Guarda el{' '}
-              <Box component="span" sx={{ 
-                fontWeight: 700, 
-                color: '#057c39',
-                textDecoration: 'underline'
-              }}>
-                número de tu operación
-              </Box>
-              {' '}para el siguiente paso.
-            </Typography>
-          </Box>
-        </CardContent>
-      </Card>
-
       {/* Información de la cuenta */}
-      <Card sx={{ mb: 4, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-        <CardContent sx={{ p: 3 }}>
-          <Typography 
-            variant="h6" 
-            sx={{ 
-              fontFamily: 'Roboto, sans-serif',
-              fontWeight: 700,
-              color: '#333',
-              mb: 3,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1
-            }}
-          >
-            <BankIcon sx={{ color: '#057c39' }} />
-            Cuenta de MangosCash
-          </Typography>
+      <Paper sx={{ 
+        p: 3, 
+        borderRadius: 3, 
+        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+        mb: 4,
+        maxWidth: 500,
+        mx: 'auto'
+      }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
+              Banco:
+            </Typography>
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
+              {mangosCashAccount.bank} - {mangosCashAccount.bankFullName}
+            </Typography>
+          </Box>
 
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
-                Banco:
-              </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
+              Número de cuenta:
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
-                {mangosCashAccount.bank} - {mangosCashAccount.bankFullName}
+                {mangosCashAccount.accountNumber}
               </Typography>
-            </Box>
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
-                Número de cuenta:
-              </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
-                  {mangosCashAccount.accountNumber}
-                </Typography>
-                <IconButton 
-                  size="small"
-                  onClick={() => handleCopy(mangosCashAccount.accountNumber, 'Número de cuenta')}
-                  sx={{ color: '#1976d2' }}
-                >
-                  <CopyIcon fontSize="small" />
-                </IconButton>
-              </Box>
-            </Box>
-
-            {shouldShowCCI() && (
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
-                  CCI:
-                </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
-                    {mangosCashAccount.cci}
-                  </Typography>
-                  <IconButton 
-                    size="small"
-                    onClick={() => handleCopy(mangosCashAccount.cci, 'CCI')}
-                    sx={{ color: '#1976d2' }}
-                  >
-                    <CopyIcon fontSize="small" />
-                  </IconButton>
-                </Box>
-              </Box>
-            )}
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
-                RUC:
-              </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
-                  {mangosCashAccount.ruc}
-                </Typography>
-                <IconButton 
-                  size="small"
-                  onClick={() => handleCopy(mangosCashAccount.ruc, 'RUC')}
-                  sx={{ color: '#1976d2' }}
-                >
-                  <CopyIcon fontSize="small" />
-                </IconButton>
-              </Box>
-            </Box>
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
-                Titular de la cuenta:
-              </Typography>
-              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
-                {mangosCashAccount.accountHolder}
-              </Typography>
-            </Box>
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
-                Tipo de Cuenta:
-              </Typography>
-              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
-                {mangosCashAccount.accountType} - {operationData.fromCurrency === 'PEN' ? 'soles' : 'dólares'}
-              </Typography>
+              <IconButton 
+                size="small"
+                onClick={() => handleCopy(mangosCashAccount.accountNumber, 'Número de cuenta')}
+                sx={{ color: '#1976d2' }}
+              >
+                <CopyIcon fontSize="small" />
+              </IconButton>
             </Box>
           </Box>
-        </CardContent>
-      </Card>
 
-      {/* Información de seguridad */}
-      <Card sx={{ mb: 4, borderRadius: 3, boxShadow: '0 4px 20px rgba(0,0,0,0.08)', bgcolor: '#f8f9fa' }}>
-        <CardContent sx={{ p: 3 }}>
-          <Typography 
-            variant="h6" 
-            sx={{ 
-              fontFamily: 'Roboto, sans-serif',
-              fontWeight: 700,
-              color: '#333',
-              mb: 2,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1
-            }}
-          >
-            <SecurityIcon sx={{ color: '#057c39' }} />
-            Información de seguridad
-          </Typography>
-          
-          <Typography 
-            variant="body2" 
-            sx={{ 
-              fontFamily: 'Roboto, sans-serif',
-              color: '#666',
-              lineHeight: 1.6
-            }}
-          >
-            • Solo transfiere a cuentas a nombre de MangosCash SAC
-            <br />
-            • Guarda el comprobante de transferencia
-            <br />
-            • El proceso puede tomar hasta 15 minutos en transferencias inmediatas
-            <br />
-            • Para transferencias interbancarias puede tomar hasta 1 día hábil
-          </Typography>
-        </CardContent>
-      </Card>
+          {shouldShowCCI() && (
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
+                CCI:
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
+                  {mangosCashAccount.cci}
+                </Typography>
+                <IconButton 
+                  size="small"
+                  onClick={() => handleCopy(mangosCashAccount.cci, 'CCI')}
+                  sx={{ color: '#1976d2' }}
+                >
+                  <CopyIcon fontSize="small" />
+                </IconButton>
+              </Box>
+            </Box>
+          )}
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
+              RUC:
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
+                {mangosCashAccount.ruc}
+              </Typography>
+              <IconButton 
+                size="small"
+                onClick={() => handleCopy(mangosCashAccount.ruc, 'RUC')}
+                sx={{ color: '#1976d2' }}
+              >
+                <CopyIcon fontSize="small" />
+              </IconButton>
+            </Box>
+          </Box>
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
+              Titular de la cuenta:
+            </Typography>
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
+              {mangosCashAccount.accountHolder}
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
+              Tipo de Cuenta:
+            </Typography>
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
+              {mangosCashAccount.accountType} - {operationData.fromCurrency === 'PEN' ? 'soles' : 'dólares'}
+            </Typography>
+          </Box>
+        </Box>
+      </Paper>
+
+      {/* Link al detalle */}
+      <Link 
+        href="#" 
+        sx={{ 
+          fontFamily: 'Roboto, sans-serif',
+          color: '#666',
+          textDecoration: 'underline',
+          mb: 4,
+          display: 'inline-block'
+        }}
+      >
+        Detalle de tu operación
+      </Link>
 
       {/* Botón principal */}
-      <Box sx={{ textAlign: 'center', mb: 4 }}>
-        <Button
-          variant="contained"
-          fullWidth
-          sx={{
-            bgcolor: '#57C9A6',
-            color: 'white',
-            fontWeight: 700,
-            py: 2.5,
-            borderRadius: 3,
-            textTransform: 'none',
-            fontSize: 18,
-            maxWidth: 400,
-            boxShadow: '0 4px 20px rgba(87, 201, 166, 0.3)',
-            '&:hover': {
-              bgcolor: '#3bbd8c',
-              boxShadow: '0 6px 25px rgba(87, 201, 166, 0.4)',
-            }
-          }}
-        >
-          YA HICE MI TRANSFERENCIA
-        </Button>
-      </Box>
+      <Button
+        variant="contained"
+        fullWidth
+        sx={{
+          bgcolor: '#57C9A6',
+          color: 'white',
+          fontWeight: 700,
+          py: 2,
+          borderRadius: 2,
+          textTransform: 'none',
+          fontSize: 16,
+          maxWidth: 400,
+          '&:hover': {
+            bgcolor: '#3bbd8c',
+          }
+        }}
+      >
+        YA HICE MI TRANSFERENCIA
+      </Button>
 
       {/* WhatsApp flotante */}
       <Box sx={{ 

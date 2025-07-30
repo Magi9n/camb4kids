@@ -32,5 +32,7 @@ api.interceptors.response.use(
   }
 );
 
+export const registrarOperacion = (data) => api.post('/operations', data);
+
 export default api; 
  
