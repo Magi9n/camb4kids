@@ -1,60 +1,55 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AuthModule } from './modules/auth/auth.module';
 import { RatesModule } from './modules/rates/rates.module';
-import { OrdersModule } from './modules/orders/orders.module';
-import { AdminModule } from './modules/admin/admin.module';
-import { CacheModule } from './common/cache.module';
+import { AlertsModule } from './modules/alerts/alerts.module';
 import { User } from './modules/auth/entities/user.entity';
 import { PasswordReset } from './modules/auth/entities/password-reset.entity';
-import { BankAccount } from './modules/auth/entities/bank-account.entity';
-import { Order } from './modules/orders/entities/order.entity';
-import { ExchangeRate } from './modules/rates/entities/exchange-rate.entity';
-import { AdminSetting } from './modules/admin/entities/admin-setting.entity';
-import { AlertsModule } from './modules/alerts/alerts.module';
-import { Alert } from './modules/alerts/alert.entity';
-import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
-import { Subscription } from './modules/subscriptions/subscription.entity';
 import { EmailChange } from './modules/auth/entities/email-change.entity';
+import { BankAccount } from './modules/auth/entities/bank-account.entity';
+import { MangosCashAccount } from './modules/auth/mangos-cash-account.entity';
+import { Operation } from './modules/auth/operation.entity';
+import { ExchangeRate } from './modules/rates/entities/exchange-rate.entity';
+import { Alert } from './modules/alerts/alert.entity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ 
+    ConfigModule.forRoot({
       isGlobal: true,
     }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'mysql',
-        host: config.get('DB_HOST'),
-        port: parseInt(config.get('DB_PORT', '3306')),
-        username: config.get('DB_USERNAME'),
-        password: config.get('DB_PASSWORD'),
-        database: config.get('DB_DATABASE'),
-        entities: [User, PasswordReset, BankAccount, Order, ExchangeRate, AdminSetting, Alert, Subscription, EmailChange],
-        migrations: [
-          config.get('NODE_ENV') === 'development'
-            ? 'src/migrations/*.ts'
-            : 'dist/migrations/*.js'
-        ],
-        migrationsRun: false,
-        synchronize: false,
-        logging: config.get('NODE_ENV') === 'development',
-      }),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      entities: [
+        User, 
+        PasswordReset, 
+        EmailChange, 
+        BankAccount,
+        MangosCashAccount,
+        Operation,
+        ExchangeRate, 
+        Alert
+      ],
+      synchronize: false,
+      logging: false,
     }),
     ScheduleModule.forRoot(),
-    ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
-    CacheModule,
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 10,
+      },
+    ]),
     AuthModule,
     RatesModule,
-    OrdersModule,
-    AdminModule,
     AlertsModule,
-    SubscriptionsModule,
   ],
 })
 export class AppModule {} 

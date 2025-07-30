@@ -24,6 +24,7 @@ import {
 } from '@mui/icons-material';
 import AccountSelectionStep from '../components/AccountSelectionStep';
 import TransactionSummary from '../components/TransactionSummary';
+import TransferStep from '../components/TransferStep';
 import CountdownTimer from '../components/CountdownTimer';
 import api from '../services/api';
 
@@ -252,7 +253,7 @@ const OperationFlowPage = () => {
         );
       case 1:
         return (
-          <TransactionSummary
+          <TransferStep
             operationData={operationData}
             onPriceUpdate={handlePriceUpdate}
           />
@@ -454,6 +455,15 @@ const OperationFlowPage = () => {
                 </Typography>
                 <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
                   {operationData.toAccount?.bank} - {operationData.toCurrency === 'PEN' ? 'Soles' : 'Dólares'}
+                </Typography>
+              </Box>
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
+                  Número de cuenta destino:
+                </Typography>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
+                  {operationData.toAccount?.accountNumber}
                 </Typography>
               </Box>
 
