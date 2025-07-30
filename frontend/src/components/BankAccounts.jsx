@@ -47,11 +47,46 @@ import Lottie from 'lottie-react';
 import cuentasBankAnim from '../assets/cuentasbank.json';
 
 // Componente para el Lottie
-const LottieAnimation = () => (
-  <Box sx={{ width: 240, height: 240, display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto' }}>
-    <Lottie animationData={cuentasBankAnim} loop={true} style={{ width: '100%', height: '100%' }} />
-  </Box>
-);
+const LottieAnimation = () => {
+  const [hasError, setHasError] = useState(false);
+
+  if (hasError) {
+    return (
+      <Box sx={{ 
+        width: 240, 
+        height: 240, 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        mx: 'auto',
+        bgcolor: '#f5f5f5',
+        borderRadius: '50%'
+      }}>
+        <Typography sx={{ color: '#666', fontSize: 14 }}>
+          🏦
+        </Typography>
+      </Box>
+    );
+  }
+
+  return (
+    <Box sx={{ 
+      width: 240, 
+      height: 240, 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center', 
+      mx: 'auto' 
+    }}>
+      <Lottie 
+        animationData={cuentasBankAnim} 
+        loop={true} 
+        style={{ width: '100%', height: '100%' }}
+        onError={() => setHasError(true)}
+      />
+    </Box>
+  );
+};
 
 const BankAccounts = ({ isModal = false, onAccountAdded }) => {
   const [accounts, setAccounts] = useState([]);
@@ -89,16 +124,31 @@ const BankAccounts = ({ isModal = false, onAccountAdded }) => {
   ];
 
   useEffect(() => {
-    setTimeout(() => setShowContent(true), 300);
-    loadAccounts();
+    const initializeComponent = async () => {
+      try {
+        setTimeout(() => setShowContent(true), 300);
+        await loadAccounts();
+      } catch (error) {
+        console.error('Error inicializando componente BankAccounts:', error);
+        setShowContent(true); // Mostrar contenido incluso si hay error
+      }
+    };
+
+    initializeComponent();
   }, []);
 
   const loadAccounts = async () => {
     try {
       const response = await api.get('/bank-accounts');
-      setAccounts(response.data);
+      if (response && response.data) {
+        setAccounts(response.data);
+      } else {
+        setAccounts([]);
+      }
     } catch (error) {
       console.error('Error cargando cuentas:', error);
+      setAccounts([]);
+      // No mostrar snackbar aquí para evitar spam de errores
     }
   };
 
@@ -171,13 +221,29 @@ const BankAccounts = ({ isModal = false, onAccountAdded }) => {
         
         // Llamar callback si existe
         if (onAccountAdded) {
-          onAccountAdded();
+          try {
+            onAccountAdded();
+          } catch (callbackError) {
+            console.error('Error en callback onAccountAdded:', callbackError);
+          }
         }
       }
+      
+      // Cerrar modal primero
       handleCloseModal();
-      loadAccounts();
+      
+      // Recargar cuentas después de un pequeño delay para evitar problemas de renderizado
+      setTimeout(() => {
+        loadAccounts();
+      }, 100);
+      
     } catch (error) {
-      setSnackbar({ open: true, message: 'Error al guardar la cuenta', severity: 'error' });
+      console.error('Error al guardar la cuenta:', error);
+      setSnackbar({ 
+        open: true, 
+        message: error.response?.data?.message || 'Error al guardar la cuenta', 
+        severity: 'error' 
+      });
     }
   };
 
@@ -205,10 +271,10 @@ const BankAccounts = ({ isModal = false, onAccountAdded }) => {
     return bank?.logo || null;
   };
 
-  const solesAccounts = accounts.filter(account => account.currency === 'soles');
-  const dollarsAccounts = accounts.filter(account => account.currency === 'dollars');
+  const solesAccounts = accounts?.filter(account => account.currency === 'soles') || [];
+  const dollarsAccounts = accounts?.filter(account => account.currency === 'dollars') || [];
 
-  const hasAccounts = accounts.length > 0;
+  const hasAccounts = accounts && accounts.length > 0;
 
   // Si es modal, solo mostrar el formulario
   if (isModal) {
