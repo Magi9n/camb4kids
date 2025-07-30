@@ -9,8 +9,21 @@ import {
 import api from '../services/api';
 
 const TransactionSummary = ({ operationData, onPriceUpdate }) => {
-  const [currentRate, setCurrentRate] = useState(operationData.currentRate);
   const [priceUpdated, setPriceUpdated] = useState(false);
+
+  // Usar el currentRate del operationData en lugar de un estado local
+  const currentRate = operationData.currentRate;
+
+  // Actualizar el estado local cuando cambie el rate
+  useEffect(() => {
+    if (operationData.priceUpdated) {
+      setPriceUpdated(true);
+      // Resetear el estado después de 5 segundos
+      setTimeout(() => {
+        setPriceUpdated(false);
+      }, 5000);
+    }
+  }, [operationData.currentRate, operationData.priceUpdated]);
 
   // Calcular montos según el tipo de cambio congelado
   const calculateAmounts = () => {
@@ -43,45 +56,6 @@ const TransactionSummary = ({ operationData, onPriceUpdate }) => {
   };
 
   const amounts = calculateAmounts();
-
-  // Función para actualizar precio cuando expire el timer (llamada desde el header)
-  const handleTimerExpired = async () => {
-    try {
-      // Obtener el tipo de cambio más reciente
-      const [rateRes, marginsRes] = await Promise.all([
-        api.get('/rates/current'),
-        api.get('/admin/public-margins')
-      ]);
-
-      const newRate = rateRes.data.rate;
-      const { buyPercent, sellPercent } = marginsRes.data;
-
-      // Validar que el nuevo rate sea válido
-      if (newRate && !isNaN(newRate)) {
-        setCurrentRate(newRate);
-        setPriceUpdated(true);
-        onPriceUpdate(newRate);
-
-        console.log('Precio actualizado:', {
-          newRate,
-          buyPercent,
-          sellPercent,
-          fromCurrency: operationData.fromCurrency,
-          toCurrency: operationData.toCurrency
-        });
-      } else {
-        console.error('Rate inválido recibido:', newRate);
-      }
-    } catch (error) {
-      console.error('Error actualizando precio:', error);
-    }
-  };
-
-  // Escuchar cuando el timer expire desde el header
-  useEffect(() => {
-    // Este efecto se ejecutará cuando el timer expire en el header
-    // y se llame a onPriceUpdate
-  }, [operationData.currentRate]);
 
   return (
     <Box>

@@ -145,13 +145,39 @@ const OperationFlowPage = () => {
     }));
   };
 
-  const handlePriceUpdate = (newRate) => {
-    if (newRate && !isNaN(newRate)) {
-      setOperationData(prev => ({
-        ...prev,
-        currentRate: newRate,
-        priceUpdated: true
-      }));
+  const handlePriceUpdate = async () => {
+    try {
+      // Obtener el tipo de cambio más reciente
+      const [rateRes, marginsRes] = await Promise.all([
+        api.get('/rates/current'),
+        api.get('/admin/public-margins')
+      ]);
+
+      const newRate = rateRes.data.rate;
+      const { buyPercent, sellPercent } = marginsRes.data;
+
+      // Validar que el nuevo rate sea válido
+      if (newRate && !isNaN(newRate)) {
+        setOperationData(prev => ({
+          ...prev,
+          currentRate: newRate,
+          priceUpdated: true,
+          buyPercent,
+          sellPercent
+        }));
+
+        console.log('Precio actualizado en OperationFlowPage:', {
+          newRate,
+          buyPercent,
+          sellPercent,
+          fromCurrency: operationData.fromCurrency,
+          toCurrency: operationData.toCurrency
+        });
+      } else {
+        console.error('Rate inválido recibido:', newRate);
+      }
+    } catch (error) {
+      console.error('Error actualizando precio en OperationFlowPage:', error);
     }
   };
 
