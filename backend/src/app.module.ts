@@ -19,6 +19,7 @@ import { Alert } from './modules/alerts/alert.entity';
 import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
 import { Subscription } from './modules/subscriptions/subscription.entity';
 import { EmailChange } from './modules/auth/entities/email-change.entity';
+import { RatesGateway } from './modules/rates/rates.gateway';
 
 @Module({
   imports: [
@@ -56,5 +57,6 @@ import { EmailChange } from './modules/auth/entities/email-change.entity';
     AlertsModule,
     SubscriptionsModule,
   ],
+  providers: [RatesGateway],
 })
 export class AppModule {} 
