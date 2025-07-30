@@ -95,7 +95,7 @@ let RatesService = RatesService_1 = class RatesService {
         this.fetchRate();
         setInterval(() => {
             this.fetchRate();
-        }, 108000);
+        }, 60000);
     }
     async getCurrent() {
         var _a, _b;

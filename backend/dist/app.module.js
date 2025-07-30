@@ -27,6 +27,7 @@ const alerts_module_1 = require("./modules/alerts/alerts.module");
 const alert_entity_1 = require("./modules/alerts/alert.entity");
 const subscriptions_module_1 = require("./modules/subscriptions/subscriptions.module");
 const subscription_entity_1 = require("./modules/subscriptions/subscription.entity");
+const email_change_entity_1 = require("./modules/auth/entities/email-change.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -46,7 +47,7 @@ exports.AppModule = AppModule = __decorate([
                     username: config.get('DB_USERNAME'),
                     password: config.get('DB_PASSWORD'),
                     database: config.get('DB_DATABASE'),
-                    entities: [user_entity_1.User, password_reset_entity_1.PasswordReset, bank_account_entity_1.BankAccount, order_entity_1.Order, exchange_rate_entity_1.ExchangeRate, admin_setting_entity_1.AdminSetting, alert_entity_1.Alert, subscription_entity_1.Subscription],
+                    entities: [user_entity_1.User, password_reset_entity_1.PasswordReset, bank_account_entity_1.BankAccount, order_entity_1.Order, exchange_rate_entity_1.ExchangeRate, admin_setting_entity_1.AdminSetting, alert_entity_1.Alert, subscription_entity_1.Subscription, email_change_entity_1.EmailChange],
                     migrations: [
                         config.get('NODE_ENV') === 'development'
                             ? 'src/migrations/*.ts'
