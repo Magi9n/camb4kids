@@ -165,22 +165,8 @@ const Header = () => {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <Box
-              onClick={() => handleMenuOption('/')}
-              sx={{
-                px: 2,
-                py: 1.5,
-                cursor: 'pointer',
-                fontFamily: 'Roboto, sans-serif',
-                fontSize: 14,
-                fontWeight: 500,
-                '&:hover': {
-                  bgcolor: 'rgba(5, 124, 57, 0.08)'
-                }
-              }}
-            >
-              🏠 Inicio
-            </Box>
+            {/* Eliminar Inicio y Dashboard */}
+            {/* Cambiar Divisas: /dashboard */}
             <Box
               onClick={() => handleMenuOption('/dashboard')}
               sx={{
@@ -195,26 +181,11 @@ const Header = () => {
                 }
               }}
             >
-              📊 Dashboard
-            </Box>
-            <Box
-              onClick={() => handleMenuOption('/cambiar-divisas')}
-              sx={{
-                px: 2,
-                py: 1.5,
-                cursor: 'pointer',
-                fontFamily: 'Roboto, sans-serif',
-                fontSize: 14,
-                fontWeight: 500,
-                '&:hover': {
-                  bgcolor: 'rgba(5, 124, 57, 0.08)'
-                }
-              }}
-            >
               💱 Cambiar Divisas
             </Box>
+            {/* Mis Cuentas: /dashboard?menu=cuentas */}
             <Box
-              onClick={() => handleMenuOption('/mis-cuentas')}
+              onClick={() => handleMenuOption('/dashboard?menu=cuentas')}
               sx={{
                 px: 2,
                 py: 1.5,
@@ -229,8 +200,9 @@ const Header = () => {
             >
               🏦 Mis Cuentas
             </Box>
+            {/* Mis Alertas: /dashboard?menu=alertas */}
             <Box
-              onClick={() => handleMenuOption('/mis-alertas')}
+              onClick={() => handleMenuOption('/dashboard?menu=alertas')}
               sx={{
                 px: 2,
                 py: 1.5,
@@ -245,8 +217,9 @@ const Header = () => {
             >
               🔔 Mis Alertas
             </Box>
+            {/* Configuración: /dashboard?menu=perfil */}
             <Box
-              onClick={() => handleMenuOption('/configuracion')}
+              onClick={() => handleMenuOption('/dashboard?menu=perfil')}
               sx={{
                 px: 2,
                 py: 1.5,

@@ -60,7 +60,7 @@ import {
   Delete as DeleteIcon
 } from '@mui/icons-material';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LOGOMANGOCASHPARADO from '../assets/LOGOMANGOCASHPARADO.svg';
 import bcpLogo from '../assets/bcp.svg';
 import interbankLogo from '../assets/interbank.svg';
@@ -193,8 +193,11 @@ const ManguitosToggle = ({ isOpen = true }) => {
 const UserPanel = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const menuParam = params.get('menu');
+  const [selectedMenu, setSelectedMenu] = useState(menuParam || 'dashboard');
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedMenu, setSelectedMenu] = useState('dashboard');
   const [couponCode, setCouponCode] = useState('');
   const [manguitos, setManguitos] = useState(2000);
   const [swap, setSwap] = useState(false);
@@ -215,6 +218,23 @@ const UserPanel = () => {
     loadAlerts();
   };
   useEffect(() => { if (selectedMenu === 'alertas') loadAlerts(); }, [selectedMenu]);
+
+  // Sincronizar selectedMenu con el parámetro de la URL
+  useEffect(() => {
+    if (menuParam && menuParam !== selectedMenu) {
+      setSelectedMenu(menuParam);
+    }
+  }, [menuParam]);
+
+  // Cuando el usuario navega desde el menú lateral, actualizar la URL
+  const handleMenuSelect = (menuId) => {
+    setSelectedMenu(menuId);
+    if (menuId === 'dashboard') {
+      navigate('/dashboard');
+    } else {
+      navigate(`/dashboard?menu=${menuId}`);
+    }
+  };
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -261,6 +281,8 @@ const UserPanel = () => {
     { id: 'manguitos', text: 'Mis Manguitos', icon: <WalletIcon /> },
     { id: 'perfil', text: 'Mi Perfil', icon: <PersonIcon /> },
     { id: 'ayuda', text: 'Ayuda', icon: <HelpIcon /> },
+    // Cerrar Sesión como último item
+    { id: 'logout', text: 'Cerrar Sesión', icon: <LogoutIcon />, logout: true },
   ];
 
   // Renderizar contenido según el menú seleccionado
@@ -555,12 +577,12 @@ const UserPanel = () => {
           />
         </Box>
         
-        <List sx={{ pt: 2, pb: 10 }}>
-          {menuItems.map((item) => (
+        <List sx={{ pt: 2, pb: 10, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+          {menuItems.map((item, idx) => (
             <ListItem
               key={item.id}
               button
-              onClick={() => setSelectedMenu(item.id)}
+              onClick={() => handleMenuSelect(item.id)}
               sx={{
                 bgcolor: selectedMenu === item.id ? '#f5f5f5' : 'transparent',
                 '&:hover': {
@@ -568,10 +590,13 @@ const UserPanel = () => {
                 },
                 py: 1.5,
                 px: 3,
+                mt: item.logout ? 'auto' : 0,
+                borderTop: item.logout ? '1px solid #eee' : 'none',
+                color: item.logout ? '#ff4757' : undefined,
               }}
             >
               <ListItemIcon sx={{ 
-                color: selectedMenu === item.id ? '#057c39' : '#666',
+                color: item.logout ? '#ff4757' : (selectedMenu === item.id ? '#057c39' : '#666'),
                 minWidth: 40 
               }}>
                 {item.icon}
@@ -582,48 +607,13 @@ const UserPanel = () => {
                   '& .MuiTypography-root': {
                     fontSize: 14,
                     fontWeight: selectedMenu === item.id ? 600 : 400,
-                    color: selectedMenu === item.id ? '#057c39' : '#333',
+                    color: item.logout ? '#ff4757' : (selectedMenu === item.id ? '#057c39' : '#333'),
                   }
                 }}
               />
             </ListItem>
           ))}
         </List>
-        <Box sx={{
-          position: 'absolute',
-          bottom: 24,
-          left: 0,
-          width: '100%',
-          px: 3,
-          display: 'flex',
-          justifyContent: 'center',
-          boxSizing: 'border-box',
-          overflowX: 'hidden'
-        }}>
-          <Button
-            variant="contained"
-            startIcon={<LogoutIcon />}
-            onClick={handleLogout}
-            sx={{
-              bgcolor: '#ff4757',
-              color: 'white',
-              fontWeight: 600,
-              borderRadius: 2,
-              minWidth: 0,
-              px: 3,
-              py: 1,
-              fontSize: 14,
-              textTransform: 'none',
-              boxShadow: '0 2px 8px rgba(255,71,87,0.15)',
-              '&:hover': {
-                bgcolor: '#e84118',
-              },
-              mt: 2
-            }}
-          >
-            Cerrar Sesión
-          </Button>
-        </Box>
       </Drawer>
 
       {/* Main Content */}
