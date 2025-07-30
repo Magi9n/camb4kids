@@ -660,6 +660,33 @@ const BankAccounts = ({ isModal = false, onAccountAdded }) => {
                     </Accordion>
                   </Paper>
                 </Box>
+                
+                {/* Botón para agregar cuenta después de las cuentas existentes */}
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                  <Button
+                    variant="contained"
+                    startIcon={<AddIcon />}
+                    onClick={() => handleOpenModal()}
+                    sx={{
+                      bgcolor: '#57C9A6',
+                      color: 'white',
+                      borderRadius: 999,
+                      px: 3,
+                      py: 1.5,
+                      boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                      '&:hover': {
+                        bgcolor: '#3bbd8c',
+                        boxShadow: '0 6px 25px rgba(0,0,0,0.2)',
+                      },
+                      fontFamily: 'Roboto, sans-serif',
+                      fontWeight: 700,
+                      textTransform: 'none',
+                      fontSize: 16
+                    }}
+                  >
+                    Agregar cuenta
+                  </Button>
+                </Box>
               </Grow>
             ) : (
               // Estado sin cuentas
