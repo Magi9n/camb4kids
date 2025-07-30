@@ -9,14 +9,15 @@ class SocketService {
   connect() {
     if (this.socket) return;
 
-    // URL del backend - ajustar según el entorno
+    // URL del backend - usar HTTP para evitar problemas de SSL
     const backendUrl = window.location.hostname === 'localhost' 
       ? 'http://localhost:3000' 
-      : 'https://cambio.mate4kids.com';
+      : 'http://cambio.mate4kids.com';
 
     this.socket = io(backendUrl, {
       transports: ['websocket', 'polling'],
       autoConnect: true,
+      path: '/socket.io/',
     });
 
     this.socket.on('connect', () => {
