@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Inject, forwardRef, Optional } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between } from 'typeorm';
 import { ExchangeRate } from './entities/exchange-rate.entity';
@@ -6,6 +6,7 @@ import { Cron } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import Redis from 'ioredis';
+import { RatesGateway } from './rates.gateway';
 
 @Injectable()
 export class RatesService {
@@ -17,6 +18,8 @@ export class RatesService {
     @InjectRepository(ExchangeRate)
     private readonly rateRepo: Repository<ExchangeRate>,
     private readonly configService: ConfigService,
+    @Optional() @Inject(forwardRef(() => RatesGateway))
+    private ratesGateway?: RatesGateway,
   ) {
     this.redis = new Redis({ 
       host: this.configService.get('REDIS_HOST') || 'localhost', 
@@ -90,6 +93,10 @@ export class RatesService {
       }
       
       await this.redis.set('EXCHANGE_RATE_USD_PEN', rate, 'EX', 70);
+      // Emitir por WebSocket si existe el gateway
+      if (this.ratesGateway) {
+        this.ratesGateway.emitRateUpdate(rate);
+      }
       this.logger.log(`Tasa actualizada: ${rate}`);
     } catch (e) {
       this.logger.error('Error al actualizar tasa', e);
@@ -108,11 +115,9 @@ export class RatesService {
   }
 
   async getCurrent() {
-    let rate = await this.redis.get('EXCHANGE_RATE_USD_PEN');
-    if (!rate) {
-      const last = await this.rateRepo.find({ order: { createdAt: 'DESC' }, take: 1 });
-      rate = last[0]?.rate?.toString() || null;
-    }
+    // Eliminar cache: siempre consultar la base de datos
+    const last = await this.rateRepo.find({ order: { createdAt: 'DESC' }, take: 1 });
+    const rate = last[0]?.rate?.toString() || null;
     return { rate: rate ? parseFloat(rate) : null };
   }
 

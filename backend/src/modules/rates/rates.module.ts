@@ -3,11 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RatesService } from './rates.service';
 import { RatesController } from './rates.controller';
 import { ExchangeRate } from './entities/exchange-rate.entity';
+import { RatesGateway } from './rates.gateway';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ExchangeRate])],
+  providers: [RatesService, RatesGateway],
   controllers: [RatesController],
-  providers: [RatesService],
-  exports: [RatesService],
+  exports: [RatesService, RatesGateway],
 })
 export class RatesModule {} 

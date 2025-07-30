@@ -7,12 +7,12 @@ import axios from 'axios';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 import peruFlag from '../assets/peru.svg';
 import usaFlag from '../assets/USA.svg';
+import { useRealTimeRate } from '../hooks/useRealTimeRate';
 
-const API_RATE = '/api/rates/current';
 const API_MARGINS = '/api/admin/public-margins';
 
 const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swapActive, onPenChange }) => {
-  const [rate, setRate] = useState(null);
+  const { currentRate, rateWithMargin, isConnected } = useRealTimeRate();
   const [buyPercent, setBuyPercent] = useState(1);
   const [sellPercent, setSellPercent] = useState(1);
   const [pen, setPen] = useState('1000');
@@ -21,24 +21,23 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
   const [error, setError] = useState('');
   const [editing, setEditing] = useState('send');
 
+  // Usar el tipo de cambio en tiempo real con margen aplicado
+  const rate = rateWithMargin;
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchMargins = async () => {
       try {
         setLoading(true);
-        const [rateRes, marginsRes] = await Promise.all([
-          axios.get(API_RATE),
-          axios.get(API_MARGINS),
-        ]);
-        setRate(rateRes.data.rate);
+        const marginsRes = await axios.get(API_MARGINS);
         setBuyPercent(marginsRes.data.buyPercent || 1);
         setSellPercent(marginsRes.data.sellPercent || 1);
         setLoading(false);
       } catch (err) {
-        setError('No se pudo obtener la tasa de cambio.');
+        setError('No se pudo obtener la configuración de márgenes.');
         setLoading(false);
       }
     };
-    fetchData();
+    fetchMargins();
   }, []);
 
   // Notificar al padre cada vez que pen cambie
@@ -112,7 +111,7 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
   };
 
   // Textos y colores según swap
-  const sendLabel = isSwapped ? 'Enví­as dólares' : 'Enví­as soles';
+  const sendLabel = isSwapped ? 'Envías dólares' : 'Envías soles';
   const receiveLabel = isSwapped ? 'Recibes soles' : 'Recibes dólares';
   const sendValue = isSwapped ? usd : pen;
   const receiveValue = isSwapped ? pen : usd;
@@ -159,7 +158,35 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
         <Typography color="error">{error}</Typography>
       ) : (
         <Box sx={{ position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          {/* Bloque superior: Enví­as */}
+          {/* Indicador de conexión en tiempo real */}
+          {isConnected && (
+            <Box sx={{ 
+              position: 'absolute', 
+              top: -10, 
+              right: 10, 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 0.5,
+              zIndex: 3 
+            }}>
+              <Box sx={{ 
+                width: 8, 
+                height: 8, 
+                borderRadius: '50%', 
+                backgroundColor: '#4CAF50',
+                animation: 'pulse 2s infinite'
+              }} />
+              <Typography sx={{ 
+                fontSize: 12, 
+                color: '#4CAF50', 
+                fontWeight: 500,
+                fontFamily: 'Roboto, sans-serif'
+              }}>
+                En tiempo real
+              </Typography>
+            </Box>
+          )}
+          {/* Bloque superior: Envías */}
           <Box sx={{
             background: sendColor,
             borderRadius: 999,
@@ -272,6 +299,13 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
           </Box>
         </Box>
       )}
+      <style jsx>{`
+        @keyframes pulse {
+          0% { opacity: 1; }
+          50% { opacity: 0.5; }
+          100% { opacity: 1; }
+        }
+      `}</style>
     </Box>
   );
 };
