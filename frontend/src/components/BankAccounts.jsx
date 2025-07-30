@@ -64,7 +64,7 @@ const BankAccounts = ({ isModal = false, onAccountAdded }) => {
     bank: '',
     accountNumber: '',
     accountName: '',
-    currency: 'soles',
+    currency: 'PEN',
     isMine: false
   });
 
@@ -120,7 +120,7 @@ const BankAccounts = ({ isModal = false, onAccountAdded }) => {
         bank: '',
         accountNumber: '',
         accountName: '',
-        currency: 'soles',
+        currency: 'PEN',
         isMine: false
       });
     }
@@ -135,7 +135,7 @@ const BankAccounts = ({ isModal = false, onAccountAdded }) => {
       bank: '',
       accountNumber: '',
       accountName: '',
-      currency: 'soles',
+      currency: 'PEN',
       isMine: false
     });
   };
@@ -205,8 +205,8 @@ const BankAccounts = ({ isModal = false, onAccountAdded }) => {
     return bank?.logo || null;
   };
 
-  const solesAccounts = accounts.filter(account => account.currency === 'soles');
-  const dollarsAccounts = accounts.filter(account => account.currency === 'dollars');
+  const solesAccounts = accounts.filter(account => account.currency === 'PEN');
+  const dollarsAccounts = accounts.filter(account => account.currency === 'USD');
 
   const hasAccounts = accounts.length > 0;
 
@@ -282,8 +282,8 @@ const BankAccounts = ({ isModal = false, onAccountAdded }) => {
               onChange={(e) => handleInputChange('currency', e.target.value)}
               label="Moneda"
             >
-              <MenuItem value="soles">Soles (PEN)</MenuItem>
-              <MenuItem value="dollars">Dólares (USD)</MenuItem>
+              <MenuItem value="PEN">Soles (PEN)</MenuItem>
+              <MenuItem value="USD">Dólares (USD)</MenuItem>
             </Select>
           </FormControl>
 
@@ -831,8 +831,8 @@ const BankAccounts = ({ isModal = false, onAccountAdded }) => {
                 onChange={(e) => handleInputChange('currency', e.target.value)}
                 label="Moneda"
               >
-                <MenuItem value="soles">Soles (PEN)</MenuItem>
-                <MenuItem value="dollars">Dólares (USD)</MenuItem>
+                <MenuItem value="PEN">Soles (PEN)</MenuItem>
+                <MenuItem value="USD">Dólares (USD)</MenuItem>
               </Select>
             </FormControl>
 

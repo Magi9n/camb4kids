@@ -77,6 +77,13 @@ const OperationFlowPage = () => {
         const fromCurrency = isSwapped ? 'USD' : 'PEN';
         const toCurrency = isSwapped ? 'PEN' : 'USD';
         
+        // Determinar el precio a usar según la operación
+        // Si enviamos soles (compramos dólares), usamos precio de venta
+        // Si enviamos dólares (vendemos dólares), usamos precio de compra
+        const operationRate = fromCurrency === 'PEN' 
+          ? rate * sellPercent  // Precio de venta (enviamos soles, recibimos dólares)
+          : rate * buyPercent;  // Precio de compra (enviamos dólares, recibimos soles)
+        
         // Calcular Manguitos (1 por cada dólar)
         const manguitos = fromCurrency === 'USD' 
           ? Math.floor(parseFloat(calculatorData.amount || 0))
@@ -90,12 +97,20 @@ const OperationFlowPage = () => {
           rate,
           buyPercent,
           sellPercent,
+          operationRate, // Precio específico para esta operación
           manguitos,
-          currentRate: rate
+          currentRate: operationRate
         }));
 
         setAccounts(accountsRes.data);
         console.log('Cuentas cargadas en OperationFlowPage:', accountsRes.data);
+        console.log('Datos de operación configurados:', {
+          fromCurrency,
+          toCurrency,
+          operationRate,
+          amount: calculatorData.amount,
+          swap: calculatorData.swap
+        });
         setLoading(false);
       } catch (err) {
         console.error('Error cargando datos:', err);
@@ -163,6 +178,7 @@ const OperationFlowPage = () => {
             onAccountSelection={handleAccountSelection}
             error={error}
             onAccountAdded={handleAccountAdded}
+            onContinue={handleNext}
           />
         );
       case 1:

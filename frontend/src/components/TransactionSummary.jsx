@@ -15,24 +15,24 @@ const TransactionSummary = ({ operationData, onPriceUpdate }) => {
 
   // Calcular montos según el tipo de cambio actualizado
   const calculateAmounts = () => {
-    const { amount, fromCurrency, toCurrency, buyPercent, sellPercent } = operationData;
-    const rate = currentRate || operationData.rate;
+    const { amount, fromCurrency, toCurrency, operationRate } = operationData;
+    const rate = currentRate || operationRate;
     
     if (fromCurrency === 'PEN' && toCurrency === 'USD') {
-      // Enviando soles, recibiendo dólares
-      const receivedAmount = (parseFloat(amount) / (rate * buyPercent)).toFixed(2);
+      // Enviando soles, recibiendo dólares (usando precio de venta)
+      const receivedAmount = (parseFloat(amount) / rate).toFixed(2);
       return {
         send: `${parseFloat(amount).toFixed(2)} S/`,
         receive: `$${receivedAmount}`,
-        rateUsed: (rate * buyPercent).toFixed(3)
+        rateUsed: rate.toFixed(3)
       };
     } else {
-      // Enviando dólares, recibiendo soles
-      const receivedAmount = (parseFloat(amount) * rate * sellPercent).toFixed(2);
+      // Enviando dólares, recibiendo soles (usando precio de compra)
+      const receivedAmount = (parseFloat(amount) * rate).toFixed(2);
       return {
         send: `$${parseFloat(amount).toFixed(2)}`,
         receive: `${receivedAmount} S/`,
-        rateUsed: (rate * sellPercent).toFixed(3)
+        rateUsed: rate.toFixed(3)
       };
     }
   };
