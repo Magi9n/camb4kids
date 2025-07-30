@@ -17,6 +17,10 @@ const TransactionSummary = ({ operationData, onPriceUpdate }) => {
     const { amount, fromCurrency, toCurrency, buyPercent, sellPercent } = operationData;
     const rate = currentRate || operationData.rate;
     
+    if (!rate || isNaN(rate)) {
+      return { send: '0.00', receive: '0.00', rateUsed: '0.0000' };
+    }
+    
     if (fromCurrency === 'PEN' && toCurrency === 'USD') {
       // Enviando soles, recibiendo dólares - usar precio de venta
       const rateUsed = rate * sellPercent;
@@ -24,7 +28,7 @@ const TransactionSummary = ({ operationData, onPriceUpdate }) => {
       return {
         send: `${parseFloat(amount).toFixed(2)} S/`,
         receive: `$${receivedAmount}`,
-        rateUsed: rateUsed.toFixed(3)
+        rateUsed: rateUsed.toFixed(4)
       };
     } else {
       // Enviando dólares, recibiendo soles - usar precio de compra
@@ -33,7 +37,7 @@ const TransactionSummary = ({ operationData, onPriceUpdate }) => {
       return {
         send: `$${parseFloat(amount).toFixed(2)}`,
         receive: `${receivedAmount} S/`,
-        rateUsed: rateUsed.toFixed(3)
+        rateUsed: rateUsed.toFixed(4)
       };
     }
   };
@@ -52,17 +56,22 @@ const TransactionSummary = ({ operationData, onPriceUpdate }) => {
       const newRate = rateRes.data.rate;
       const { buyPercent, sellPercent } = marginsRes.data;
 
-      setCurrentRate(newRate);
-      setPriceUpdated(true);
-      onPriceUpdate(newRate);
+      // Validar que el nuevo rate sea válido
+      if (newRate && !isNaN(newRate)) {
+        setCurrentRate(newRate);
+        setPriceUpdated(true);
+        onPriceUpdate(newRate);
 
-      console.log('Precio actualizado:', {
-        newRate,
-        buyPercent,
-        sellPercent,
-        fromCurrency: operationData.fromCurrency,
-        toCurrency: operationData.toCurrency
-      });
+        console.log('Precio actualizado:', {
+          newRate,
+          buyPercent,
+          sellPercent,
+          fromCurrency: operationData.fromCurrency,
+          toCurrency: operationData.toCurrency
+        });
+      } else {
+        console.error('Rate inválido recibido:', newRate);
+      }
     } catch (error) {
       console.error('Error actualizando precio:', error);
     }

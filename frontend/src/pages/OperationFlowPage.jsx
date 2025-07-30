@@ -9,11 +9,18 @@ import {
   StepLabel,
   Button,
   IconButton,
-  Alert
+  Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Divider,
+  Chip
 } from '@mui/material';
 import { 
   ArrowBack as ArrowBackIcon,
-  Close as CloseIcon
+  Close as CloseIcon,
+  CheckCircle as CheckCircleIcon
 } from '@mui/icons-material';
 import AccountSelectionStep from '../components/AccountSelectionStep';
 import TransactionSummary from '../components/TransactionSummary';
@@ -26,6 +33,7 @@ const OperationFlowPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeStep, setActiveStep] = useState(0);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [operationData, setOperationData] = useState({
     // Datos de la calculadora
     amount: '',
@@ -114,6 +122,9 @@ const OperationFlowPage = () => {
         return;
       }
       setError('');
+      // Mostrar modal de confirmación en lugar de avanzar directamente
+      setShowConfirmationModal(true);
+      return;
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -135,25 +146,72 @@ const OperationFlowPage = () => {
   };
 
   const handlePriceUpdate = (newRate) => {
-    setOperationData(prev => ({
-      ...prev,
-      currentRate: newRate,
-      priceUpdated: true
-    }));
+    if (newRate && !isNaN(newRate)) {
+      setOperationData(prev => ({
+        ...prev,
+        currentRate: newRate,
+        priceUpdated: true
+      }));
+    }
   };
 
-  // Calcular el tipo de cambio congelado
+  const handleConfirmOperation = () => {
+    setShowConfirmationModal(false);
+    setActiveStep(1); // Avanzar al siguiente paso
+  };
+
+  const handleCloseConfirmationModal = () => {
+    setShowConfirmationModal(false);
+  };
+
+  // Calcular el tipo de cambio congelado con 4 decimales
   const getFrozenRate = () => {
     const { fromCurrency, currentRate, buyPercent, sellPercent } = operationData;
     
+    if (!currentRate || isNaN(currentRate)) {
+      return '0.0000';
+    }
+    
     if (fromCurrency === 'PEN') {
       // Enviando soles, usar precio de venta
-      return (currentRate * sellPercent).toFixed(3);
+      return (currentRate * sellPercent).toFixed(4);
     } else {
       // Enviando dólares, usar precio de compra
-      return (currentRate * buyPercent).toFixed(3);
+      return (currentRate * buyPercent).toFixed(4);
     }
   };
+
+  // Calcular montos para el modal de confirmación
+  const calculateAmounts = () => {
+    const { amount, fromCurrency, toCurrency, buyPercent, sellPercent } = operationData;
+    const rate = operationData.currentRate || operationData.rate;
+    
+    if (!rate || isNaN(rate)) {
+      return { send: '0.00', receive: '0.00', rateUsed: '0.0000' };
+    }
+    
+    if (fromCurrency === 'PEN' && toCurrency === 'USD') {
+      // Enviando soles, recibiendo dólares - usar precio de venta
+      const rateUsed = rate * sellPercent;
+      const receivedAmount = (parseFloat(amount) / rateUsed).toFixed(2);
+      return {
+        send: `${parseFloat(amount).toFixed(2)} S/`,
+        receive: `$${receivedAmount}`,
+        rateUsed: rateUsed.toFixed(4)
+      };
+    } else {
+      // Enviando dólares, recibiendo soles - usar precio de compra
+      const rateUsed = rate * buyPercent;
+      const receivedAmount = (parseFloat(amount) * rateUsed).toFixed(2);
+      return {
+        send: `$${parseFloat(amount).toFixed(2)}`,
+        receive: `${receivedAmount} S/`,
+        rateUsed: rateUsed.toFixed(4)
+      };
+    }
+  };
+
+  const amounts = calculateAmounts();
 
   const renderStepContent = (step) => {
     switch (step) {
@@ -316,6 +374,159 @@ const OperationFlowPage = () => {
           </Box>
         )}
       </Paper>
+
+      {/* Modal de Confirmación de Operación */}
+      <Dialog
+        open={showConfirmationModal}
+        onClose={handleCloseConfirmationModal}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+            overflow: 'hidden'
+          }
+        }}
+      >
+        <DialogTitle sx={{ 
+          bgcolor: '#057c39',
+          color: 'white',
+          textAlign: 'center',
+          py: 3
+        }}>
+          <CheckCircleIcon sx={{ fontSize: 40, mb: 1 }} />
+          <Typography sx={{ 
+            fontFamily: 'Roboto, sans-serif', 
+            fontSize: 24, 
+            fontWeight: 700
+          }}>
+            DETALLE DE OPERACIÓN
+          </Typography>
+        </DialogTitle>
+
+        <DialogContent sx={{ p: 4 }}>
+          <Paper sx={{ 
+            p: 3, 
+            bgcolor: '#f8f9fa', 
+            borderRadius: 2,
+            mb: 3
+          }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
+                  Banco origen:
+                </Typography>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
+                  {operationData.fromAccount?.bank} - {operationData.fromCurrency === 'PEN' ? 'Soles' : 'Dólares'}
+                </Typography>
+              </Box>
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
+                  Banco destino:
+                </Typography>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
+                  {operationData.toAccount?.bank} - {operationData.toCurrency === 'PEN' ? 'Soles' : 'Dólares'}
+                </Typography>
+              </Box>
+
+              <Divider sx={{ my: 1 }} />
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
+                  Enviado:
+                </Typography>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: 18 }}>
+                  {amounts.send}
+                </Typography>
+              </Box>
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
+                  Recibido:
+                </Typography>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: 18 }}>
+                  {amounts.receive}
+                </Typography>
+              </Box>
+
+              <Divider sx={{ my: 1 }} />
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
+                  Tipo de cambio:
+                </Typography>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#057c39' }}>
+                  {amounts.rateUsed}
+                </Typography>
+              </Box>
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
+                  Manguitos:
+                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700 }}>
+                    {operationData.manguitos}
+                  </Typography>
+                  <Chip 
+                    label="🪙" 
+                    size="small" 
+                    sx={{ 
+                      bgcolor: '#ffd700',
+                      color: '#333',
+                      fontWeight: 700
+                    }}
+                  />
+                </Box>
+              </Box>
+            </Box>
+          </Paper>
+
+          <Alert severity="info" sx={{ mb: 3 }}>
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontSize: 14 }}>
+              Revisa cuidadosamente los detalles de tu operación antes de confirmar.
+            </Typography>
+          </Alert>
+        </DialogContent>
+
+        <DialogActions sx={{ p: 4, pt: 0, flexDirection: 'column', gap: 2 }}>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={handleConfirmOperation}
+            sx={{
+              bgcolor: '#057c39',
+              color: 'white',
+              fontWeight: 700,
+              py: 2,
+              borderRadius: 2,
+              textTransform: 'none',
+              fontSize: 16,
+              '&:hover': {
+                bgcolor: '#046a30',
+              }
+            }}
+          >
+            ESTOY CONFORME
+          </Button>
+          <Button
+            onClick={handleCloseConfirmationModal}
+            sx={{
+              color: '#666',
+              textDecoration: 'underline',
+              textTransform: 'none',
+              '&:hover': {
+                bgcolor: 'transparent',
+                textDecoration: 'underline'
+              }
+            }}
+          >
+            Volver
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

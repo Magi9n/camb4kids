@@ -17,6 +17,11 @@ const CountdownTimer = ({ duration = 240, onExpired, size = 'normal' }) => {
       if (onExpired) {
         onExpired();
       }
+      // Reiniciar el timer después de 2 segundos
+      setTimeout(() => {
+        setTimeLeft(duration);
+        setIsExpired(false);
+      }, 2000);
       return;
     }
 
@@ -25,7 +30,13 @@ const CountdownTimer = ({ duration = 240, onExpired, size = 'normal' }) => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft, onExpired]);
+  }, [timeLeft, onExpired, duration]);
+
+  // Reiniciar cuando cambie la duración
+  useEffect(() => {
+    setTimeLeft(duration);
+    setIsExpired(false);
+  }, [duration]);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
