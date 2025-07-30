@@ -22,7 +22,7 @@ import {
 } from '@mui/icons-material';
 import BankAccounts from './BankAccounts';
 
-const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, error, onAccountAdded, onContinue }) => {
+const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, error }) => {
   const [showAddAccountModal, setShowAddAccountModal] = useState(false);
   const [fromAccount, setFromAccount] = useState('');
   const [toAccount, setToAccount] = useState('');
@@ -31,53 +31,17 @@ const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, err
   const fromCurrency = operationData.fromCurrency;
   const toCurrency = operationData.toCurrency;
 
-  // Normalizar las monedas para comparación
-  const normalizeCurrency = (currency) => {
-    if (!currency) return '';
-    return currency.toLowerCase().trim();
-  };
-
-  const fromAccounts = accounts.filter(account => {
-    const accountCurrency = normalizeCurrency(account.currency);
-    const targetCurrency = normalizeCurrency(fromCurrency);
-    const matches = accountCurrency === targetCurrency;
-    console.log(`Cuenta ${account.id}: ${accountCurrency} vs ${targetCurrency} = ${matches}`);
-    return matches;
-  });
-
-  const toAccounts = accounts.filter(account => {
-    const accountCurrency = normalizeCurrency(account.currency);
-    const targetCurrency = normalizeCurrency(toCurrency);
-    const matches = accountCurrency === targetCurrency;
-    console.log(`Cuenta ${account.id}: ${accountCurrency} vs ${targetCurrency} = ${matches}`);
-    return matches;
-  });
-
-  console.log('Filtrado de cuentas:', {
-    fromCurrency,
-    toCurrency,
-    allAccounts: accounts.map(acc => ({ id: acc.id, currency: acc.currency, bank: acc.bank })),
-    fromAccounts: fromAccounts.map(acc => ({ id: acc.id, currency: acc.currency, bank: acc.bank })),
-    toAccounts: toAccounts.map(acc => ({ id: acc.id, currency: acc.currency, bank: acc.bank }))
-  });
-
-  console.log('Cuentas disponibles para selección:', {
-    fromAccountsCount: fromAccounts.length,
-    toAccountsCount: toAccounts.length,
-    fromAccountsDetails: fromAccounts,
-    toAccountsDetails: toAccounts
-  });
+  const fromAccounts = accounts.filter(account => account.currency === fromCurrency.toLowerCase());
+  const toAccounts = accounts.filter(account => account.currency === toCurrency.toLowerCase());
 
   const handleFromAccountChange = (event) => {
     const selectedAccount = fromAccounts.find(acc => acc.id === event.target.value);
-    console.log('Cuenta origen seleccionada:', selectedAccount);
     setFromAccount(event.target.value);
     onAccountSelection(selectedAccount, toAccounts.find(acc => acc.id === toAccount));
   };
 
   const handleToAccountChange = (event) => {
     const selectedAccount = toAccounts.find(acc => acc.id === event.target.value);
-    console.log('Cuenta destino seleccionada:', selectedAccount);
     setToAccount(event.target.value);
     onAccountSelection(fromAccounts.find(acc => acc.id === fromAccount), selectedAccount);
   };
@@ -88,13 +52,6 @@ const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, err
 
   const handleCloseModal = () => {
     setShowAddAccountModal(false);
-  };
-
-  const handleAccountAdded = () => {
-    setShowAddAccountModal(false);
-    if (onAccountAdded) {
-      onAccountAdded();
-    }
   };
 
   const getCurrencyLabel = (currency) => {
@@ -208,7 +165,6 @@ const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, err
             '&:hover': { bgcolor: '#046a30' }
           }}
           disabled={!fromAccount || !toAccount}
-          onClick={onContinue}
         >
           Continuar
         </Button>
@@ -262,7 +218,11 @@ const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, err
         <DialogContent sx={{ pt: 2 }}>
           <BankAccounts 
             isModal={true}
-            onAccountAdded={handleAccountAdded}
+            onAccountAdded={() => {
+              handleCloseModal();
+              // Recargar cuentas
+              window.location.reload();
+            }}
           />
         </DialogContent>
       </Dialog>
