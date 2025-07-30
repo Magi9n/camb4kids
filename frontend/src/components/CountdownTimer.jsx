@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import { AccessTime as AccessTimeIcon } from '@mui/icons-material';
 
-const CountdownTimer = ({ duration = 240, onExpired }) => {
+const CountdownTimer = ({ duration = 240, onExpired, size = 'normal' }) => {
   const [timeLeft, setTimeLeft] = useState(duration);
   const [isExpired, setIsExpired] = useState(false);
 
@@ -43,23 +43,54 @@ const CountdownTimer = ({ duration = 240, onExpired }) => {
     return ((duration - timeLeft) / duration) * 100;
   };
 
-  return (
-    <Paper sx={{ 
-      p: 3, 
-      borderRadius: 3, 
-      boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-      bgcolor: isExpired ? '#fff3e0' : '#fff',
-      border: isExpired ? '2px solid #ff9800' : 'none'
-    }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
-        <AccessTimeIcon sx={{ color: getProgressColor(), fontSize: 28 }} />
-        
+  // Configuraciones según el tamaño
+  const getSizeConfig = () => {
+    switch (size) {
+      case 'small':
+        return {
+          paperPadding: 1,
+          iconSize: 16,
+          progressSize: 32,
+          progressThickness: 3,
+          titleVariant: 'body2',
+          subtitleVariant: 'caption',
+          timeVariant: 'body2'
+        };
+      case 'large':
+        return {
+          paperPadding: 4,
+          iconSize: 32,
+          progressSize: 80,
+          progressThickness: 5,
+          titleVariant: 'h5',
+          subtitleVariant: 'body1',
+          timeVariant: 'h4'
+        };
+      default: // normal
+        return {
+          paperPadding: 3,
+          iconSize: 28,
+          progressSize: 60,
+          progressThickness: 4,
+          titleVariant: 'h6',
+          subtitleVariant: 'body2',
+          timeVariant: 'h6'
+        };
+    }
+  };
+
+  const config = getSizeConfig();
+
+  // Si es tamaño pequeño, mostrar solo el cronómetro sin texto
+  if (size === 'small') {
+    return (
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <Box sx={{ position: 'relative', display: 'inline-flex' }}>
           <CircularProgress
             variant="determinate"
             value={getProgressValue()}
-            size={60}
-            thickness={4}
+            size={config.progressSize}
+            thickness={config.progressThickness}
             sx={{
               color: getProgressColor(),
               '& .MuiCircularProgress-circle': {
@@ -80,7 +111,61 @@ const CountdownTimer = ({ duration = 240, onExpired }) => {
             }}
           >
             <Typography
-              variant="h6"
+              variant={config.timeVariant}
+              component="div"
+              sx={{ 
+                fontFamily: 'Roboto, sans-serif',
+                fontWeight: 700,
+                color: getProgressColor(),
+                fontSize: 10
+              }}
+            >
+              {formatTime(timeLeft)}
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+    );
+  }
+
+  return (
+    <Paper sx={{ 
+      p: config.paperPadding, 
+      borderRadius: 3, 
+      boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+      bgcolor: isExpired ? '#fff3e0' : '#fff',
+      border: isExpired ? '2px solid #ff9800' : 'none'
+    }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+        <AccessTimeIcon sx={{ color: getProgressColor(), fontSize: config.iconSize }} />
+        
+        <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+          <CircularProgress
+            variant="determinate"
+            value={getProgressValue()}
+            size={config.progressSize}
+            thickness={config.progressThickness}
+            sx={{
+              color: getProgressColor(),
+              '& .MuiCircularProgress-circle': {
+                strokeLinecap: 'round',
+              },
+            }}
+          />
+          <Box
+            sx={{
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              position: 'absolute',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Typography
+              variant={config.timeVariant}
               component="div"
               sx={{ 
                 fontFamily: 'Roboto, sans-serif',
@@ -95,7 +180,7 @@ const CountdownTimer = ({ duration = 240, onExpired }) => {
 
         <Box>
           <Typography 
-            variant="h6" 
+            variant={config.titleVariant}
             sx={{ 
               fontFamily: 'Roboto, sans-serif',
               fontWeight: 700,
@@ -105,7 +190,7 @@ const CountdownTimer = ({ duration = 240, onExpired }) => {
             {isExpired ? 'Tiempo agotado' : 'Tiempo restante'}
           </Typography>
           <Typography 
-            variant="body2" 
+            variant={config.subtitleVariant}
             sx={{ 
               color: '#666',
               fontFamily: 'Roboto, sans-serif'

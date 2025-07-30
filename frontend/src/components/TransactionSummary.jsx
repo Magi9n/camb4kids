@@ -6,40 +6,41 @@ import {
   Divider,
   Chip
 } from '@mui/material';
-import CountdownTimer from './CountdownTimer';
 import api from '../services/api';
 
 const TransactionSummary = ({ operationData, onPriceUpdate }) => {
   const [currentRate, setCurrentRate] = useState(operationData.currentRate);
   const [priceUpdated, setPriceUpdated] = useState(false);
 
-  // Calcular montos según el tipo de cambio actualizado
+  // Calcular montos según el tipo de cambio congelado
   const calculateAmounts = () => {
     const { amount, fromCurrency, toCurrency, buyPercent, sellPercent } = operationData;
     const rate = currentRate || operationData.rate;
     
     if (fromCurrency === 'PEN' && toCurrency === 'USD') {
-      // Enviando soles, recibiendo dólares
-      const receivedAmount = (parseFloat(amount) / (rate * buyPercent)).toFixed(2);
+      // Enviando soles, recibiendo dólares - usar precio de venta
+      const rateUsed = rate * sellPercent;
+      const receivedAmount = (parseFloat(amount) / rateUsed).toFixed(2);
       return {
         send: `${parseFloat(amount).toFixed(2)} S/`,
         receive: `$${receivedAmount}`,
-        rateUsed: (rate * buyPercent).toFixed(3)
+        rateUsed: rateUsed.toFixed(3)
       };
     } else {
-      // Enviando dólares, recibiendo soles
-      const receivedAmount = (parseFloat(amount) * rate * sellPercent).toFixed(2);
+      // Enviando dólares, recibiendo soles - usar precio de compra
+      const rateUsed = rate * buyPercent;
+      const receivedAmount = (parseFloat(amount) * rateUsed).toFixed(2);
       return {
         send: `$${parseFloat(amount).toFixed(2)}`,
         receive: `${receivedAmount} S/`,
-        rateUsed: (rate * sellPercent).toFixed(3)
+        rateUsed: rateUsed.toFixed(3)
       };
     }
   };
 
   const amounts = calculateAmounts();
 
-  // Función para actualizar precio cuando expire el timer
+  // Función para actualizar precio cuando expire el timer (llamada desde el header)
   const handleTimerExpired = async () => {
     try {
       // Obtener el tipo de cambio más reciente
@@ -67,6 +68,12 @@ const TransactionSummary = ({ operationData, onPriceUpdate }) => {
     }
   };
 
+  // Escuchar cuando el timer expire desde el header
+  useEffect(() => {
+    // Este efecto se ejecutará cuando el timer expire en el header
+    // y se llame a onPriceUpdate
+  }, [operationData.currentRate]);
+
   return (
     <Box>
       <Typography 
@@ -80,14 +87,6 @@ const TransactionSummary = ({ operationData, onPriceUpdate }) => {
       >
         Resumen de tu operación
       </Typography>
-
-      {/* Cronómetro */}
-      <Box sx={{ mb: 3 }}>
-        <CountdownTimer 
-          duration={4 * 60} // 4 minutos en segundos
-          onExpired={handleTimerExpired}
-        />
-      </Box>
 
       {/* Resumen de transacción */}
       <Paper sx={{ 

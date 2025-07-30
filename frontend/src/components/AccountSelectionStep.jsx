@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -21,18 +21,52 @@ import {
   Close as CloseIcon
 } from '@mui/icons-material';
 import BankAccounts from './BankAccounts';
+import api from '../services/api';
 
 const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, error }) => {
   const [showAddAccountModal, setShowAddAccountModal] = useState(false);
   const [fromAccount, setFromAccount] = useState('');
   const [toAccount, setToAccount] = useState('');
+  const [localAccounts, setLocalAccounts] = useState(accounts);
+
+  // Actualizar cuentas locales cuando cambien las props
+  useEffect(() => {
+    setLocalAccounts(accounts);
+  }, [accounts]);
 
   // Filtrar cuentas según la moneda
   const fromCurrency = operationData.fromCurrency;
   const toCurrency = operationData.toCurrency;
 
-  const fromAccounts = accounts.filter(account => account.currency === fromCurrency.toLowerCase());
-  const toAccounts = accounts.filter(account => account.currency === toCurrency.toLowerCase());
+  // Corregir el filtrado para que funcione con 'soles' y 'dollars'
+  const fromAccounts = localAccounts.filter(account => {
+    if (fromCurrency === 'PEN') {
+      return account.currency === 'soles';
+    } else if (fromCurrency === 'USD') {
+      return account.currency === 'dollars';
+    }
+    return false;
+  });
+
+  const toAccounts = localAccounts.filter(account => {
+    if (toCurrency === 'PEN') {
+      return account.currency === 'soles';
+    } else if (toCurrency === 'USD') {
+      return account.currency === 'dollars';
+    }
+    return false;
+  });
+
+  // Debug logs
+  console.log('AccountSelectionStep Debug:', {
+    fromCurrency,
+    toCurrency,
+    allAccounts: localAccounts,
+    fromAccounts,
+    toAccounts,
+    fromAccountsCount: fromAccounts.length,
+    toAccountsCount: toAccounts.length
+  });
 
   const handleFromAccountChange = (event) => {
     const selectedAccount = fromAccounts.find(acc => acc.id === event.target.value);
@@ -52,6 +86,17 @@ const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, err
 
   const handleCloseModal = () => {
     setShowAddAccountModal(false);
+  };
+
+  // Función para recargar cuentas después de agregar una nueva
+  const handleAccountAdded = async () => {
+    try {
+      const response = await api.get('/bank-accounts');
+      setLocalAccounts(response.data);
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error recargando cuentas:', error);
+    }
   };
 
   const getCurrencyLabel = (currency) => {
@@ -109,11 +154,11 @@ const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, err
       {/* Campos de selección */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mb: 3 }}>
         <FormControl fullWidth>
-          <InputLabel>¿Desde que cuenta nos envías?</InputLabel>
+          <InputLabel>¿Desde que cuenta nos envías? ({getCurrencyLabel(fromCurrency)})</InputLabel>
           <Select
             value={fromAccount}
             onChange={handleFromAccountChange}
-            label="¿Desde que cuenta nos envías?"
+            label={`¿Desde que cuenta nos envías? (${getCurrencyLabel(fromCurrency)})`}
           >
             {fromAccounts.map((account) => (
               <MenuItem key={account.id} value={account.id}>
@@ -124,11 +169,11 @@ const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, err
         </FormControl>
 
         <FormControl fullWidth>
-          <InputLabel>¿En que cuenta recibirás tu cambio?</InputLabel>
+          <InputLabel>¿En que cuenta recibirás tu cambio? ({getCurrencyLabel(toCurrency)})</InputLabel>
           <Select
             value={toAccount}
             onChange={handleToAccountChange}
-            label="¿En que cuenta recibirás tu cambio?"
+            label={`¿En que cuenta recibirás tu cambio? (${getCurrencyLabel(toCurrency)})`}
           >
             {toAccounts.map((account) => (
               <MenuItem key={account.id} value={account.id}>
@@ -155,26 +200,6 @@ const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, err
       >
         Agregar nueva cuenta +
       </Button>
-
-      {/* Botones de acción */}
-      <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
-        <Button
-          variant="contained"
-          sx={{ 
-            bgcolor: '#057c39',
-            '&:hover': { bgcolor: '#046a30' }
-          }}
-          disabled={!fromAccount || !toAccount}
-        >
-          Continuar
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{ color: '#666' }}
-        >
-          Cancelar
-        </Button>
-      </Box>
 
       {/* Error */}
       {error && (
@@ -218,11 +243,7 @@ const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, err
         <DialogContent sx={{ pt: 2 }}>
           <BankAccounts 
             isModal={true}
-            onAccountAdded={() => {
-              handleCloseModal();
-              // Recargar cuentas
-              window.location.reload();
-            }}
+            onAccountAdded={handleAccountAdded}
           />
         </DialogContent>
       </Dialog>

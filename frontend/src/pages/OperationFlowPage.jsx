@@ -142,6 +142,19 @@ const OperationFlowPage = () => {
     }));
   };
 
+  // Calcular el tipo de cambio congelado
+  const getFrozenRate = () => {
+    const { fromCurrency, currentRate, buyPercent, sellPercent } = operationData;
+    
+    if (fromCurrency === 'PEN') {
+      // Enviando soles, usar precio de venta
+      return (currentRate * sellPercent).toFixed(3);
+    } else {
+      // Enviando dólares, usar precio de compra
+      return (currentRate * buyPercent).toFixed(3);
+    }
+  };
+
   const renderStepContent = (step) => {
     switch (step) {
       case 0:
@@ -219,15 +232,53 @@ const OperationFlowPage = () => {
               Operación de Cambio
             </Typography>
           </Box>
-          {activeStep > 0 && (
-            <Button
-              startIcon={<ArrowBackIcon />}
-              onClick={handleBack}
-              sx={{ color: '#666' }}
-            >
-              Atrás
-            </Button>
-          )}
+          
+          {/* Tipo de cambio congelado y cronómetro */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ textAlign: 'right' }}>
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  fontFamily: 'Roboto, sans-serif',
+                  color: '#666',
+                  fontSize: 12
+                }}
+              >
+                Tipo de cambio utilizado:
+              </Typography>
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  fontFamily: 'Roboto, sans-serif',
+                  fontWeight: 700,
+                  color: '#057c39'
+                }}
+              >
+                {getFrozenRate()}
+              </Typography>
+            </Box>
+            
+            {/* Cronómetro */}
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <CountdownTimer 
+                duration={4 * 60} // 4 minutos en segundos
+                onExpired={handlePriceUpdate}
+                size="small"
+              />
+            </Box>
+          </Box>
+          
+          <Box sx={{ minWidth: 80 }}>
+            {activeStep > 0 && (
+              <Button
+                startIcon={<ArrowBackIcon />}
+                onClick={handleBack}
+                sx={{ color: '#666' }}
+              >
+                Atrás
+              </Button>
+            )}
+          </Box>
         </Box>
 
         {/* Stepper */}
