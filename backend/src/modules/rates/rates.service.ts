@@ -70,7 +70,7 @@ export class RatesService {
     throw lastError || new Error('Todos los API keys fallaron');
   }
 
-  // Intervalo personalizado: cada 1 minuto y 48 segundos (108 segundos)
+  // Intervalo personalizado: cada 1 minuto (60 segundos)
   async fetchRate() {
     try {
       const rate = await this.tryFetchRate();
@@ -101,10 +101,10 @@ export class RatesService {
     // Ejecutar inmediatamente
     this.fetchRate();
     
-    // Configurar intervalo de 1 minuto y 48 segundos (108000 ms)
+    // Configurar intervalo de 1 minuto (60000 ms)
     setInterval(() => {
       this.fetchRate();
-    }, 108000);
+    }, 60000);
   }
 
   async getCurrent() {

@@ -22,7 +22,7 @@ import {
 } from '@mui/icons-material';
 import BankAccounts from './BankAccounts';
 
-const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, error }) => {
+const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, error, onAccountAdded }) => {
   const [showAddAccountModal, setShowAddAccountModal] = useState(false);
   const [fromAccount, setFromAccount] = useState('');
   const [toAccount, setToAccount] = useState('');
@@ -31,8 +31,22 @@ const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, err
   const fromCurrency = operationData.fromCurrency;
   const toCurrency = operationData.toCurrency;
 
-  const fromAccounts = accounts.filter(account => account.currency === fromCurrency.toLowerCase());
-  const toAccounts = accounts.filter(account => account.currency === toCurrency.toLowerCase());
+  const fromAccounts = accounts.filter(account => 
+    account.currency?.toLowerCase() === fromCurrency?.toLowerCase() ||
+    account.currency === fromCurrency
+  );
+  const toAccounts = accounts.filter(account => 
+    account.currency?.toLowerCase() === toCurrency?.toLowerCase() ||
+    account.currency === toCurrency
+  );
+
+  console.log('Filtrado de cuentas:', {
+    fromCurrency,
+    toCurrency,
+    allAccounts: accounts,
+    fromAccounts,
+    toAccounts
+  });
 
   const handleFromAccountChange = (event) => {
     const selectedAccount = fromAccounts.find(acc => acc.id === event.target.value);
@@ -52,6 +66,13 @@ const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, err
 
   const handleCloseModal = () => {
     setShowAddAccountModal(false);
+  };
+
+  const handleAccountAdded = () => {
+    setShowAddAccountModal(false);
+    if (onAccountAdded) {
+      onAccountAdded();
+    }
   };
 
   const getCurrencyLabel = (currency) => {
@@ -218,11 +239,7 @@ const AccountSelectionStep = ({ accounts, operationData, onAccountSelection, err
         <DialogContent sx={{ pt: 2 }}>
           <BankAccounts 
             isModal={true}
-            onAccountAdded={() => {
-              handleCloseModal();
-              // Recargar cuentas
-              window.location.reload();
-            }}
+            onAccountAdded={handleAccountAdded}
           />
         </DialogContent>
       </Dialog>

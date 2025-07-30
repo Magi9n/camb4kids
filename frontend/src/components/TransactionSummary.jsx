@@ -69,6 +69,50 @@ const TransactionSummary = ({ operationData, onPriceUpdate }) => {
 
   return (
     <Box>
+      {/* Header con tipo de cambio congelado y cronómetro */}
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        mb: 3,
+        p: 2,
+        bgcolor: '#f8f9fa',
+        borderRadius: 2,
+        border: '1px solid #e0e0e0'
+      }}>
+        <Typography 
+          variant="h5" 
+          sx={{ 
+            fontFamily: 'Roboto, sans-serif',
+            fontWeight: 700,
+            color: '#333'
+          }}
+        >
+          Operación de Cambio
+        </Typography>
+        
+        <Box sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: 2 
+        }}>
+          <Typography sx={{ 
+            fontFamily: 'Roboto, sans-serif',
+            fontWeight: 600,
+            color: '#057c39',
+            fontSize: 14
+          }}>
+            Tipo de cambio utilizado: {amounts.rateUsed}
+          </Typography>
+          
+          <CountdownTimer 
+            duration={4 * 60} // 4 minutos en segundos
+            onExpired={handleTimerExpired}
+            size="small"
+          />
+        </Box>
+      </Box>
+
       <Typography 
         variant="h5" 
         sx={{ 
@@ -80,14 +124,6 @@ const TransactionSummary = ({ operationData, onPriceUpdate }) => {
       >
         Resumen de tu operación
       </Typography>
-
-      {/* Cronómetro */}
-      <Box sx={{ mb: 3 }}>
-        <CountdownTimer 
-          duration={4 * 60} // 4 minutos en segundos
-          onExpired={handleTimerExpired}
-        />
-      </Box>
 
       {/* Resumen de transacción */}
       <Paper sx={{ 
@@ -137,17 +173,6 @@ const TransactionSummary = ({ operationData, onPriceUpdate }) => {
             />
           </Box>
         </Box>
-
-        <Divider sx={{ my: 2 }} />
-
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500 }}>
-            Tipo de cambio utilizado
-          </Typography>
-          <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700 }}>
-            {amounts.rateUsed}
-          </Typography>
-        </Box>
       </Paper>
 
       {/* Alerta de precio actualizado */}
@@ -156,7 +181,8 @@ const TransactionSummary = ({ operationData, onPriceUpdate }) => {
           p: 2, 
           borderRadius: 2, 
           bgcolor: '#e8f5e8',
-          border: '1px solid #4caf50'
+          border: '1px solid #4caf50',
+          mb: 3
         }}>
           <Typography sx={{ 
             fontFamily: 'Roboto, sans-serif',

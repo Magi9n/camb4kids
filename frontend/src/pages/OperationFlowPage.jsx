@@ -95,6 +95,7 @@ const OperationFlowPage = () => {
         }));
 
         setAccounts(accountsRes.data);
+        console.log('Cuentas cargadas en OperationFlowPage:', accountsRes.data);
         setLoading(false);
       } catch (err) {
         console.error('Error cargando datos:', err);
@@ -142,6 +143,16 @@ const OperationFlowPage = () => {
     }));
   };
 
+  const handleAccountAdded = async () => {
+    try {
+      // Recargar las cuentas bancarias
+      const accountsRes = await api.get('/bank-accounts');
+      setAccounts(accountsRes.data);
+    } catch (err) {
+      console.error('Error recargando cuentas:', err);
+    }
+  };
+
   const renderStepContent = (step) => {
     switch (step) {
       case 0:
@@ -151,6 +162,7 @@ const OperationFlowPage = () => {
             operationData={operationData}
             onAccountSelection={handleAccountSelection}
             error={error}
+            onAccountAdded={handleAccountAdded}
           />
         );
       case 1:
