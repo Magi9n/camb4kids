@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Fade from '@mui/material/Fade';
@@ -12,6 +12,7 @@ import SwapVertIcon from '@mui/icons-material/SwapVert';
 import WalletIcon from '../assets/wallet.svg';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const ArrowButton = styled(Box)(({ theme, active }) => ({
   display: 'flex',
@@ -49,6 +50,42 @@ const HeroSection = () => {
     if (isNaN(penNum)) return '0.00';
     return (penNum * 0.0225).toFixed(2);
   }, [penValue]);
+
+  // Función para obtener datos de tipos de cambio sin mostrar loading
+  const fetchRatesSilently = async () => {
+    try {
+      const [rateRes, marginsRes] = await Promise.all([
+        axios.get('/api/rates/current'),
+        axios.get('/api/admin/public-margins'),
+      ]);
+      
+      const rate = rateRes.data.rate;
+      const buyPercent = marginsRes.data.buyPercent || 1;
+      const sellPercent = marginsRes.data.sellPercent || 1;
+      
+      const compra = (rate * buyPercent).toFixed(4);
+      const venta = (rate * sellPercent).toFixed(4);
+      
+      setPrecioCompra(compra);
+      setPrecioVenta(venta);
+    } catch (err) {
+      console.error('Error fetching rates in HeroSection:', err);
+      // No mostrar error en actualizaciones silenciosas
+    }
+  };
+
+  // Actualización automática cada 5 segundos
+  useEffect(() => {
+    // Carga inicial
+    fetchRatesSilently();
+    
+    // Actualización cada 5 segundos
+    const interval = setInterval(() => {
+      fetchRatesSilently();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSwap = () => {
     setFade(true);

@@ -21,31 +21,44 @@ const Calculator = ({ overrideBuyPercent, overrideSellPercent, swap, onSwap, swa
   const [error, setError] = useState('');
   const [editing, setEditing] = useState('send');
 
+  // Función para obtener datos sin mostrar loading
+  const fetchDataSilently = async () => {
+    try {
+      const [rateRes, marginsRes] = await Promise.all([
+        axios.get(API_RATE),
+        axios.get(API_MARGINS),
+      ]);
+      setRate(rateRes.data.rate);
+      setBuyPercent(marginsRes.data.buyPercent || 1);
+      setSellPercent(marginsRes.data.sellPercent || 1);
+      setError('');
+    } catch (err) {
+      console.error('Error fetching rates:', err);
+      // No mostrar error en actualizaciones silenciosas
+    }
+  };
+
+  // Carga inicial con loading
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchInitialData = async () => {
       try {
         setLoading(true);
-        const [rateRes, marginsRes] = await Promise.all([
-          axios.get(API_RATE),
-          axios.get(API_MARGINS),
-        ]);
-        setRate(rateRes.data.rate);
-        setBuyPercent(marginsRes.data.buyPercent || 1);
-        setSellPercent(marginsRes.data.sellPercent || 1);
+        await fetchDataSilently();
         setLoading(false);
       } catch (err) {
         setError('No se pudo obtener la tasa de cambio.');
         setLoading(false);
       }
     };
-    
-    // Cargar datos iniciales
-    fetchData();
-    
-    // Actualizar cada 5 segundos
-    const interval = setInterval(fetchData, 5000);
-    
-    // Limpiar intervalo cuando el componente se desmonte
+    fetchInitialData();
+  }, []);
+
+  // Actualización automática cada 5 segundos sin loading
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchDataSilently();
+    }, 5000);
+
     return () => clearInterval(interval);
   }, []);
 
