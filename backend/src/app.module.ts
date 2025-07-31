@@ -7,6 +7,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { RatesModule } from './modules/rates/rates.module';
 import { AlertsModule } from './modules/alerts/alerts.module';
 import { OperationsModule } from './modules/operations/operations.module';
+import { AdminModule } from './modules/admin/admin.module';
 import { User } from './modules/auth/entities/user.entity';
 import { PasswordReset } from './modules/auth/entities/password-reset.entity';
 import { EmailChange } from './modules/auth/entities/email-change.entity';
@@ -52,6 +53,7 @@ import { Alert } from './modules/alerts/alert.entity';
     RatesModule,
     AlertsModule,
     OperationsModule,
+    AdminModule,
   ],
 })
 export class AppModule {} 
