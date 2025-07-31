@@ -12,6 +12,7 @@ import { PasswordReset } from './modules/auth/entities/password-reset.entity';
 import { EmailChange } from './modules/auth/entities/email-change.entity';
 import { BankAccount } from './modules/auth/entities/bank-account.entity';
 import { MangosCashAccount } from './modules/auth/mangos-cash-account.entity';
+import { Order } from './modules/orders/entities/order.entity';
 import { ExchangeRate } from './modules/rates/entities/exchange-rate.entity';
 import { Alert } from './modules/alerts/alert.entity';
 
@@ -33,6 +34,7 @@ import { Alert } from './modules/alerts/alert.entity';
         EmailChange, 
         BankAccount,
         MangosCashAccount,
+        Order,
         ExchangeRate, 
         Alert
       ],

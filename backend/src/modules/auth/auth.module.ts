@@ -10,6 +10,7 @@ import { PasswordReset } from './entities/password-reset.entity';
 import { EmailChange } from './entities/email-change.entity';
 import { BankAccount } from './entities/bank-account.entity';
 import { MangosCashAccount } from './mangos-cash-account.entity';
+import { Order } from '../orders/entities/order.entity';
 import { BankAccountsService } from './bank-accounts.service';
 import { BankAccountsController } from './bank-accounts.controller';
 import { MangosCashAccountsService } from './mangos-cash-accounts.service';
@@ -22,7 +23,8 @@ import { MangosCashAccountsController } from './mangos-cash-accounts.controller'
       PasswordReset, 
       EmailChange, 
       BankAccount,
-      MangosCashAccount
+      MangosCashAccount,
+      Order
     ]),
     PassportModule,
     JwtModule.registerAsync({
