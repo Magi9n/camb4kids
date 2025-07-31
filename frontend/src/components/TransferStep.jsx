@@ -300,16 +300,13 @@ const TransferStep = ({ operationData, onOperationCreated }) => {
           2. Guarda el{' '}
           <Box 
             component="span" 
-            onClick={() => setShowOperationNumberModal(true)}
             sx={{ 
               fontWeight: 700, 
               color: '#057c39',
               textDecoration: 'underline',
-              cursor: 'pointer',
-              '&:hover': {
-                color: '#046a30'
-              }
+              cursor: 'pointer'
             }}
+            onClick={() => setShowOperationNumberModal(true)}
           >
             número de tu operación
           </Box>
@@ -657,7 +654,7 @@ const TransferStep = ({ operationData, onOperationCreated }) => {
         <DialogContent sx={{ p: 4 }}>
           <Typography sx={{ 
             fontFamily: 'Roboto, sans-serif', 
-            fontSize: 16, 
+            fontSize: 16,
             textAlign: 'center',
             mb: 3
           }}>
@@ -675,15 +672,15 @@ const TransferStep = ({ operationData, onOperationCreated }) => {
               style={{ 
                 maxWidth: '100%', 
                 height: 'auto',
-                borderRadius: 8,
-                border: '2px solid #e0e0e0'
+                borderRadius: 8
               }}
             />
           </Box>
           
           <Alert severity="info" sx={{ mb: 2 }}>
             <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontSize: 14 }}>
-              El número de operación aparece en el voucher o resumen de tu transferencia bancaria.
+              El número de operación aparece en el voucher o resumen de tu transferencia bancaria. 
+              Guárdalo para el siguiente paso del proceso.
             </Typography>
           </Alert>
         </DialogContent>

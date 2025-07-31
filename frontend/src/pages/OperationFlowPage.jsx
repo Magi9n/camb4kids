@@ -38,7 +38,7 @@ const OperationFlowPage = () => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showBackModal, setShowBackModal] = useState(false);
-  const [currentOperationId, setCurrentOperationId] = useState(null);
+  const [operationId, setOperationId] = useState(null);
   const [operationData, setOperationData] = useState({
     // Datos de la calculadora
     amount: '',
@@ -123,7 +123,6 @@ const OperationFlowPage = () => {
 
   const handleNext = () => {
     if (activeStep === 0) {
-      // Validar que se hayan seleccionado las cuentas
       if (!operationData.fromAccount || !operationData.toAccount) {
         setError('Debes seleccionar ambas cuentas para continuar');
         return;
@@ -138,7 +137,7 @@ const OperationFlowPage = () => {
 
   const handleBack = () => {
     if (activeStep === 1) {
-      // Si estamos en el paso de transferir, mostrar modal de confirmación
+      // Si está en el paso de transferencia, mostrar modal de confirmación
       setShowBackModal(true);
       return;
     }
@@ -151,14 +150,14 @@ const OperationFlowPage = () => {
 
   const handleConfirmCancel = async () => {
     try {
-      if (currentOperationId) {
-        // Eliminar la operación de la BD
-        await api.delete(`/operations/${currentOperationId}`);
+      if (operationId) {
+        // Borrar la operación de la BD
+        await api.delete(`/operations/${operationId}`);
       }
       setShowCancelModal(false);
       navigate('/dashboard');
     } catch (error) {
-      console.error('Error eliminando operación:', error);
+      console.error('Error al cancelar operación:', error);
       setShowCancelModal(false);
       navigate('/dashboard');
     }
@@ -166,14 +165,14 @@ const OperationFlowPage = () => {
 
   const handleConfirmBack = async () => {
     try {
-      if (currentOperationId) {
-        // Eliminar la operación de la BD
-        await api.delete(`/operations/${currentOperationId}`);
+      if (operationId) {
+        // Borrar la operación de la BD
+        await api.delete(`/operations/${operationId}`);
       }
       setShowBackModal(false);
       setActiveStep(0);
     } catch (error) {
-      console.error('Error eliminando operación:', error);
+      console.error('Error al volver atrás:', error);
       setShowBackModal(false);
       setActiveStep(0);
     }
@@ -233,7 +232,22 @@ const OperationFlowPage = () => {
   };
 
   const handleOperationCreated = (operationId) => {
-    setCurrentOperationId(operationId);
+    setOperationId(operationId);
+  };
+
+  const getFrozenRate = () => {
+    if (operationData.currentRate && operationData.buyPercent && operationData.sellPercent) {
+      const rate = operationData.currentRate;
+      const buyPercent = operationData.buyPercent;
+      const sellPercent = operationData.sellPercent;
+      
+      if (operationData.fromCurrency === 'PEN') {
+        return (rate * buyPercent).toFixed(4);
+      } else {
+        return (rate * sellPercent).toFixed(4);
+      }
+    }
+    return '0.0000';
   };
 
   const calculateAmounts = () => {
@@ -245,18 +259,20 @@ const OperationFlowPage = () => {
     if (operationData.fromCurrency === 'PEN') {
       // Enviando PEN, recibiendo USD
       const amountToReceive = amount / (rate * buyPercent);
+      const rateUsed = rate * buyPercent;
       return {
-        amountToSend: amount,
-        amountToReceive: amountToReceive,
-        rateUsed: rate * buyPercent
+        send: `${amount.toFixed(2)} S/`,
+        receive: `${amountToReceive.toFixed(2)} $`,
+        rateUsed: rateUsed.toFixed(4)
       };
     } else {
       // Enviando USD, recibiendo PEN
       const amountToReceive = amount * (rate * sellPercent);
+      const rateUsed = rate * sellPercent;
       return {
-        amountToSend: amount,
-        amountToReceive: amountToReceive,
-        rateUsed: rate * sellPercent
+        send: `${amount.toFixed(2)} $`,
+        receive: `${amountToReceive.toFixed(2)} S/`,
+        rateUsed: rateUsed.toFixed(4)
       };
     }
   };
@@ -315,30 +331,66 @@ const OperationFlowPage = () => {
   return (
     <Box sx={{ 
       width: '100%', 
-      minHeight: '100vh',
-      bgcolor: '#f8f9fa',
-      py: 4
+      minHeight: '100vh', 
+      bgcolor: '#f8f9fa', 
+      p: { xs: 1, md: 4 } 
     }}>
       <Paper sx={{ 
-        maxWidth: 800, 
-        mx: 'auto', 
-        p: 4,
-        borderRadius: 3,
-        boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-        bgcolor: 'white'
+        p: { xs: 2, md: 4 }, 
+        borderRadius: 3, 
+        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+        maxWidth: 800,
+        mx: 'auto'
       }}>
         {/* Header con botones de navegación */}
         <Box sx={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
           alignItems: 'center',
-          mb: 4
+          mb: 3
         }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <IconButton onClick={handleCancel} size="small">
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" sx={{ fontFamily: 'Roboto, sans-serif' }}>
+              Operación de Cambio
+            </Typography>
+          </Box>
+          
+          {/* Tipo de cambio congelado y cronómetro */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <CountdownTimer 
-              onTimeUp={handlePriceUpdate}
-              isActive={activeStep === 1}
-            />
+            <Box sx={{ textAlign: 'right' }}>
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  fontFamily: 'Roboto, sans-serif',
+                  color: '#666',
+                  fontSize: 12
+                }}
+              >
+                Tipo de cambio utilizado:
+              </Typography>
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  fontFamily: 'Roboto, sans-serif',
+                  fontWeight: 700,
+                  color: '#057c39'
+                }}
+              >
+                {getFrozenRate()}
+              </Typography>
+            </Box>
+            
+            {/* Cronómetro */}
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <CountdownTimer 
+                duration={4 * 60} // 4 minutos en segundos
+                onExpired={handlePriceUpdate}
+                size="small"
+              />
+            </Box>
           </Box>
           
           <Box sx={{ minWidth: 80 }}>
@@ -366,18 +418,27 @@ const OperationFlowPage = () => {
         {/* Contenido del paso actual */}
         {renderStepContent(activeStep)}
 
-        {/* Botón X para cerrar */}
-        <IconButton
-          onClick={handleCancel}
-          sx={{
-            position: 'absolute',
-            top: 16,
-            left: 16,
-            color: '#666'
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
+        {/* Botones de navegación - Solo para el paso de cuentas */}
+        {activeStep === 0 && (
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+            <Button
+              onClick={handleCancel}
+              sx={{ color: '#666' }}
+            >
+              Cancelar
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleNext}
+              sx={{ 
+                bgcolor: '#057c39',
+                '&:hover': { bgcolor: '#046a30' }
+              }}
+            >
+              Continuar
+            </Button>
+          </Box>
+        )}
       </Paper>
 
       {/* Modal de Confirmación de Operación */}
@@ -438,28 +499,32 @@ const OperationFlowPage = () => {
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
-                  Monto a enviar:
+                  Enviado:
                 </Typography>
-                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#057c39' }}>
-                  {amounts.amountToSend.toFixed(2)} {operationData.fromCurrency}
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: 18 }}>
+                  {amounts.send}
                 </Typography>
               </Box>
 
+              <Divider sx={{ my: 1 }} />
+
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
-                  Monto a recibir:
+                  Recibido:
                 </Typography>
-                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#057c39' }}>
-                  {amounts.amountToReceive.toFixed(2)} {operationData.toCurrency}
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: 18 }}>
+                  {amounts.receive}
                 </Typography>
               </Box>
+
+              <Divider sx={{ my: 1 }} />
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
                   Tipo de cambio:
                 </Typography>
-                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600 }}>
-                  {amounts.rateUsed.toFixed(4)}
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, color: '#057c39' }}>
+                  {amounts.rateUsed}
                 </Typography>
               </Box>
 
@@ -510,26 +575,34 @@ const OperationFlowPage = () => {
               }
             }}
           >
-            ESTOY CONFORME
+            CONFIRMAR OPERACIÓN
           </Button>
+          
           <Button
+            variant="outlined"
+            fullWidth
             onClick={handleCloseConfirmationModal}
             sx={{
-              color: '#666',
-              textDecoration: 'underline',
+              borderColor: '#057c39',
+              color: '#057c39',
+              fontWeight: 600,
+              py: 1.5,
+              borderRadius: 2,
               textTransform: 'none',
+              fontSize: 14,
               '&:hover': {
-                bgcolor: 'transparent',
-                textDecoration: 'underline'
+                borderColor: '#046a30',
+                color: '#046a30',
+                bgcolor: 'rgba(5, 124, 57, 0.04)',
               }
             }}
           >
-            Volver
+            REVISAR DETALLES
           </Button>
         </DialogActions>
       </Dialog>
 
-      {/* Modal de Cancelación */}
+      {/* Modal de Confirmación para Cancelar */}
       <Dialog
         open={showCancelModal}
         onClose={() => setShowCancelModal(false)}
@@ -544,7 +617,7 @@ const OperationFlowPage = () => {
         }}
       >
         <DialogTitle sx={{ 
-          bgcolor: '#f44336',
+          bgcolor: '#ff9800',
           color: 'white',
           textAlign: 'center',
           py: 3
@@ -560,66 +633,70 @@ const OperationFlowPage = () => {
         </DialogTitle>
 
         <DialogContent sx={{ p: 4 }}>
-          <Alert severity="warning" sx={{ mb: 3 }}>
-            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontSize: 14 }}>
-              <strong>¡Atención!</strong> Si ya realizaste la transferencia bancaria, 
-              debes continuar con el proceso para completar tu operación.
-            </Typography>
-          </Alert>
-          
-          <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontSize: 16, textAlign: 'center' }}>
+          <Typography sx={{ 
+            fontFamily: 'Roboto, sans-serif', 
+            fontSize: 16,
+            textAlign: 'center',
+            mb: 3
+          }}>
             ¿Estás seguro de que deseas cancelar esta operación?
           </Typography>
           
-          <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontSize: 14, textAlign: 'center', color: '#666', mt: 2 }}>
-            Esta acción eliminará la operación de nuestros registros.
-          </Typography>
+          <Alert severity="warning" sx={{ mb: 3 }}>
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontSize: 14 }}>
+              <strong>⚠️ Advertencia:</strong> Si ya realizaste la transferencia bancaria, 
+              debes continuar con el proceso para completar tu operación. 
+              Cancelar ahora podría resultar en la pérdida de tu dinero.
+            </Typography>
+          </Alert>
         </DialogContent>
 
-        <DialogActions sx={{ p: 4, pt: 0, justifyContent: 'center', gap: 2 }}>
+        <DialogActions sx={{ p: 4, pt: 0, flexDirection: 'column', gap: 2 }}>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={handleConfirmCancel}
+            sx={{
+              bgcolor: '#d32f2f',
+              color: 'white',
+              fontWeight: 700,
+              py: 2,
+              borderRadius: 2,
+              textTransform: 'none',
+              fontSize: 16,
+              '&:hover': {
+                bgcolor: '#b71c1c',
+              }
+            }}
+          >
+            SÍ, CANCELAR OPERACIÓN
+          </Button>
+          
           <Button
             variant="outlined"
+            fullWidth
             onClick={() => setShowCancelModal(false)}
             sx={{
               borderColor: '#666',
               color: '#666',
               fontWeight: 600,
               py: 1.5,
-              px: 3,
               borderRadius: 2,
               textTransform: 'none',
               fontSize: 14,
               '&:hover': {
                 borderColor: '#333',
-                color: '#333'
+                color: '#333',
+                bgcolor: 'rgba(0, 0, 0, 0.04)',
               }
             }}
           >
             CONTINUAR OPERACIÓN
           </Button>
-          <Button
-            variant="contained"
-            onClick={handleConfirmCancel}
-            sx={{
-              bgcolor: '#f44336',
-              color: 'white',
-              fontWeight: 700,
-              py: 1.5,
-              px: 3,
-              borderRadius: 2,
-              textTransform: 'none',
-              fontSize: 14,
-              '&:hover': {
-                bgcolor: '#d32f2f'
-              }
-            }}
-          >
-            SÍ, CANCELAR
-          </Button>
         </DialogActions>
       </Dialog>
 
-      {/* Modal de Confirmación Atrás */}
+      {/* Modal de Confirmación para Volver Atrás */}
       <Dialog
         open={showBackModal}
         onClose={() => setShowBackModal(false)}
@@ -650,61 +727,65 @@ const OperationFlowPage = () => {
         </DialogTitle>
 
         <DialogContent sx={{ p: 4 }}>
+          <Typography sx={{ 
+            fontFamily: 'Roboto, sans-serif', 
+            fontSize: 16,
+            textAlign: 'center',
+            mb: 3
+          }}>
+            ¿Estás seguro de que deseas volver atrás? Esto cancelará la operación actual.
+          </Typography>
+          
           <Alert severity="warning" sx={{ mb: 3 }}>
             <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontSize: 14 }}>
-              <strong>¡Atención!</strong> Si ya realizaste la transferencia bancaria, 
-              debes presionar "YA HICE MI TRANSFERENCIA" para continuar.
+              <strong>⚠️ Advertencia:</strong> Si ya realizaste la transferencia bancaria, 
+              debes hacer clic en "YA HICE MI TRANSFERENCIA" para continuar. 
+              Volver atrás ahora podría resultar en la pérdida de tu dinero.
             </Typography>
           </Alert>
-          
-          <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontSize: 16, textAlign: 'center' }}>
-            ¿Estás seguro de que deseas volver al paso anterior?
-          </Typography>
-          
-          <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontSize: 14, textAlign: 'center', color: '#666', mt: 2 }}>
-            Esta acción eliminará la operación actual de nuestros registros.
-          </Typography>
         </DialogContent>
 
-        <DialogActions sx={{ p: 4, pt: 0, justifyContent: 'center', gap: 2 }}>
+        <DialogActions sx={{ p: 4, pt: 0, flexDirection: 'column', gap: 2 }}>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={handleConfirmBack}
+            sx={{
+              bgcolor: '#d32f2f',
+              color: 'white',
+              fontWeight: 700,
+              py: 2,
+              borderRadius: 2,
+              textTransform: 'none',
+              fontSize: 16,
+              '&:hover': {
+                bgcolor: '#b71c1c',
+              }
+            }}
+          >
+            SÍ, VOLVER ATRÁS
+          </Button>
+          
           <Button
             variant="outlined"
+            fullWidth
             onClick={() => setShowBackModal(false)}
             sx={{
               borderColor: '#666',
               color: '#666',
               fontWeight: 600,
               py: 1.5,
-              px: 3,
               borderRadius: 2,
               textTransform: 'none',
               fontSize: 14,
               '&:hover': {
                 borderColor: '#333',
-                color: '#333'
+                color: '#333',
+                bgcolor: 'rgba(0, 0, 0, 0.04)',
               }
             }}
           >
-            CONTINUAR AQUÍ
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleConfirmBack}
-            sx={{
-              bgcolor: '#ff9800',
-              color: 'white',
-              fontWeight: 700,
-              py: 1.5,
-              px: 3,
-              borderRadius: 2,
-              textTransform: 'none',
-              fontSize: 14,
-              '&:hover': {
-                bgcolor: '#f57c00'
-              }
-            }}
-          >
-            SÍ, VOLVER
+            CONTINUAR TRANSFERENCIA
           </Button>
         </DialogActions>
       </Dialog>

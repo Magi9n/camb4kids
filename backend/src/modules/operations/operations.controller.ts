@@ -56,14 +56,14 @@ export class OperationsController {
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) id: number, @Req() req: any) {
     try {
-      this.logger.log(`Eliminando operación ID: ${id} para usuario: ${req.user.id}`);
+      this.logger.log(`Eliminando operación ${id} para usuario ${req.user.id}`);
       
       const result = await this.operationsService.delete(id, req.user.id);
       
-      this.logger.log(`Operación eliminada exitosamente: ${id}`);
-      return { message: 'Operación eliminada exitosamente' };
+      this.logger.log(`Operación ${id} eliminada exitosamente`);
+      return result;
     } catch (error) {
-      this.logger.error(`Error al eliminar operación: ${error.message}`);
+      this.logger.error(`Error al eliminar operación ${id}: ${error.message}`);
       this.logger.error(`Stack trace: ${error.stack}`);
       throw error;
     }

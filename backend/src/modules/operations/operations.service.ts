@@ -33,14 +33,14 @@ export class OperationsService {
 
   async delete(id: number, userId: number): Promise<void> {
     try {
-      this.logger.log(`Buscando operación ID: ${id} para usuario: ${userId}`);
+      this.logger.log(`Buscando operación ${id} para eliminar`);
       
       const operation = await this.operationsRepository.findOne({
         where: { id, userId }
       });
       
       if (!operation) {
-        this.logger.warn(`Operación no encontrada: ID ${id}, Usuario ${userId}`);
+        this.logger.warn(`Operación ${id} no encontrada para usuario ${userId}`);
         throw new NotFoundException('Operación no encontrada');
       }
       
@@ -51,9 +51,9 @@ export class OperationsService {
       }
       
       await this.operationsRepository.remove(operation);
-      this.logger.log(`Operación eliminada exitosamente: ${id}`);
+      this.logger.log(`Operación ${id} eliminada exitosamente`);
     } catch (error) {
-      this.logger.error(`Error en servicio al eliminar operación: ${error.message}`);
+      this.logger.error(`Error en servicio al eliminar operación ${id}: ${error.message}`);
       this.logger.error(`Stack trace: ${error.stack}`);
       throw error;
     }
