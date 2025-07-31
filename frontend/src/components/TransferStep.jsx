@@ -400,44 +400,46 @@ const TransferStep = ({ operationData }) => {
       </Paper>
 
       {/* Link al detalle */}
-      <Link 
-        component="button"
-        onClick={() => setShowDetailsModal(true)}
-        sx={{ 
-          fontFamily: 'Roboto, sans-serif',
-          color: '#666',
-          textDecoration: 'underline',
-          mb: 2,
-          display: 'inline-block',
-          border: 'none',
-          background: 'none',
-          cursor: 'pointer'
-        }}
-      >
-        Detalle de tu operación
-      </Link>
-
-      {/* Botón principal - Más pequeño y reposicionado */}
-      <Button
-        variant="contained"
-        sx={{
-          bgcolor: '#57C9A6',
-          color: 'white',
-          fontWeight: 700,
-          py: 1.5,
-          px: 3,
-          borderRadius: 2,
-          textTransform: 'none',
-          fontSize: 14,
-          boxShadow: '0 4px 20px rgba(87, 201, 166, 0.3)',
-          '&:hover': {
-            bgcolor: '#3bbd8c',
-            boxShadow: '0 6px 25px rgba(87, 201, 166, 0.4)',
-          }
-        }}
-      >
-        YA HICE MI TRANSFERENCIA
-      </Button>
+      <Box sx={{ textAlign: 'center', mb: 2 }}>
+        <Link 
+          component="button"
+          onClick={() => setShowDetailsModal(true)}
+          sx={{ 
+            fontFamily: 'Roboto, sans-serif',
+            color: '#666',
+            textDecoration: 'underline',
+            display: 'inline-block',
+            border: 'none',
+            background: 'none',
+            cursor: 'pointer',
+            mb: 2
+          }}
+        >
+          Detalle de tu operación
+        </Link>
+        
+        {/* Botón principal - Centrado debajo del link */}
+        <Button
+          variant="contained"
+          sx={{
+            bgcolor: '#57C9A6',
+            color: 'white',
+            fontWeight: 700,
+            py: 1.5,
+            px: 3,
+            borderRadius: 2,
+            textTransform: 'none',
+            fontSize: 14,
+            boxShadow: '0 4px 20px rgba(87, 201, 166, 0.3)',
+            '&:hover': {
+              bgcolor: '#3bbd8c',
+              boxShadow: '0 6px 25px rgba(87, 201, 166, 0.4)',
+            }
+          }}
+        >
+          YA HICE MI TRANSFERENCIA
+        </Button>
+      </Box>
 
       {/* WhatsApp flotante */}
       <Box sx={{ 
@@ -515,6 +517,15 @@ const TransferStep = ({ operationData }) => {
                 </Typography>
                 <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600, fontSize: 14 }}>
                   {operationData.toAccount?.bank} - {operationData.toCurrency === 'PEN' ? 'Soles' : 'Dólares'}
+                </Typography>
+              </Box>
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666', fontSize: 14 }}>
+                  Cuenta destino:
+                </Typography>
+                <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 600, fontSize: 14 }}>
+                  {operationData.toAccount?.accountNumber}
                 </Typography>
               </Box>
 
