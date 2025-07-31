@@ -84,10 +84,19 @@ const TransferStep = ({ operationData }) => {
           'Interbank': 'interbank'
         };
         
+        // Mapear monedas a códigos de la base de datos
+        const currencyMapping = {
+          'PEN': 'soles',
+          'USD': 'dollars'
+        };
+        
         const bankCode = bankMapping[fromBank] || 'interbank'; // Default a interbank para otros bancos
+        const currencyCode = currencyMapping[currency] || 'soles'; // Default a soles
+        
+        console.log(`Buscando cuenta para banco: ${bankCode}, moneda: ${currencyCode}`);
         
         // Obtener la cuenta de MangosCash correspondiente
-        const response = await api.get(`/admin/mangos-cash-accounts/${bankCode}/${currency.toLowerCase()}`);
+        const response = await api.get(`/admin/mangos-cash-accounts/${bankCode}/${currencyCode}`);
         setMangosCashAccount(response.data);
         
       } catch (error) {
