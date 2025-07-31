@@ -399,7 +399,7 @@ const TransferStep = ({ operationData }) => {
         </Box>
       </Paper>
 
-      {/* Link al detalle */}
+      {/* Link al detalle y botón */}
       <Box sx={{ textAlign: 'center', mb: 2 }}>
         <Link 
           component="button"
@@ -408,11 +408,12 @@ const TransferStep = ({ operationData }) => {
             fontFamily: 'Roboto, sans-serif',
             color: '#666',
             textDecoration: 'underline',
-            display: 'inline-block',
+            display: 'block',
             border: 'none',
             background: 'none',
             cursor: 'pointer',
-            mb: 2
+            mb: 2,
+            width: '100%'
           }}
         >
           Detalle de tu operación
