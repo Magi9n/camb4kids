@@ -17,6 +17,7 @@ import { Order } from './modules/orders/entities/order.entity';
 import { ExchangeRate } from './modules/rates/entities/exchange-rate.entity';
 import { Alert } from './modules/alerts/alert.entity';
 import { AdminSetting } from './modules/admin/entities/admin-setting.entity';
+import { Operation } from './modules/operations/operation.entity';
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { AdminSetting } from './modules/admin/entities/admin-setting.entity';
         Order,
         ExchangeRate, 
         Alert,
-        AdminSetting
+        AdminSetting,
+        Operation
       ],
       synchronize: false,
       logging: false,
