@@ -16,6 +16,7 @@ import { MangosCashAccount } from './modules/auth/mangos-cash-account.entity';
 import { Order } from './modules/orders/entities/order.entity';
 import { ExchangeRate } from './modules/rates/entities/exchange-rate.entity';
 import { Alert } from './modules/alerts/alert.entity';
+import { AdminSetting } from './modules/admin/entities/admin-setting.entity';
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import { Alert } from './modules/alerts/alert.entity';
         MangosCashAccount,
         Order,
         ExchangeRate, 
-        Alert
+        Alert,
+        AdminSetting
       ],
       synchronize: false,
       logging: false,
