@@ -25,7 +25,7 @@ import bcpGif from '../assets/bcp.gif';
 import api from '../services/api';
 import { registrarOperacion } from '../services/api';
 
-const TransferStep = ({ operationData, onOperationCreated }) => {
+const TransferStep = ({ operationData, onOperationCreated, onTransferCompleted }) => {
   const [mangosCashAccount, setMangosCashAccount] = useState(null);
   const [loading, setLoading] = useState(true);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
@@ -464,6 +464,7 @@ const TransferStep = ({ operationData, onOperationCreated }) => {
         {/* Botón principal - Centrado debajo del link */}
         <Button
           variant="contained"
+          onClick={onTransferCompleted}
           sx={{
             bgcolor: '#57C9A6',
             color: 'white',

@@ -26,6 +26,7 @@ import {
 import AccountSelectionStep from '../components/AccountSelectionStep';
 import TransactionSummary from '../components/TransactionSummary';
 import TransferStep from '../components/TransferStep';
+import CompleteStep from '../components/CompleteStep';
 import CountdownTimer from '../components/CountdownTimer';
 import api from '../services/api';
 
@@ -344,6 +345,10 @@ const OperationFlowPage = () => {
     setOperationId(operationId);
   };
 
+  const handleTransferCompleted = () => {
+    setActiveStep(2); // Avanzar al paso de completar
+  };
+
   const getFrozenRate = () => {
     if (operationData.currentRate && operationData.buyPercent && operationData.sellPercent) {
       const rate = operationData.currentRate;
@@ -408,18 +413,14 @@ const OperationFlowPage = () => {
             }}
             onPriceUpdate={handlePriceUpdate}
             onOperationCreated={handleOperationCreated}
+            onTransferCompleted={handleTransferCompleted}
           />
         );
       case 2:
         return (
-          <Box sx={{ textAlign: 'center', py: 4 }}>
-            <Typography variant="h5" gutterBottom>
-              Operación Completada
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              Tu operación ha sido procesada exitosamente.
-            </Typography>
-          </Box>
+          <CompleteStep
+            operationData={operationData}
+          />
         );
       default:
         return null;
