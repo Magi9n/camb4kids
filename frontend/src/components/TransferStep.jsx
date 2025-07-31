@@ -21,14 +21,16 @@ import {
 } from '@mui/icons-material';
 import Lottie from 'lottie-react';
 import transferAnim from '../assets/transfer.json';
+import bcpGif from '../assets/bcp.gif';
 import api from '../services/api';
 import { registrarOperacion } from '../services/api';
 
-const TransferStep = ({ operationData }) => {
+const TransferStep = ({ operationData, onOperationCreated }) => {
   const [mangosCashAccount, setMangosCashAccount] = useState(null);
   const [loading, setLoading] = useState(true);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showOperationNumberModal, setShowOperationNumberModal] = useState(false);
 
   // Registrar operación al entrar a la pantalla de transferir
   useEffect(() => {
@@ -58,8 +60,13 @@ const TransferStep = ({ operationData }) => {
             estado: 'Falta Transferir'
           };
           
-          await registrarOperacion(payload);
-          console.log('Operación registrada exitosamente:', payload);
+          const response = await registrarOperacion(payload);
+          console.log('Operación registrada exitosamente:', response.data);
+          
+          // Pasar el ID de la operación al componente padre
+          if (onOperationCreated && response.data.id) {
+            onOperationCreated(response.data.id);
+          }
         } catch (error) {
           console.error('Error registrando operación:', error);
           setSnackbar({ 
@@ -72,7 +79,7 @@ const TransferStep = ({ operationData }) => {
     };
 
     registerOperation();
-  }, [operationData]);
+  }, [operationData, onOperationCreated]);
 
   useEffect(() => {
     const loadMangosCashAccount = async () => {
@@ -291,11 +298,19 @@ const TransferStep = ({ operationData }) => {
           }}
         >
           2. Guarda el{' '}
-          <Box component="span" sx={{ 
-            fontWeight: 700, 
-            color: '#057c39',
-            textDecoration: 'underline'
-          }}>
+          <Box 
+            component="span" 
+            onClick={() => setShowOperationNumberModal(true)}
+            sx={{ 
+              fontWeight: 700, 
+              color: '#057c39',
+              textDecoration: 'underline',
+              cursor: 'pointer',
+              '&:hover': {
+                color: '#046a30'
+              }
+            }}
+          >
             número de tu operación
           </Box>
           {' '}para el siguiente paso.
@@ -602,6 +617,92 @@ const TransferStep = ({ operationData }) => {
               fontSize: 14,
               '&:hover': {
                 bgcolor: '#046a30'
+              }
+            }}
+          >
+            Entendido
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Modal del Número de Operación */}
+      <Dialog
+        open={showOperationNumberModal}
+        onClose={() => setShowOperationNumberModal(false)}
+        maxWidth="md"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+            overflow: 'hidden'
+          }
+        }}
+      >
+        <DialogTitle sx={{ 
+          bgcolor: '#1976d2',
+          color: 'white',
+          textAlign: 'center',
+          py: 3
+        }}>
+          <Typography sx={{ 
+            fontFamily: 'Roboto, sans-serif', 
+            fontSize: 18, 
+            fontWeight: 700
+          }}>
+            NÚMERO DE OPERACIÓN
+          </Typography>
+        </DialogTitle>
+
+        <DialogContent sx={{ p: 4 }}>
+          <Typography sx={{ 
+            fontFamily: 'Roboto, sans-serif', 
+            fontSize: 16, 
+            textAlign: 'center',
+            mb: 3
+          }}>
+            Puedes encontrar el número de operación del voucher o resumen en el siguiente ejemplo:
+          </Typography>
+          
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'center',
+            mb: 3
+          }}>
+            <img 
+              src={bcpGif} 
+              alt="Ejemplo de voucher BCP" 
+              style={{ 
+                maxWidth: '100%', 
+                height: 'auto',
+                borderRadius: 8,
+                border: '2px solid #e0e0e0'
+              }}
+            />
+          </Box>
+          
+          <Alert severity="info" sx={{ mb: 2 }}>
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontSize: 14 }}>
+              El número de operación aparece en el voucher o resumen de tu transferencia bancaria.
+            </Typography>
+          </Alert>
+        </DialogContent>
+
+        <DialogActions sx={{ p: 4, pt: 0, justifyContent: 'center' }}>
+          <Button
+            variant="contained"
+            onClick={() => setShowOperationNumberModal(false)}
+            sx={{
+              bgcolor: '#1976d2',
+              color: 'white',
+              fontWeight: 700,
+              py: 1.5,
+              px: 4,
+              borderRadius: 2,
+              textTransform: 'none',
+              fontSize: 14,
+              '&:hover': {
+                bgcolor: '#1565c0'
               }
             }}
           >

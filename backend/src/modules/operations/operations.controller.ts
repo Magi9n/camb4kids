@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req, UseGuards, Logger } from '@nestjs/common';
+import { Controller, Post, Body, Req, UseGuards, Logger, Delete, Param, ParseIntPipe } from '@nestjs/common';
 import { OperationsService } from './operations.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -48,6 +48,22 @@ export class OperationsController {
       return result;
     } catch (error) {
       this.logger.error(`Error al crear operación: ${error.message}`);
+      this.logger.error(`Stack trace: ${error.stack}`);
+      throw error;
+    }
+  }
+
+  @Delete(':id')
+  async delete(@Param('id', ParseIntPipe) id: number, @Req() req: any) {
+    try {
+      this.logger.log(`Eliminando operación ID: ${id} para usuario: ${req.user.id}`);
+      
+      const result = await this.operationsService.delete(id, req.user.id);
+      
+      this.logger.log(`Operación eliminada exitosamente: ${id}`);
+      return { message: 'Operación eliminada exitosamente' };
+    } catch (error) {
+      this.logger.error(`Error al eliminar operación: ${error.message}`);
       this.logger.error(`Stack trace: ${error.stack}`);
       throw error;
     }

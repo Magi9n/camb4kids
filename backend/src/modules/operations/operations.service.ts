@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Operation } from './operation.entity';
@@ -25,7 +25,35 @@ export class OperationsService {
       
       return savedOperation;
     } catch (error) {
-      this.logger.error(`Error en servicio de operaciones: ${error.message}`);
+      this.logger.error(`Error en servicio al crear operación: ${error.message}`);
+      this.logger.error(`Stack trace: ${error.stack}`);
+      throw error;
+    }
+  }
+
+  async delete(id: number, userId: number): Promise<void> {
+    try {
+      this.logger.log(`Buscando operación ID: ${id} para usuario: ${userId}`);
+      
+      const operation = await this.operationsRepository.findOne({
+        where: { id, userId }
+      });
+      
+      if (!operation) {
+        this.logger.warn(`Operación no encontrada: ID ${id}, Usuario ${userId}`);
+        throw new NotFoundException('Operación no encontrada');
+      }
+      
+      // Verificar que la operación pertenece al usuario
+      if (operation.userId !== userId) {
+        this.logger.warn(`Usuario ${userId} intentó eliminar operación ${id} que no le pertenece`);
+        throw new ForbiddenException('No tienes permisos para eliminar esta operación');
+      }
+      
+      await this.operationsRepository.remove(operation);
+      this.logger.log(`Operación eliminada exitosamente: ${id}`);
+    } catch (error) {
+      this.logger.error(`Error en servicio al eliminar operación: ${error.message}`);
       this.logger.error(`Stack trace: ${error.stack}`);
       throw error;
     }
