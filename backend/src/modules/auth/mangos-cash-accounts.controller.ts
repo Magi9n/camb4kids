@@ -1,6 +1,6 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { MangosCashAccountsService } from './mangos-cash-accounts.service';
-import { JwtAuthGuard } from './jwt-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('admin/mangos-cash-accounts')
 @UseGuards(JwtAuthGuard)

@@ -25,33 +25,46 @@ const TransferStep = ({ operationData }) => {
 
   // Registrar operación al entrar a la pantalla de transferir
   useEffect(() => {
-    let registrado = false;
-    if (
-      operationData &&
-      operationData.fromAccount &&
-      operationData.toAccount &&
-      operationData.amount &&
-      !registrado
-    ) {
-      registrado = true;
-      // Preparar datos para la operación
-      const payload = {
-        nombre: `${operationData.user?.name || ''} ${operationData.user?.lastname || ''}`.trim(),
-        dni: operationData.user?.document || '',
-        telefono: operationData.user?.phone || '',
-        importe_envia: parseFloat(operationData.amount),
-        importe_recibe: operationData.toCurrency === 'PEN'
-          ? (parseFloat(operationData.amount) * (operationData.currentRate * operationData.buyPercent)).toFixed(2)
-          : (parseFloat(operationData.amount) / (operationData.currentRate * operationData.sellPercent)).toFixed(2),
-        tipo_cambio: operationData.toCurrency === 'PEN'
-          ? (operationData.currentRate * operationData.buyPercent).toFixed(4)
-          : (operationData.currentRate * operationData.sellPercent).toFixed(4),
-        moneda_envia: operationData.fromCurrency,
-        moneda_recibe: operationData.toCurrency,
-        estado: 'Falta Transferir'
-      };
-      registrarOperacion(payload).catch(() => {});
-    }
+    const registerOperation = async () => {
+      if (
+        operationData &&
+        operationData.fromAccount &&
+        operationData.toAccount &&
+        operationData.amount &&
+        operationData.user
+      ) {
+        try {
+          // Preparar datos para la operación
+          const payload = {
+            nombre: `${operationData.user.name || ''} ${operationData.user.lastname || ''}`.trim(),
+            dni: operationData.user.document || '',
+            telefono: operationData.user.phone || '',
+            importe_envia: parseFloat(operationData.amount),
+            importe_recibe: operationData.toCurrency === 'PEN'
+              ? parseFloat((parseFloat(operationData.amount) * (operationData.currentRate * operationData.buyPercent)).toFixed(2))
+              : parseFloat((parseFloat(operationData.amount) / (operationData.currentRate * operationData.sellPercent)).toFixed(2)),
+            tipo_cambio: parseFloat(operationData.toCurrency === 'PEN'
+              ? (operationData.currentRate * operationData.buyPercent).toFixed(4)
+              : (operationData.currentRate * operationData.sellPercent).toFixed(4)),
+            moneda_envia: operationData.fromCurrency,
+            moneda_recibe: operationData.toCurrency,
+            estado: 'Falta Transferir'
+          };
+          
+          await registrarOperacion(payload);
+          console.log('Operación registrada exitosamente:', payload);
+        } catch (error) {
+          console.error('Error registrando operación:', error);
+          setSnackbar({ 
+            open: true, 
+            message: 'Error al registrar la operación', 
+            severity: 'error' 
+          });
+        }
+      }
+    };
+
+    registerOperation();
   }, [operationData]);
 
   useEffect(() => {
@@ -155,7 +168,7 @@ const TransferStep = ({ operationData }) => {
         width: 200, 
         height: 200, 
         mx: 'auto', 
-        mb: 3,
+        mb: 4,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
@@ -174,7 +187,7 @@ const TransferStep = ({ operationData }) => {
           fontFamily: 'Roboto, sans-serif',
           fontWeight: 700,
           color: '#333',
-          mb: 3
+          mb: 4
         }}
       >
         Transfiere a MangosCash
@@ -224,14 +237,16 @@ const TransferStep = ({ operationData }) => {
 
       {/* Información de la cuenta */}
       <Paper sx={{ 
-        p: 3, 
+        p: 4, 
         borderRadius: 3, 
-        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
         mb: 4,
-        maxWidth: 500,
-        mx: 'auto'
+        maxWidth: 600,
+        mx: 'auto',
+        bgcolor: '#fff',
+        border: '1px solid #e0e0e0'
       }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: '#666' }}>
               Banco:
@@ -339,13 +354,15 @@ const TransferStep = ({ operationData }) => {
           bgcolor: '#57C9A6',
           color: 'white',
           fontWeight: 700,
-          py: 2,
-          borderRadius: 2,
+          py: 2.5,
+          borderRadius: 3,
           textTransform: 'none',
           fontSize: 16,
-          maxWidth: 400,
+          maxWidth: 500,
+          boxShadow: '0 4px 20px rgba(87, 201, 166, 0.3)',
           '&:hover': {
             bgcolor: '#3bbd8c',
+            boxShadow: '0 6px 25px rgba(87, 201, 166, 0.4)',
           }
         }}
       >

@@ -71,11 +71,12 @@ const OperationFlowPage = () => {
           return;
         }
 
-        // Obtener tasas y márgenes
-        const [rateRes, marginsRes, accountsRes] = await Promise.all([
+        // Obtener tasas, márgenes, cuentas y perfil del usuario
+        const [rateRes, marginsRes, accountsRes, userProfileRes] = await Promise.all([
           api.get('/rates/current'),
           api.get('/admin/public-margins'),
-          api.get('/bank-accounts')
+          api.get('/bank-accounts'),
+          api.get('/auth/profile')
         ]);
 
         const rate = rateRes.data.rate;
@@ -100,7 +101,8 @@ const OperationFlowPage = () => {
           buyPercent,
           sellPercent,
           manguitos,
-          currentRate: rate
+          currentRate: rate,
+          user: userProfileRes.data // Agregar datos del usuario
         }));
 
         setAccounts(accountsRes.data);
