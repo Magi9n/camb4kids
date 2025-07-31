@@ -58,4 +58,42 @@ export class OperationsService {
       throw error;
     }
   }
+
+  async update(id: number, userId: number, updateData: Partial<Operation>): Promise<Operation> {
+    try {
+      this.logger.log(`Buscando operación ${id} para actualizar`);
+      
+      const operation = await this.operationsRepository.findOne({
+        where: { id, userId }
+      });
+      
+      if (!operation) {
+        this.logger.warn(`Operación ${id} no encontrada para usuario ${userId}`);
+        throw new NotFoundException('Operación no encontrada');
+      }
+      
+      // Verificar que la operación pertenece al usuario
+      if (operation.userId !== userId) {
+        this.logger.warn(`Usuario ${userId} intentó actualizar operación ${id} que no le pertenece`);
+        throw new ForbiddenException('No tienes permisos para actualizar esta operación');
+      }
+      
+      // Actualizar solo los campos permitidos
+      if (updateData.exchangeRate !== undefined) {
+        operation.exchangeRate = updateData.exchangeRate;
+      }
+      if (updateData.amountToReceive !== undefined) {
+        operation.amountToReceive = updateData.amountToReceive;
+      }
+      
+      const updatedOperation = await this.operationsRepository.save(operation);
+      this.logger.log(`Operación ${id} actualizada exitosamente`);
+      
+      return updatedOperation;
+    } catch (error) {
+      this.logger.error(`Error en servicio al actualizar operación ${id}: ${error.message}`);
+      this.logger.error(`Stack trace: ${error.stack}`);
+      throw error;
+    }
+  }
 } 

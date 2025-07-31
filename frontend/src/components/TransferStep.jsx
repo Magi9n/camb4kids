@@ -224,6 +224,15 @@ const TransferStep = ({ operationData, onOperationCreated }) => {
     }
   };
 
+  // Escuchar cambios en operationData para actualizar automáticamente
+  useEffect(() => {
+    if (operationData.currentRate && operationData.buyPercent && operationData.sellPercent) {
+      // Los montos se actualizan automáticamente cuando cambia el tipo de cambio
+      // porque calculateAmounts() usa operationData.currentRate
+      console.log('Tipo de cambio actualizado en TransferStep:', operationData.currentRate);
+    }
+  }, [operationData.currentRate, operationData.buyPercent, operationData.sellPercent]);
+
   if (loading) {
     return (
       <Box sx={{ textAlign: 'center', py: 2 }}>

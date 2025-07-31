@@ -62,13 +62,88 @@ const OperationFlowPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  // Función para guardar el estado en localStorage
+  const saveOperationState = (data) => {
+    try {
+      localStorage.setItem('operationFlowState', JSON.stringify({
+        activeStep: data.activeStep,
+        operationData: data.operationData,
+        operationId: data.operationId,
+        timestamp: Date.now()
+      }));
+    } catch (error) {
+      console.error('Error guardando estado:', error);
+    }
+  };
+
+  // Función para cargar el estado desde localStorage
+  const loadOperationState = () => {
+    try {
+      const savedState = localStorage.getItem('operationFlowState');
+      if (savedState) {
+        const parsedState = JSON.parse(savedState);
+        const timeDiff = Date.now() - parsedState.timestamp;
+        
+        // Si han pasado más de 30 minutos, limpiar el estado
+        if (timeDiff > 30 * 60 * 1000) {
+          localStorage.removeItem('operationFlowState');
+          return null;
+        }
+        
+        return parsedState;
+      }
+    } catch (error) {
+      console.error('Error cargando estado:', error);
+    }
+    return null;
+  };
+
+  // Función para limpiar el estado guardado
+  const clearOperationState = () => {
+    localStorage.removeItem('operationFlowState');
+  };
+
   // Cargar datos iniciales
   useEffect(() => {
     const loadInitialData = async () => {
       try {
         setLoading(true);
         
-        // Obtener datos de la calculadora desde el estado de navegación
+        // Intentar cargar estado guardado
+        const savedState = loadOperationState();
+        
+        if (savedState) {
+          // Restaurar estado guardado
+          setActiveStep(savedState.activeStep);
+          setOperationData(savedState.operationData);
+          setOperationId(savedState.operationId);
+          
+          // Cargar cuentas y datos actualizados
+          const [accountsRes, rateRes, marginsRes] = await Promise.all([
+            api.get('/bank-accounts'),
+            api.get('/rates/current'),
+            api.get('/admin/public-margins')
+          ]);
+          
+          setAccounts(accountsRes.data);
+          
+          // Actualizar tasas y márgenes
+          const newRate = rateRes.data.rate;
+          const { buyPercent, sellPercent } = marginsRes.data;
+          
+          setOperationData(prev => ({
+            ...prev,
+            currentRate: newRate,
+            buyPercent,
+            sellPercent,
+            priceUpdated: true
+          }));
+          
+          setLoading(false);
+          return;
+        }
+        
+        // Si no hay estado guardado, cargar datos nuevos
         const calculatorData = location.state?.calculatorData;
         if (!calculatorData) {
           navigate('/dashboard');
@@ -96,8 +171,7 @@ const OperationFlowPage = () => {
           ? Math.floor(parseFloat(calculatorData.amount || 0))
           : Math.floor(parseFloat(calculatorData.amount || 0) / rate);
 
-        setOperationData(prev => ({
-          ...prev,
+        const newOperationData = {
           amount: calculatorData.amount || '',
           fromCurrency,
           toCurrency,
@@ -106,9 +180,10 @@ const OperationFlowPage = () => {
           sellPercent,
           manguitos,
           currentRate: rate,
-          user: userProfileRes.data // Agregar datos del usuario
-        }));
+          user: userProfileRes.data
+        };
 
+        setOperationData(newOperationData);
         setAccounts(accountsRes.data);
         setLoading(false);
       } catch (err) {
@@ -120,6 +195,17 @@ const OperationFlowPage = () => {
 
     loadInitialData();
   }, [location.state, navigate]);
+
+  // Guardar estado cuando cambie
+  useEffect(() => {
+    if (!loading) {
+      saveOperationState({
+        activeStep,
+        operationData,
+        operationId
+      });
+    }
+  }, [activeStep, operationData, operationId, loading]);
 
   const handleNext = () => {
     if (activeStep === 0) {
@@ -154,10 +240,12 @@ const OperationFlowPage = () => {
         // Borrar la operación de la BD
         await api.delete(`/operations/${operationId}`);
       }
+      clearOperationState();
       setShowCancelModal(false);
       navigate('/dashboard');
     } catch (error) {
       console.error('Error al cancelar operación:', error);
+      clearOperationState();
       setShowCancelModal(false);
       navigate('/dashboard');
     }
@@ -169,10 +257,12 @@ const OperationFlowPage = () => {
         // Borrar la operación de la BD
         await api.delete(`/operations/${operationId}`);
       }
+      clearOperationState();
       setShowBackModal(false);
       setActiveStep(0);
     } catch (error) {
       console.error('Error al volver atrás:', error);
+      clearOperationState();
       setShowBackModal(false);
       setActiveStep(0);
     }
@@ -206,6 +296,24 @@ const OperationFlowPage = () => {
           buyPercent,
           sellPercent
         }));
+
+        // Actualizar la operación en la BD si existe
+        if (operationId) {
+          try {
+            const newAmountToReceive = operationData.fromCurrency === 'PEN'
+              ? parseFloat(operationData.amount) / (newRate * buyPercent)
+              : parseFloat(operationData.amount) * (newRate * sellPercent);
+
+            await api.patch(`/operations/${operationId}`, {
+              exchangeRate: operationData.fromCurrency === 'PEN'
+                ? (newRate * buyPercent).toFixed(4)
+                : (newRate * sellPercent).toFixed(4),
+              amountToReceive: newAmountToReceive.toFixed(2)
+            });
+          } catch (error) {
+            console.error('Error actualizando operación en BD:', error);
+          }
+        }
 
         console.log('Precio actualizado en OperationFlowPage:', {
           newRate,
