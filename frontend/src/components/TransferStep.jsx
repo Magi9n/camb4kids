@@ -41,6 +41,18 @@ const TransferStep = ({ operationData, onOperationCreated }) => {
         return;
       }
 
+      // Verificar si ya existe una operación (cuando se recarga la página)
+      if (operationData.operationId) {
+        console.log('Operación ya existe, no se creará una nueva:', operationData.operationId);
+        setOperationCreated(true);
+        
+        // Pasar el ID existente al componente padre
+        if (onOperationCreated) {
+          onOperationCreated(operationData.operationId);
+        }
+        return;
+      }
+
       if (
         operationData &&
         operationData.fromAccount &&

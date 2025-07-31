@@ -136,7 +136,8 @@ const OperationFlowPage = () => {
             currentRate: newRate,
             buyPercent,
             sellPercent,
-            priceUpdated: true
+            priceUpdated: true,
+            operationId: savedState.operationId // Mantener el ID de la operación
           }));
           
           setLoading(false);
@@ -401,7 +402,10 @@ const OperationFlowPage = () => {
       case 1:
         return (
           <TransferStep
-            operationData={operationData}
+            operationData={{
+              ...operationData,
+              operationId: operationId // Pasar el ID de la operación existente
+            }}
             onPriceUpdate={handlePriceUpdate}
             onOperationCreated={handleOperationCreated}
           />
