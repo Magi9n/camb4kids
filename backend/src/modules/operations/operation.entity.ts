@@ -14,31 +14,56 @@ export class Operation {
   userId: number;
 
   @Column({ type: 'varchar', length: 100 })
-  nombre: string;
+  userName: string;
 
   @Column({ type: 'varchar', length: 20 })
-  dni: string;
+  userDni: string;
 
   @Column({ type: 'varchar', length: 20 })
-  telefono: string;
+  userPhone: string;
 
-  @Column({ type: 'decimal', precision: 12, scale: 2 })
-  importe_envia: number;
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  amountToSend: number;
 
-  @Column({ type: 'decimal', precision: 12, scale: 2 })
-  importe_recibe: number;
+  @Column({ type: 'decimal', precision: 10, scale: 4 })
+  exchangeRate: number;
 
-  @Column({ type: 'decimal', precision: 12, scale: 4 })
-  tipo_cambio: number;
-
-  @Column({ type: 'varchar', length: 10 })
-  moneda_envia: string;
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  amountToReceive: number;
 
   @Column({ type: 'varchar', length: 10 })
-  moneda_recibe: string;
+  fromCurrency: string;
 
-  @Column({ type: 'varchar', length: 30, default: 'Falta Transferir' })
-  estado: string;
+  @Column({ type: 'varchar', length: 10 })
+  toCurrency: string;
+
+  @Column({ type: 'varchar', length: 50 })
+  fromBank: string;
+
+  @Column({ type: 'varchar', length: 50 })
+  toBank: string;
+
+  @Column({ type: 'varchar', length: 50 })
+  fromAccountNumber: string;
+
+  @Column({ type: 'varchar', length: 50 })
+  toAccountNumber: string;
+
+  @Column({ type: 'int', default: 0 })
+  manguitos: number;
+
+  @Column({ 
+    type: 'enum', 
+    enum: ['PENDING_TRANSFER', 'TRANSFERRED', 'COMPLETED', 'CANCELLED'],
+    default: 'PENDING_TRANSFER'
+  })
+  status: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  transferReference: string;
+
+  @Column({ type: 'text', nullable: true })
+  notes: string;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -18,12 +18,29 @@ export class OperationsController {
       
       // El usuario autenticado está en req.user
       const user = req.user;
+      
+      // Mapear los datos del frontend a la estructura de la base de datos
       const operationData = {
-        ...body,
-        userId: user.id
+        userId: user.id,
+        userName: body.nombre || body.userName,
+        userDni: body.dni || body.userDni,
+        userPhone: body.telefono || body.userPhone,
+        amountToSend: body.importe_envia || body.amountToSend,
+        exchangeRate: body.tipo_cambio || body.exchangeRate,
+        amountToReceive: body.importe_recibe || body.amountToReceive,
+        fromCurrency: body.moneda_envia || body.fromCurrency,
+        toCurrency: body.moneda_recibe || body.toCurrency,
+        fromBank: body.fromBank || '',
+        toBank: body.toBank || '',
+        fromAccountNumber: body.fromAccountNumber || '',
+        toAccountNumber: body.toAccountNumber || '',
+        manguitos: body.manguitos || 0,
+        status: 'PENDING_TRANSFER',
+        transferReference: body.transferReference || null,
+        notes: body.notes || null
       };
       
-      this.logger.log(`Datos de operación a crear: ${JSON.stringify(operationData)}`);
+      this.logger.log(`Datos de operación mapeados: ${JSON.stringify(operationData)}`);
       
       const result = await this.operationsService.create(operationData);
       
