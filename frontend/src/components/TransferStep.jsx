@@ -31,10 +31,16 @@ const TransferStep = ({ operationData, onOperationCreated }) => {
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showOperationNumberModal, setShowOperationNumberModal] = useState(false);
+  const [operationCreated, setOperationCreated] = useState(false);
 
   // Registrar operación al entrar a la pantalla de transferir
   useEffect(() => {
     const registerOperation = async () => {
+      // Evitar crear múltiples operaciones
+      if (operationCreated) {
+        return;
+      }
+
       if (
         operationData &&
         operationData.fromAccount &&
@@ -63,6 +69,9 @@ const TransferStep = ({ operationData, onOperationCreated }) => {
           const response = await registrarOperacion(payload);
           console.log('Operación registrada exitosamente:', response.data);
           
+          // Marcar como creada para evitar duplicados
+          setOperationCreated(true);
+          
           // Pasar el ID de la operación al componente padre
           if (onOperationCreated && response.data.id) {
             onOperationCreated(response.data.id);
@@ -79,7 +88,7 @@ const TransferStep = ({ operationData, onOperationCreated }) => {
     };
 
     registerOperation();
-  }, [operationData, onOperationCreated]);
+  }, [operationData, onOperationCreated, operationCreated]);
 
   useEffect(() => {
     const loadMangosCashAccount = async () => {
@@ -626,7 +635,7 @@ const TransferStep = ({ operationData, onOperationCreated }) => {
       <Dialog
         open={showOperationNumberModal}
         onClose={() => setShowOperationNumberModal(false)}
-        maxWidth="md"
+        maxWidth="sm"
         fullWidth
         PaperProps={{
           sx: {
@@ -637,11 +646,12 @@ const TransferStep = ({ operationData, onOperationCreated }) => {
         }}
       >
         <DialogTitle sx={{ 
-          bgcolor: '#1976d2',
+          bgcolor: '#057c39',
           color: 'white',
           textAlign: 'center',
-          py: 3
+          py: 2
         }}>
+          <CheckCircleIcon sx={{ fontSize: 32, mb: 1 }} />
           <Typography sx={{ 
             fontFamily: 'Roboto, sans-serif', 
             fontSize: 18, 
@@ -651,12 +661,12 @@ const TransferStep = ({ operationData, onOperationCreated }) => {
           </Typography>
         </DialogTitle>
 
-        <DialogContent sx={{ p: 4 }}>
+        <DialogContent sx={{ p: 3 }}>
           <Typography sx={{ 
             fontFamily: 'Roboto, sans-serif', 
-            fontSize: 16,
+            fontSize: 14,
             textAlign: 'center',
-            mb: 3
+            mb: 2
           }}>
             Puedes encontrar el número de operación del voucher o resumen en el siguiente ejemplo:
           </Typography>
@@ -664,13 +674,14 @@ const TransferStep = ({ operationData, onOperationCreated }) => {
           <Box sx={{ 
             display: 'flex', 
             justifyContent: 'center',
-            mb: 3
+            mb: 2
           }}>
             <img 
               src={bcpGif} 
               alt="Ejemplo de voucher BCP" 
               style={{ 
                 maxWidth: '100%', 
+                maxHeight: '200px',
                 height: 'auto',
                 borderRadius: 8
               }}
@@ -678,28 +689,28 @@ const TransferStep = ({ operationData, onOperationCreated }) => {
           </Box>
           
           <Alert severity="info" sx={{ mb: 2 }}>
-            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontSize: 14 }}>
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontSize: 12 }}>
               El número de operación aparece en el voucher o resumen de tu transferencia bancaria. 
               Guárdalo para el siguiente paso del proceso.
             </Typography>
           </Alert>
         </DialogContent>
 
-        <DialogActions sx={{ p: 4, pt: 0, justifyContent: 'center' }}>
+        <DialogActions sx={{ p: 3, pt: 0, justifyContent: 'center' }}>
           <Button
             variant="contained"
             onClick={() => setShowOperationNumberModal(false)}
             sx={{
-              bgcolor: '#1976d2',
+              bgcolor: '#057c39',
               color: 'white',
               fontWeight: 700,
-              py: 1.5,
+              py: 1,
               px: 4,
               borderRadius: 2,
               textTransform: 'none',
               fontSize: 14,
               '&:hover': {
-                bgcolor: '#1565c0'
+                bgcolor: '#046a30'
               }
             }}
           >
