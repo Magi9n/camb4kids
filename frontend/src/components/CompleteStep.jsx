@@ -8,17 +8,25 @@ import {
   DialogContent,
   DialogActions,
   Alert,
-  TextField
+  TextField,
+  Slide,
+  Paper
 } from '@mui/material';
 import {
-  CheckCircle as CheckCircleIcon
+  CheckCircle as CheckCircleIcon,
+  Close as CloseIcon
 } from '@mui/icons-material';
 import Lottie from 'lottie-react';
 import reciboAnim from '../assets/recibo.json';
 import bcpGif from '../assets/bcp.gif';
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="left" ref={ref} {...props} />;
+});
+
 const CompleteStep = ({ operationData }) => {
   const [showOperationNumberModal, setShowOperationNumberModal] = useState(false);
+  const [showTransferDetailModal, setShowTransferDetailModal] = useState(false);
   const [operationNumber, setOperationNumber] = useState('');
 
   const calculateAmounts = () => {
@@ -47,15 +55,18 @@ const CompleteStep = ({ operationData }) => {
   };
 
   const amounts = calculateAmounts();
+  const mangosCashAccount = operationData.mangosCashAccount || {};
+  const userAccount = operationData.toAccount || {};
 
   return (
     <Box sx={{ textAlign: 'center', py: 2 }}>
       {/* Lottie Animation */}
       <Box sx={{ 
-        width: 200, 
-        height: 200, 
+        width: 110, 
+        height: 110, 
         mx: 'auto', 
-        mb: 3,
+        mb: 1,
+        mt: 0,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
@@ -74,20 +85,22 @@ const CompleteStep = ({ operationData }) => {
           fontFamily: 'Roboto, sans-serif',
           fontWeight: 700,
           color: '#333',
-          mb: 2
+          mb: 2,
+          mt: 0
         }}
       >
         Envía tu constancia
       </Typography>
 
-      {/* Instrucción */}
+      {/* Label centrado */}
       <Typography 
         variant="body1" 
         sx={{ 
           fontFamily: 'Roboto, sans-serif',
           fontWeight: 500,
           color: '#666',
-          mb: 2
+          mb: 1,
+          textAlign: 'center'
         }}
       >
         Escribe el número de operación de la transferencia aquí:
@@ -101,7 +114,17 @@ const CompleteStep = ({ operationData }) => {
           placeholder="Número de operación"
           value={operationNumber}
           onChange={e => setOperationNumber(e.target.value)}
-          sx={{ bgcolor: '#fff' }}
+          inputProps={{ style: { textAlign: 'center' } }}
+          sx={{
+            bgcolor: '#fff',
+            borderRadius: 4,
+            '& .MuiOutlinedInput-root': {
+              borderRadius: 4,
+            },
+            '& input': {
+              textAlign: 'center',
+            }
+          }}
         />
       </Box>
 
@@ -110,14 +133,43 @@ const CompleteStep = ({ operationData }) => {
         variant="body2"
         sx={{
           fontFamily: 'Roboto, sans-serif',
+          color: '#666',
+          mb: 1,
+          textAlign: 'center'
+        }}
+      >
+        ¿Dónde encuentro el{' '}
+        <Box
+          component="span"
+          sx={{
+            fontWeight: 700,
+            color: '#057c39',
+            textDecoration: 'underline',
+            cursor: 'pointer',
+            display: 'inline',
+          }}
+          onClick={() => setShowOperationNumberModal(true)}
+        >
+          número de operación
+        </Box>
+        ?
+      </Typography>
+
+      {/* ¿Aún no haces la transferencia? */}
+      <Typography
+        variant="body2"
+        sx={{
+          fontFamily: 'Roboto, sans-serif',
           color: '#057c39',
           textDecoration: 'underline',
           cursor: 'pointer',
-          mb: 3
+          mb: 3,
+          textAlign: 'center',
+          fontWeight: 500
         }}
-        onClick={() => setShowOperationNumberModal(true)}
+        onClick={() => setShowTransferDetailModal(true)}
       >
-        ¿Dónde encuentro el número de operación?
+        ¿Aún no haces la transferencia?
       </Typography>
 
       {/* Mensaje de verificación */}
@@ -248,6 +300,125 @@ const CompleteStep = ({ operationData }) => {
             Entendido
           </Button>
         </DialogActions>
+      </Dialog>
+
+      {/* Modal lateral derecho para detalle de transferencia */}
+      <Dialog
+        open={showTransferDetailModal}
+        onClose={() => setShowTransferDetailModal(false)}
+        TransitionComponent={Transition}
+        keepMounted
+        maxWidth="xs"
+        fullWidth
+        sx={{
+          '& .MuiDialog-paper': {
+            position: 'fixed',
+            right: 0,
+            top: 0,
+            height: '100vh',
+            m: 0,
+            borderRadius: '16px 0 0 16px',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
+            width: { xs: '100vw', sm: 400 },
+            maxWidth: 400,
+            p: 0
+          }
+        }}
+        PaperProps={{
+          sx: {
+            borderRadius: '16px 0 0 16px',
+            height: '100vh',
+            p: 0,
+            bgcolor: '#fff',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.18)'
+          }
+        }}
+      >
+        <Box sx={{ p: 0, height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2, borderBottom: '1px solid #e0e0e0' }}>
+            <Typography sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 700, fontSize: 18 }}>
+              Transferencia Bancaria
+            </Typography>
+            <Button onClick={() => setShowTransferDetailModal(false)} sx={{ minWidth: 0, p: 0, color: '#666' }}>
+              <CloseIcon />
+            </Button>
+          </Box>
+          <Box sx={{ p: 3, flex: 1, overflowY: 'auto' }}>
+            <Typography sx={{ fontWeight: 600, mb: 1, color: '#333', fontSize: 15 }}>
+              ¿A dónde tengo que transferir?
+            </Typography>
+            <Paper sx={{ p: 2, mb: 2, bgcolor: '#f8f9fa', borderRadius: 2, boxShadow: 'none' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography sx={{ color: '#666', fontWeight: 500 }}>Banco</Typography>
+                  <Typography sx={{ fontWeight: 700, color: '#057c39' }}>{mangosCashAccount.bankFullName || '-'}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography sx={{ color: '#666', fontWeight: 500 }}>Número de cuenta</Typography>
+                  <Typography sx={{ fontWeight: 700 }}>{mangosCashAccount.accountNumber || '-'}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography sx={{ color: '#666', fontWeight: 500 }}>RUC</Typography>
+                  <Typography sx={{ fontWeight: 700 }}>{mangosCashAccount.ruc || '-'}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography sx={{ color: '#666', fontWeight: 500 }}>Titular de la cuenta</Typography>
+                  <Typography sx={{ fontWeight: 700 }}>{mangosCashAccount.accountHolder || '-'}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography sx={{ color: '#666', fontWeight: 500 }}>Tipo de Cuenta</Typography>
+                  <Typography sx={{ fontWeight: 700 }}>{mangosCashAccount.accountType || '-'}</Typography>
+                </Box>
+              </Box>
+            </Paper>
+            <Typography sx={{ fontWeight: 600, mb: 1, color: '#333', fontSize: 15 }}>
+              ¿Cuánto tengo que transferir?
+            </Typography>
+            <Paper sx={{ p: 2, mb: 2, bgcolor: '#f8f9fa', borderRadius: 2, boxShadow: 'none' }}>
+              <Typography sx={{ fontWeight: 700, color: '#057c39', fontSize: 18 }}>
+                {amounts.amountToSend.toFixed(2)} {operationData.fromCurrency}
+              </Typography>
+            </Paper>
+            <Typography sx={{ fontWeight: 600, mb: 1, color: '#333', fontSize: 15 }}>
+              ¿Cuánto recibiré?
+            </Typography>
+            <Paper sx={{ p: 2, mb: 2, bgcolor: '#f8f9fa', borderRadius: 2, boxShadow: 'none' }}>
+              <Typography sx={{ fontWeight: 700, color: '#057c39', fontSize: 18 }}>
+                {amounts.amountToReceive.toFixed(2)} {operationData.toCurrency}
+              </Typography>
+            </Paper>
+            <Typography sx={{ fontWeight: 600, mb: 1, color: '#333', fontSize: 15 }}>
+              ¿En qué cuenta lo recibiré?
+            </Typography>
+            <Paper sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 2, boxShadow: 'none' }}>
+              <Typography sx={{ fontWeight: 700, color: '#057c39', fontSize: 16 }}>
+                {userAccount.bank || '-'} - {userAccount.accountNumber || '-'}
+              </Typography>
+            </Paper>
+          </Box>
+          <Box sx={{ p: 3, borderTop: '1px solid #e0e0e0', textAlign: 'center' }}>
+            <Button
+              variant="contained"
+              onClick={() => setShowTransferDetailModal(false)}
+              sx={{
+                bgcolor: '#057c39',
+                color: 'white',
+                fontWeight: 700,
+                py: 1.5,
+                px: 4,
+                borderRadius: 2,
+                textTransform: 'none',
+                fontSize: 16,
+                boxShadow: '0 4px 20px rgba(5, 124, 57, 0.15)',
+                '&:hover': {
+                  bgcolor: '#046a30'
+                }
+              }}
+            >
+              ENTENDIDO
+            </Button>
+          </Box>
+        </Box>
       </Dialog>
     </Box>
   );
