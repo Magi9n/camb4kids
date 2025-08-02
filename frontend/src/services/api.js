@@ -1,7 +1,16 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api'
+  baseURL: process.env.REACT_APP_API_URL || '/api',
+});
+
+// Interceptor para agregar el header de la API key en cada petición
+api.interceptors.request.use((config) => {
+  const apiKey = process.env.REACT_APP_PUBLIC_API_SECRET;
+  if (apiKey) {
+    config.headers['x-public-api-key'] = apiKey;
+  }
+  return config;
 });
 
 // Interceptor para agregar el token JWT automáticamente

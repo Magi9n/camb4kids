@@ -7,8 +7,8 @@ export class RatesController {
 
   @Get('current')
   async getCurrent(@Req() req) {
-    const origin = req.headers['origin'] || req.headers['referer'] || '';
-    if (origin && !origin.includes('cambio.mate4kids.com')) {
+    const apiKey = req.headers['x-public-api-key'];
+    if (!apiKey || apiKey !== process.env.PUBLIC_API_SECRET) {
       throw new ForbiddenException('No autorizado');
     }
     return this.ratesService.getCurrent();

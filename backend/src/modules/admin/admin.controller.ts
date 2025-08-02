@@ -81,9 +81,8 @@ export class AdminController {
 
   @Get('public-margins')
   async getPublicMargins(@Req() req) {
-    // Permitir solo si el referer/origin es del mismo dominio
-    const origin = req.headers['origin'] || req.headers['referer'] || '';
-    if (origin && !origin.includes('cambio.mate4kids.com')) {
+    const apiKey = req.headers['x-public-api-key'];
+    if (!apiKey || apiKey !== process.env.PUBLIC_API_SECRET) {
       throw new ForbiddenException('No autorizado');
     }
     const settings = await this.adminService.getSettings() as any;
