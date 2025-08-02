@@ -7,9 +7,20 @@ const api = axios.create({
 // Interceptor para agregar el header de la API key en cada petición
 api.interceptors.request.use((config) => {
   const apiKey = process.env.REACT_APP_PUBLIC_API_SECRET;
+  console.log('🔑 API Key from env:', apiKey ? 'EXISTS' : 'NOT FOUND');
+  console.log('🔑 API Key length:', apiKey ? apiKey.length : 0);
+  console.log('🔑 API Key first 10 chars:', apiKey ? apiKey.substring(0, 10) + '...' : 'N/A');
+  
   if (apiKey) {
     config.headers['x-public-api-key'] = apiKey;
+    console.log('✅ Header x-public-api-key added');
+  } else {
+    console.log('❌ No API key found in environment');
   }
+  
+  console.log('🌐 Request URL:', config.url);
+  console.log('📋 Request headers:', config.headers);
+  
   return config;
 });
 

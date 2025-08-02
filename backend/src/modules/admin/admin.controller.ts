@@ -82,9 +82,18 @@ export class AdminController {
   @Get('public-margins')
   async getPublicMargins(@Req() req) {
     const apiKey = req.headers['x-public-api-key'];
+    console.log('🔍 Backend - Received headers:', Object.keys(req.headers));
+    console.log('🔍 Backend - x-public-api-key received:', apiKey ? 'YES' : 'NO');
+    console.log('🔍 Backend - API key length:', apiKey ? apiKey.length : 0);
+    console.log('🔍 Backend - Expected key length:', process.env.PUBLIC_API_SECRET ? process.env.PUBLIC_API_SECRET.length : 0);
+    console.log('🔍 Backend - Keys match:', apiKey === process.env.PUBLIC_API_SECRET);
+    
     if (!apiKey || apiKey !== process.env.PUBLIC_API_SECRET) {
+      console.log('❌ Backend - Authorization failed');
       throw new ForbiddenException('No autorizado');
     }
+    
+    console.log('✅ Backend - Authorization successful');
     const settings = await this.adminService.getSettings() as any;
     return {
       buyPercent: settings.buyPercent,
