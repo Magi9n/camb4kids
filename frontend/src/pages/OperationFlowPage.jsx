@@ -419,7 +419,10 @@ const OperationFlowPage = () => {
       case 2:
         return (
           <CompleteStep
-            operationData={operationData}
+            operationData={{
+              ...operationData,
+              mangosCashAccount: operationData.mangosCashAccount
+            }}
           />
         );
       default:

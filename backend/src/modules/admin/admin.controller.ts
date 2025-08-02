@@ -8,7 +8,9 @@ import {
   Query, 
   UseGuards,
   ParseIntPipe,
-  DefaultValuePipe 
+  DefaultValuePipe,
+  Req,
+  ForbiddenException
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { UpdateSettingsDto } from '../../common/dto/update-settings.dto';
@@ -78,7 +80,12 @@ export class AdminController {
   }
 
   @Get('public-margins')
-  async getPublicMargins() {
+  async getPublicMargins(@Req() req) {
+    // Permitir solo si el referer/origin es del mismo dominio
+    const origin = req.headers['origin'] || req.headers['referer'] || '';
+    if (origin && !origin.includes('cambio.mate4kids.com')) {
+      throw new ForbiddenException('No autorizado');
+    }
     const settings = await this.adminService.getSettings() as any;
     return {
       buyPercent: settings.buyPercent,

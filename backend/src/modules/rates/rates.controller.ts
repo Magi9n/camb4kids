@@ -1,4 +1,4 @@
-import { Controller, Get, Query, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Query, BadRequestException, Req, ForbiddenException } from '@nestjs/common';
 import { RatesService } from './rates.service';
 
 @Controller('rates')
@@ -6,7 +6,11 @@ export class RatesController {
   constructor(private readonly ratesService: RatesService) {}
 
   @Get('current')
-  async getCurrent() {
+  async getCurrent(@Req() req) {
+    const origin = req.headers['origin'] || req.headers['referer'] || '';
+    if (origin && !origin.includes('cambio.mate4kids.com')) {
+      throw new ForbiddenException('No autorizado');
+    }
     return this.ratesService.getCurrent();
   }
 
