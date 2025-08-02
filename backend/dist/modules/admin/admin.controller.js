@@ -45,7 +45,18 @@ let AdminController = class AdminController {
     async getCacheStats() {
         return this.adminService.getCacheStats();
     }
-    async getPublicMargins() {
+    async getPublicMargins(req) {
+        const apiKey = req.headers['x-public-api-key'];
+        console.log('🔍 Backend - Received headers:', Object.keys(req.headers));
+        console.log('🔍 Backend - x-public-api-key received:', apiKey ? 'YES' : 'NO');
+        console.log('🔍 Backend - API key length:', apiKey ? apiKey.length : 0);
+        console.log('🔍 Backend - Expected key length:', process.env.PUBLIC_API_SECRET ? process.env.PUBLIC_API_SECRET.length : 0);
+        console.log('🔍 Backend - Keys match:', apiKey === process.env.PUBLIC_API_SECRET);
+        if (!apiKey || apiKey !== process.env.PUBLIC_API_SECRET) {
+            console.log('❌ Backend - Authorization failed');
+            throw new common_1.ForbiddenException('No autorizado');
+        }
+        console.log('✅ Backend - Authorization successful');
         const settings = await this.adminService.getSettings();
         return {
             buyPercent: settings.buyPercent,
@@ -118,8 +129,9 @@ __decorate([
 ], AdminController.prototype, "getCacheStats", null);
 __decorate([
     (0, common_1.Get)('public-margins'),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AdminController.prototype, "getPublicMargins", null);
 exports.AdminController = AdminController = __decorate([

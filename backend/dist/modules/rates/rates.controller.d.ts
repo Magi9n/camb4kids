@@ -2,7 +2,7 @@ import { RatesService } from './rates.service';
 export declare class RatesController {
     private readonly ratesService;
     constructor(ratesService: RatesService);
-    getCurrent(): Promise<{
+    getCurrent(req: any): Promise<{
         rate: number;
     }>;
     getHistory(from: string, to: string): Promise<{

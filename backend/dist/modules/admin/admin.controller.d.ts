@@ -34,7 +34,7 @@ export declare class AdminController {
         valid: number;
         expired: number;
     }>;
-    getPublicMargins(): Promise<{
+    getPublicMargins(req: any): Promise<{
         buyPercent: any;
         sellPercent: any;
     }>;
